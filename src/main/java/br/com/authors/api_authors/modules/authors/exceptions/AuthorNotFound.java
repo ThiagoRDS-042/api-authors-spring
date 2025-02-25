@@ -4,8 +4,8 @@ import org.springframework.http.HttpStatus;
 
 import br.com.authors.api_authors.exceptions.AppException;
 
-public class InvalidAgeException extends AppException {
-  public InvalidAgeException() {
-    super("Minimum age not reached.", HttpStatus.BAD_REQUEST);
+public class AuthorNotFound extends AppException {
+  public AuthorNotFound() {
+    super("Author does not exist.", HttpStatus.NOT_FOUND);
   }
 }

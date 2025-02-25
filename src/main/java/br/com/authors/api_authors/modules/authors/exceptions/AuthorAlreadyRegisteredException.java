@@ -1,9 +1,12 @@
 package br.com.authors.api_authors.modules.authors.exceptions;
 
-public class AuthorAlreadyRegisteredException extends RuntimeException {
+import org.springframework.http.HttpStatus;
 
+import br.com.authors.api_authors.exceptions.AppException;
+
+public class AuthorAlreadyRegisteredException extends AppException {
   public AuthorAlreadyRegisteredException() {
-    super("Author already registered.");
+    super("Author already registered.", HttpStatus.CONFLICT);
   }
 
 }

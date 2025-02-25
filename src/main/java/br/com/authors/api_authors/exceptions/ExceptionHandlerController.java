@@ -5,14 +5,21 @@ import java.util.List;
 
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+
+import br.com.authors.api_authors.exceptions.dtos.ErrorMessageDTO;
+import br.com.authors.api_authors.exceptions.dtos.ErrorResponseDTO;
 
 @ControllerAdvice
-public class ExceptionHandlerController {
+public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
 
   private MessageSource messageSource;
 
@@ -20,9 +27,9 @@ public class ExceptionHandlerController {
     this.messageSource = messageSource;
   }
 
-  @ExceptionHandler(MethodArgumentNotValidException.class)
-  public ResponseEntity<List<ErrorMessageDTO>> handleMethodArgumentNotValidException(
-      MethodArgumentNotValidException exception) {
+  @Override
+  public ResponseEntity<Object> handleMethodArgumentNotValid(
+      MethodArgumentNotValidException exception, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
     List<ErrorMessageDTO> dto = new ArrayList<>();
 
     exception.getBindingResult().getFieldErrors().forEach(error -> {
@@ -34,5 +41,14 @@ public class ExceptionHandlerController {
     });
 
     return new ResponseEntity<>(dto, HttpStatus.BAD_REQUEST);
+  }
+
+  @ExceptionHandler(AppException.class)
+  public ResponseEntity<Object> handleAppException(
+      AppException exception) {
+
+    var error = new ErrorResponseDTO(exception.getMessage(), exception.getClass().getSimpleName());
+
+    return ResponseEntity.status(exception.getStatusCode()).body(error);
   }
 }
