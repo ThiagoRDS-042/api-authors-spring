@@ -1,6 +1,7 @@
 package br.com.authors.api_authors.modules.authors.entities;
 
 import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.UUID;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -22,7 +23,6 @@ public class Author {
   @GeneratedValue(strategy = GenerationType.UUID)
   private UUID id;
 
-  @NotEmpty
   @Column(nullable = false)
   private String name;
 
@@ -30,33 +30,34 @@ public class Author {
   @Column(unique = true)
   private String email;
 
-  @NotEmpty
   @Column(unique = true)
   private String tag;
 
-  @NotEmpty
   @Column(nullable = false)
-  private LocalDateTime birthdate;
+  private String password;
 
-  @NotEmpty
+  @Column(nullable = false)
+  private LocalDate birthdate;
+
   @CreationTimestamp
   @Column(name = "created_at", nullable = false)
   private LocalDateTime createdAt;
 
-  @NotEmpty
   @Column(name = "updtaed_at", nullable = false)
   private LocalDateTime updtaedAt;
 
   public Author() {
   }
 
-  public Author(String name, String email, String tag, LocalDateTime birthdate,
-      LocalDateTime updtaedAt) {
+  public Author(String name, String email, String tag, String password, LocalDate birthdate) {
+    var today = LocalDateTime.now();
+
     this.name = name;
     this.email = email;
     this.tag = tag;
+    this.password = password;
     this.birthdate = birthdate;
-    this.updtaedAt = updtaedAt;
+    this.updtaedAt = today;
   }
 
   public UUID getId() {
@@ -91,11 +92,19 @@ public class Author {
     this.tag = tag;
   }
 
-  public LocalDateTime getBirthdate() {
+  public UUID getPassword() {
+    return this.id;
+  }
+
+  public void setPassword(UUID id) {
+    this.id = id;
+  }
+
+  public LocalDate getBirthdate() {
     return this.birthdate;
   }
 
-  public void setBirthdate(LocalDateTime birthdate) {
+  public void setBirthdate(LocalDate birthdate) {
     this.birthdate = birthdate;
   }
 
@@ -124,13 +133,14 @@ public class Author {
     }
     Author author = (Author) o;
     return Objects.equals(id, author.id) && Objects.equals(name, author.name) && Objects.equals(email, author.email)
-        && Objects.equals(tag, author.tag) && Objects.equals(birthdate, author.birthdate)
-        && Objects.equals(createdAt, author.createdAt) && Objects.equals(updtaedAt, author.updtaedAt);
+        && Objects.equals(tag, author.tag) && Objects.equals(password, author.password)
+        && Objects.equals(birthdate, author.birthdate) && Objects.equals(createdAt, author.createdAt)
+        && Objects.equals(updtaedAt, author.updtaedAt);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, name, email, tag, birthdate, createdAt, updtaedAt);
+    return Objects.hash(id, name, email, tag, password, birthdate, createdAt, updtaedAt);
   }
 
   @Override
@@ -140,6 +150,7 @@ public class Author {
         ", name='" + getName() + "'" +
         ", email='" + getEmail() + "'" +
         ", tag='" + getTag() + "'" +
+        ", password='" + getPassword() + "'" +
         ", birthdate='" + getBirthdate() + "'" +
         ", createdAt='" + getCreatedAt() + "'" +
         ", updtaedAt='" + getUpdtaedAt() + "'" +
