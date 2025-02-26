@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.authors.api_authors.modules.authors.dtos.AuthorReponseMapperDTO;
 import br.com.authors.api_authors.modules.authors.mappers.AuthorMapper;
 import br.com.authors.api_authors.modules.authors.usecases.GetAuthorById;
+import jakarta.validation.Valid;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -20,7 +22,7 @@ public class GetAuthorByIdController {
   private GetAuthorById getAuthorById;
 
   @GetMapping("/{authorId}")
-  public ResponseEntity<AuthorReponseMapperDTO> getAuthor(@PathVariable() UUID authorId) {
+  public ResponseEntity<AuthorReponseMapperDTO> getAuthor(@Valid @PathVariable UUID authorId) {
     var author = this.getAuthorById.execute(authorId);
 
     var authorMapper = AuthorMapper.ToHttp(author);

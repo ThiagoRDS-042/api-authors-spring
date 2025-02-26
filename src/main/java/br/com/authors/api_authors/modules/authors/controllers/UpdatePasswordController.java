@@ -10,7 +10,7 @@ import br.com.authors.api_authors.utils.SessionId;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
-import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.UUID;
@@ -24,7 +24,7 @@ public class UpdatePasswordController {
   @Autowired
   private UpdatePassword updatePassword;
 
-  @PutMapping("/password")
+  @PatchMapping("/password")
   public ResponseEntity<Object> putMethodName(HttpServletRequest request,
       @Valid @RequestBody UpdatePasswordControllerDTO data) {
     var authorId = request.getAttribute(SessionId.ID);

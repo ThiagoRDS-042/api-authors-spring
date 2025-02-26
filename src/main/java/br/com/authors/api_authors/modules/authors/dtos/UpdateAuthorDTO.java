@@ -9,9 +9,9 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 
 public record UpdateAuthorDTO(
-    @NotBlank UUID id,
-    @NotBlank String name,
-    @NotBlank @Email String email,
-    @NotNull AddressDTO address,
-    @NotBlank @Pattern(regexp = ValidBirthdate.FORMAT, message = ValidBirthdate.MESSAGE) String birthdate) {
+        @NotBlank UUID authorId,
+        @NotBlank String name,
+        @NotBlank @Email String email,
+        @NotNull AddressDTO address,
+        @NotBlank @Pattern(regexp = ValidBirthdate.FORMAT, message = ValidBirthdate.MESSAGE) String birthdate) {
 }

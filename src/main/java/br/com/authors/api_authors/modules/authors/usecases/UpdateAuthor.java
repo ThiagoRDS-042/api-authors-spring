@@ -26,7 +26,7 @@ public class UpdateAuthor {
   }
 
   public void execute(UpdateAuthorDTO data) {
-    var author = this.authorsRepository.findById(data.id()).orElseThrow(() -> {
+    var author = this.authorsRepository.findById(data.authorId()).orElseThrow(() -> {
       throw new AuthorNotFoundException();
     });
 
