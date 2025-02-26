@@ -30,9 +30,7 @@ public class ListAuthorsController {
 
     var authors = this.listAuthors.execute(filters);
 
-    var authorsMapper = new ArrayList<AuthorReponseMapperDTO>();
-
-    authors.forEach((author) -> authorsMapper.add(AuthorMapper.ToHttp(author)));
+    var authorsMapper = authors.stream().map(AuthorMapper::ToHttp).toList();
 
     return ResponseEntity.ok(authorsMapper);
   }

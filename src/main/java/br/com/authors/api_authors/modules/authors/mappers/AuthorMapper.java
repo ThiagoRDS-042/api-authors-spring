@@ -7,9 +7,9 @@ public record AuthorMapper() {
   public static AuthorReponseMapperDTO ToHttp(Author author) {
     var authorMapper = new AuthorReponseMapperDTO(
         author.getId(),
+        author.getTag(),
         author.getName(),
         author.getEmail(),
-        author.getTag(),
         author.getAddress(),
         author.getBirthdate());
 
