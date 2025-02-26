@@ -4,23 +4,31 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
-import br.com.authors.api_authors.modules.authors.entities.Author;
+import br.com.authors.api_authors.modules.authors.exceptions.AuthorAlreadyRegisteredException;
 import br.com.authors.api_authors.modules.authors.exceptions.AuthorNotFoundException;
 import br.com.authors.api_authors.modules.authors.repositories.AuthorsRepository;
 
 @Service
-public class GetAuthorById {
+public class UpdateTag {
   private AuthorsRepository authorsRepository;
 
-  public GetAuthorById(AuthorsRepository authorsRepository) {
+  public UpdateTag(AuthorsRepository authorsRepository) {
     this.authorsRepository = authorsRepository;
   }
 
-  public Author execute(UUID authorId) {
+  public void execute(UUID authorId, String tag) {
     var author = this.authorsRepository.findById(authorId).orElseThrow(() -> {
       throw new AuthorNotFoundException();
     });
 
-    return author;
+    var tagAlreadyRegistered = this.authorsRepository.findByTag(tag);
+
+    if (tagAlreadyRegistered.isPresent() && author.getId() != tagAlreadyRegistered.get().getId()) {
+      throw new AuthorAlreadyRegisteredException();
+    }
+
+    author.setTag(tag);
+
+    this.authorsRepository.save(author);
   }
 }

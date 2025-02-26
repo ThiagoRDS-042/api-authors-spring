@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 
 import br.com.authors.api_authors.modules.authors.dtos.AuthenticateAuthorDTO;
 import br.com.authors.api_authors.modules.authors.dtos.AuthenticateAuthorResponseDTO;
-import br.com.authors.api_authors.modules.authors.exceptions.InvalidCredentials;
+import br.com.authors.api_authors.modules.authors.exceptions.InvalidCredentialsException;
 import br.com.authors.api_authors.modules.authors.repositories.AuthorsRepository;
 import br.com.authors.api_authors.providers.JwtProvider;
 
@@ -26,13 +26,13 @@ public class AuthenticateAuthor {
 
   public AuthenticateAuthorResponseDTO execute(AuthenticateAuthorDTO data) {
     var author = this.authorsRepository.findByEmail(data.email()).orElseThrow(() -> {
-      throw new InvalidCredentials();
+      throw new InvalidCredentialsException();
     });
 
     var passwordDoesMatches = this.passwordEncoder.matches(data.password(), author.getPassword());
 
     if (!passwordDoesMatches) {
-      throw new InvalidCredentials();
+      throw new InvalidCredentialsException();
     }
 
     var signToken = this.jwtProvider.sign(author.getId().toString());

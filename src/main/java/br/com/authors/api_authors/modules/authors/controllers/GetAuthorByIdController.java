@@ -20,8 +20,17 @@ public class GetAuthorByIdController {
   private GetAuthorById getAuthorById;
 
   @GetMapping("/{authorId}")
-  public ResponseEntity<AuthorReponseMapperDTO> getMethodName(@PathVariable() UUID authorId) {
+  public ResponseEntity<AuthorReponseMapperDTO> getAuthor(@PathVariable() UUID authorId) {
     var author = this.getAuthorById.execute(authorId);
+
+    var authorMapper = AuthorMapper.ToHttp(author);
+
+    return ResponseEntity.ok(authorMapper);
+  }
+
+  @GetMapping("/test/{testId}")
+  public ResponseEntity<AuthorReponseMapperDTO> getMethodName(@PathVariable() UUID testId) {
+    var author = this.getAuthorById.execute(testId);
 
     var authorMapper = AuthorMapper.ToHttp(author);
 
