@@ -16,9 +16,8 @@ import br.com.authors.api_authors.utils.ValidAge;
 
 @Service
 public class UpdateAuthor {
-  private AuthorsRepository authorsRepository;
-
-  private AddressesRepository addressesRepository;
+  private final AuthorsRepository authorsRepository;
+  private final AddressesRepository addressesRepository;
 
   public UpdateAuthor(AuthorsRepository authorsRepository, AddressesRepository addressesRepository) {
     this.authorsRepository = authorsRepository;

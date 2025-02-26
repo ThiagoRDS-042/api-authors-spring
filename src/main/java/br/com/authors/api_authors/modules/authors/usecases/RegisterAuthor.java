@@ -16,16 +16,14 @@ import br.com.authors.api_authors.utils.ValidAge;
 
 @Service
 public class RegisterAuthor {
-  private AuthorsRepository authorsRepository;
-
-  private PasswordEncoder passwordEncoder;
-
-  private GenerateTagProvider generateTagProvider;
+  private final PasswordEncoder passwordEncoder;
+  private final AuthorsRepository authorsRepository;
+  private final GenerateTagProvider generateTagProvider;
 
   RegisterAuthor(AuthorsRepository authorsRepository, PasswordEncoder passwordEncoder,
       GenerateTagProvider generateTagProvider) {
-    this.authorsRepository = authorsRepository;
     this.passwordEncoder = passwordEncoder;
+    this.authorsRepository = authorsRepository;
     this.generateTagProvider = generateTagProvider;
   }
 

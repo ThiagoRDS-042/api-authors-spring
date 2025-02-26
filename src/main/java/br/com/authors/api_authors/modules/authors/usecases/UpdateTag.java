@@ -10,7 +10,7 @@ import br.com.authors.api_authors.modules.authors.repositories.AuthorsRepository
 
 @Service
 public class UpdateTag {
-  private AuthorsRepository authorsRepository;
+  private final AuthorsRepository authorsRepository;
 
   public UpdateTag(AuthorsRepository authorsRepository) {
     this.authorsRepository = authorsRepository;

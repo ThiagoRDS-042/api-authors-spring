@@ -11,17 +11,15 @@ import br.com.authors.api_authors.providers.JwtProvider;
 
 @Service
 public class AuthenticateAuthor {
-  private JwtProvider jwtProvider;
-
-  private PasswordEncoder passwordEncoder;
-
-  private AuthorsRepository authorsRepository;
+  private final JwtProvider jwtProvider;
+  private final PasswordEncoder passwordEncoder;
+  private final AuthorsRepository authorsRepository;
 
   public AuthenticateAuthor(AuthorsRepository authorsRepository, JwtProvider jwtProvider,
       PasswordEncoder passwordEncoder) {
-    this.authorsRepository = authorsRepository;
     this.jwtProvider = jwtProvider;
     this.passwordEncoder = passwordEncoder;
+    this.authorsRepository = authorsRepository;
   }
 
   public AuthenticateAuthorResponseDTO execute(AuthenticateAuthorDTO data) {

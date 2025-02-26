@@ -10,13 +10,12 @@ import br.com.authors.api_authors.modules.authors.repositories.AuthorsRepository
 
 @Service
 public class UpdatePassword {
-  private AuthorsRepository authorsRepository;
-
-  private PasswordEncoder passwordEncoder;
+  private final PasswordEncoder passwordEncoder;
+  private final AuthorsRepository authorsRepository;
 
   public UpdatePassword(AuthorsRepository authorsRepository, PasswordEncoder passwordEncoder) {
-    this.authorsRepository = authorsRepository;
     this.passwordEncoder = passwordEncoder;
+    this.authorsRepository = authorsRepository;
   }
 
   public void execute(UpdatePasswordDTO data) {

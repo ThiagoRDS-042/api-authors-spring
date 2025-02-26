@@ -9,7 +9,7 @@ import br.com.authors.api_authors.modules.authors.repositories.AuthorsRepository
 
 @Service
 public class DeleteAuthor {
-  private AuthorsRepository authorsRepository;
+  private final AuthorsRepository authorsRepository;
 
   public DeleteAuthor(AuthorsRepository authorsRepository) {
     this.authorsRepository = authorsRepository;
