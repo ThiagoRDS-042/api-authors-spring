@@ -3,10 +3,12 @@ package br.com.authors.api_authors.modules.authors.controllers;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.authors.api_authors.modules.authors.entities.Author;
+import br.com.authors.api_authors.modules.authors.mappers.AuthorMapper;
+import br.com.authors.api_authors.modules.authors.mappers.dtos.AuthorReponseMapperDTO;
 import br.com.authors.api_authors.modules.authors.usecases.GetAuthorById;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,7 +20,11 @@ public class GetAuthorByIdController {
   private GetAuthorById getAuthorById;
 
   @GetMapping("/{authorId}")
-  public Author getMethodName(@PathVariable() UUID authorId) {
-    return this.getAuthorById.execute(authorId);
+  public ResponseEntity<AuthorReponseMapperDTO> getMethodName(@PathVariable() UUID authorId) {
+    var author = this.getAuthorById.execute(authorId);
+
+    var authorMapper = AuthorMapper.ToHttp(author);
+
+    return ResponseEntity.ok(authorMapper);
   }
 }

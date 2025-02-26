@@ -19,6 +19,6 @@ public class GenerateTagProvider {
 
     var tag = NONLATIN.matcher(normalized).replaceAll("");
 
-    return tag + "-" + Instant.now().getEpochSecond();
+    return tag + "-" + Instant.now().toEpochMilli();
   }
 }

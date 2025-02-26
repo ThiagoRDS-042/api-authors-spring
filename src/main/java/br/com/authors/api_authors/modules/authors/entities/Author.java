@@ -49,6 +49,18 @@ public class Author {
   public Author() {
   }
 
+  public Author(UUID id, String name, String email, String tag, String password, LocalDate birthdate,
+      LocalDateTime updtaedAt, LocalDateTime createdAt) {
+    this.id = id;
+    this.name = name;
+    this.email = email;
+    this.tag = tag;
+    this.password = password;
+    this.birthdate = birthdate;
+    this.updtaedAt = updtaedAt;
+    this.createdAt = createdAt;
+  }
+
   public Author(String name, String email, String tag, String password, LocalDate birthdate) {
     var today = LocalDateTime.now();
 
@@ -92,12 +104,12 @@ public class Author {
     this.tag = tag;
   }
 
-  public UUID getPassword() {
-    return this.id;
+  public String getPassword() {
+    return this.password;
   }
 
-  public void setPassword(UUID id) {
-    this.id = id;
+  public void setPassword(String password) {
+    this.password = password;
   }
 
   public LocalDate getBirthdate() {

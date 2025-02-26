@@ -53,6 +53,19 @@ public class Address {
   public Address() {
   }
 
+  public Address(UUID id, String city, String street, String zipCode, String stateCode, String complement,
+      String neighborhood, UUID authorId, Author author) {
+    this.id = id;
+    this.city = city;
+    this.street = street;
+    this.zipCode = zipCode;
+    this.stateCode = stateCode;
+    this.complement = complement;
+    this.neighborhood = neighborhood;
+    this.authorId = authorId;
+    this.author = author;
+  }
+
   public Address(String city, String street, String zipCode, String stateCode, String complement,
       String neighborhood, UUID authorId, Author author) {
     this.city = city;
