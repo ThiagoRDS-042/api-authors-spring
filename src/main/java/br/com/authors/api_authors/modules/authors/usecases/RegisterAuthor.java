@@ -12,11 +12,10 @@ import br.com.authors.api_authors.modules.authors.exceptions.AuthorAlreadyRegist
 import br.com.authors.api_authors.modules.authors.exceptions.InvalidAgeException;
 import br.com.authors.api_authors.modules.authors.repositories.AuthorsRepository;
 import br.com.authors.api_authors.providers.GenerateTagProvider;
+import br.com.authors.api_authors.utils.ValidAge;
 
 @Service
 public class RegisterAuthor {
-  private final int VALID_AGE_IN_MONTHS = 216; // 18 years in months
-
   private AuthorsRepository authorsRepository;
 
   private PasswordEncoder passwordEncoder;
@@ -40,7 +39,7 @@ public class RegisterAuthor {
 
     var months = ChronoUnit.MONTHS.between(birthdate, LocalDate.now());
 
-    if (months < this.VALID_AGE_IN_MONTHS) {
+    if (months < ValidAge.VALUE) {
       throw new InvalidAgeException();
     }
 

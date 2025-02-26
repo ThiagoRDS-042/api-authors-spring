@@ -3,8 +3,9 @@ package br.com.authors.api_authors.modules.authors.controllers;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.authors.api_authors.modules.authors.dtos.UpdateTagDTO;
-import br.com.authors.api_authors.modules.authors.usecases.UpdateTag;
+import br.com.authors.api_authors.modules.authors.dtos.UpdatePasswordControllerDTO;
+import br.com.authors.api_authors.modules.authors.dtos.UpdatePasswordDTO;
+import br.com.authors.api_authors.modules.authors.usecases.UpdatePassword;
 import br.com.authors.api_authors.utils.SessionId;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -19,16 +20,19 @@ import org.springframework.http.ResponseEntity;
 
 @RestController
 @RequestMapping("/authors")
-public class UpdateTagController {
+public class UpdatePasswordController {
   @Autowired
-  private UpdateTag updateTag;
+  private UpdatePassword updatePassword;
 
-  @PutMapping("/tag")
-  public ResponseEntity<Object> updateTag(HttpServletRequest request,
-      @Valid @RequestBody UpdateTagDTO data) {
+  @PutMapping("/password")
+  public ResponseEntity<Object> putMethodName(HttpServletRequest request,
+      @Valid @RequestBody UpdatePasswordControllerDTO data) {
     var authorId = request.getAttribute(SessionId.ID);
 
-    this.updateTag.execute(UUID.fromString(authorId.toString()), data.tag());
+    var updatePasswordData = new UpdatePasswordDTO(UUID.fromString(authorId.toString()), data.oldPassword(),
+        data.newPassword(), data.confirmpassword());
+
+    this.updatePassword.execute(updatePasswordData);
 
     return ResponseEntity.noContent().build();
   }

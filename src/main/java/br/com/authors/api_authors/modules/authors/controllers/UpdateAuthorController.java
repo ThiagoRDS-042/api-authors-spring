@@ -11,6 +11,7 @@ import br.com.authors.api_authors.modules.authors.dtos.SaveAddressDTO;
 import br.com.authors.api_authors.modules.authors.dtos.UpdateAuthorControllerDTO;
 import br.com.authors.api_authors.modules.authors.dtos.UpdateAuthorDTO;
 import br.com.authors.api_authors.modules.authors.usecases.UpdateAuthor;
+import br.com.authors.api_authors.utils.SessionId;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
@@ -25,7 +26,7 @@ public class UpdateAuthorController {
 
   @PutMapping("/account")
   public ResponseEntity<Object> update(HttpServletRequest request, @Valid @RequestBody UpdateAuthorControllerDTO data) {
-    var authorId = request.getAttribute("authorId");
+    var authorId = request.getAttribute(SessionId.ID);
 
     var address = new SaveAddressDTO(
         data.address().city(), data.address().street(), data.address().zipCode(), data.address().stateCode(),

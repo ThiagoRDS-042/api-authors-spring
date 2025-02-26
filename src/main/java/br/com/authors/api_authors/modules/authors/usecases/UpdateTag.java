@@ -23,7 +23,7 @@ public class UpdateTag {
 
     var tagAlreadyRegistered = this.authorsRepository.findByTag(tag);
 
-    if (tagAlreadyRegistered.isPresent() && author.getId() != tagAlreadyRegistered.get().getId()) {
+    if (tagAlreadyRegistered.isPresent() && !tagAlreadyRegistered.get().getId().equals(author.getId())) {
       throw new AuthorAlreadyRegisteredException();
     }
 

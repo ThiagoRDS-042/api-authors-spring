@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import br.com.authors.api_authors.providers.JwtProvider;
+import br.com.authors.api_authors.utils.SessionId;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -39,7 +40,7 @@ public class SecurityAuthorConfig extends OncePerRequestFilter {
 
       var authorId = decodedToken.getSubject();
 
-      request.setAttribute("authorId", authorId);
+      request.setAttribute(SessionId.ID, authorId);
 
       var auth = new UsernamePasswordAuthenticationToken(authorId, null, null);
 
