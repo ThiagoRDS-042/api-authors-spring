@@ -27,13 +27,4 @@ public class GetAuthorByIdController {
 
     return ResponseEntity.ok(authorMapper);
   }
-
-  @GetMapping("/test/{testId}")
-  public ResponseEntity<AuthorReponseMapperDTO> getMethodName(@PathVariable() UUID testId) {
-    var author = this.getAuthorById.execute(testId);
-
-    var authorMapper = AuthorMapper.ToHttp(author);
-
-    return ResponseEntity.ok(authorMapper);
-  }
 }

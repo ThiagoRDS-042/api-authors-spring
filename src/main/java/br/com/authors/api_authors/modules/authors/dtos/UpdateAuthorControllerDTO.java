@@ -7,8 +7,8 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 
 public record UpdateAuthorControllerDTO(
-                @NotBlank String name,
-                @NotBlank @Email String email,
-                @NotNull SaveAddressControllerDTO address,
-                @NotBlank @Pattern(regexp = ValidBirthdate.FORMAT, message = ValidBirthdate.MESSAGE) String birthdate) {
+    @NotBlank String name,
+    @NotBlank @Email String email,
+    @NotNull AddressDTO address,
+    @NotBlank @Pattern(regexp = ValidBirthdate.FORMAT, message = ValidBirthdate.MESSAGE) String birthdate) {
 }

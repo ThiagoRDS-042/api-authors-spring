@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.authors.api_authors.modules.authors.dtos.SaveAddressDTO;
+import br.com.authors.api_authors.modules.authors.dtos.AddressDTO;
 import br.com.authors.api_authors.modules.authors.dtos.UpdateAuthorControllerDTO;
 import br.com.authors.api_authors.modules.authors.dtos.UpdateAuthorDTO;
 import br.com.authors.api_authors.modules.authors.usecases.UpdateAuthor;
@@ -28,11 +28,12 @@ public class UpdateAuthorController {
   public ResponseEntity<Object> update(HttpServletRequest request, @Valid @RequestBody UpdateAuthorControllerDTO data) {
     var authorId = request.getAttribute(SessionId.ID);
 
-    var address = new SaveAddressDTO(
+    var address = new AddressDTO(
         data.address().city(), data.address().street(), data.address().zipCode(), data.address().stateCode(),
-        data.address().complement(), data.address().neighborhood(), UUID.fromString(authorId.toString()));
+        data.address().complement(), data.address().neighborhood());
 
-    var updateAuthorData = new UpdateAuthorDTO(data.name(), data.email(), address, data.birthdate());
+    var updateAuthorData = new UpdateAuthorDTO(UUID.fromString(authorId.toString()), data.name(), data.email(), address,
+        data.birthdate());
 
     this.updateAuthor.execute(updateAuthorData);
 
