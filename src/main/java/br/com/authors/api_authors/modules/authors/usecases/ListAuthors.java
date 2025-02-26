@@ -16,7 +16,7 @@ public class ListAuthors {
   }
 
   public List<Author> execute() {
-    var authors = this.authorsRepository.findAll();
+    var authors = this.authorsRepository.findMany();
 
     return authors;
   }
