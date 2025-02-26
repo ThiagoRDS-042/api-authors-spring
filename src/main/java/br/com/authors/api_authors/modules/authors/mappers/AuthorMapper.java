@@ -1,7 +1,7 @@
 package br.com.authors.api_authors.modules.authors.mappers;
 
+import br.com.authors.api_authors.modules.authors.dtos.AuthorReponseMapperDTO;
 import br.com.authors.api_authors.modules.authors.entities.Author;
-import br.com.authors.api_authors.modules.authors.mappers.dtos.AuthorReponseMapperDTO;
 
 public class AuthorMapper {
   public static AuthorReponseMapperDTO ToHttp(Author author) {

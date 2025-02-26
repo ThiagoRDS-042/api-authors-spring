@@ -9,7 +9,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
-import jakarta.validation.constraints.NotEmpty;
 
 import java.util.Objects;
 
@@ -19,30 +18,24 @@ public class Address {
   @GeneratedValue(strategy = GenerationType.UUID)
   private UUID id;
 
-  @NotEmpty
   @Column(nullable = false)
   private String city;
 
-  @NotEmpty
   @Column(nullable = false)
   private String street;
 
-  @NotEmpty
   @Column(name = "zip_code", nullable = false)
   private String zipCode;
 
-  @NotEmpty
   @Column(name = "state_code", nullable = false)
   private String stateCode;
 
   @Column(nullable = true)
   private String complement;
 
-  @NotEmpty
   @Column(nullable = false)
   private String neighborhood;
 
-  @NotEmpty
   @Column(name = "author_id", nullable = false)
   private UUID authorId;
 

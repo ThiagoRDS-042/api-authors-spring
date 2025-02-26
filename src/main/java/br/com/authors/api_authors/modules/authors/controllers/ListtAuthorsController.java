@@ -8,8 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.authors.api_authors.modules.authors.dtos.AuthorReponseMapperDTO;
 import br.com.authors.api_authors.modules.authors.mappers.AuthorMapper;
-import br.com.authors.api_authors.modules.authors.mappers.dtos.AuthorReponseMapperDTO;
 import br.com.authors.api_authors.modules.authors.usecases.ListAuthors;
 import org.springframework.web.bind.annotation.GetMapping;
 

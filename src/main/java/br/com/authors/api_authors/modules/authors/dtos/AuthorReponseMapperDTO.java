@@ -1,4 +1,4 @@
-package br.com.authors.api_authors.modules.authors.mappers.dtos;
+package br.com.authors.api_authors.modules.authors.dtos;
 
 import java.time.LocalDate;
 import java.util.UUID;
