@@ -15,11 +15,17 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.NamedAttributeNode;
+import jakarta.persistence.NamedEntityGraph;
+import jakarta.persistence.NamedSubgraph;
 import jakarta.persistence.Table;
 import java.util.Objects;
 
 @Entity
 @Table(name = "posts")
+@NamedEntityGraph(name = "Post")
+@NamedEntityGraph(name = "Post.author.address", attributeNodes = @NamedAttributeNode(value = "author", subgraph = "Author.address"), subgraphs = {
+    @NamedSubgraph(name = "Author.address", attributeNodes = @NamedAttributeNode("address")) })
 public class Post {
   private static final long serialVersionUID = -112237786L;
 

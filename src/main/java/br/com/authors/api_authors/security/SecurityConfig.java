@@ -22,7 +22,8 @@ public class SecurityConfig {
     http.csrf(csrf -> csrf.disable()).authorizeHttpRequests(auth -> {
       auth.requestMatchers("/authors").permitAll()
           .requestMatchers("/authors/auth").permitAll()
-          .requestMatchers("/authors/{authorId}").permitAll();
+          .requestMatchers("/authors/{authorId}").permitAll()
+          .requestMatchers("/posts/{postId}").permitAll();
 
       auth.anyRequest().authenticated();
     }).addFilterBefore(this.securityAuthorConfig, BasicAuthenticationFilter.class);
