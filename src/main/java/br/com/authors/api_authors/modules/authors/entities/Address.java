@@ -9,11 +9,12 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
 @Table(name = "addresses")
-public class Address {
+public class Address implements Serializable {
   private static final long serialVersionUID = -8332834589L;
 
   @Id

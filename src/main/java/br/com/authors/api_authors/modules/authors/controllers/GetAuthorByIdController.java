@@ -7,9 +7,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.authors.api_authors.modules.authors.dtos.AuthorReponseMapperDTO;
-import br.com.authors.api_authors.modules.authors.entities.Author;
-import br.com.authors.api_authors.modules.authors.mappers.AuthorMapper;
+import br.com.authors.api_authors.modules.authors.dtos.AuthorWithPostsDTO;
+import br.com.authors.api_authors.modules.authors.dtos.AuthorWithPostsReponseMapperDTO;
+import br.com.authors.api_authors.modules.authors.mappers.AuthorWithPostsMapper;
 import br.com.authors.api_authors.modules.authors.usecases.GetAuthorById;
 import jakarta.validation.Valid;
 
@@ -23,10 +23,10 @@ public class GetAuthorByIdController {
   private GetAuthorById getAuthorById;
 
   @GetMapping("/{authorId}")
-  public ResponseEntity<AuthorReponseMapperDTO> getAuthor(@Valid @PathVariable UUID authorId) {
-    Author author = this.getAuthorById.execute(authorId);
+  public ResponseEntity<AuthorWithPostsReponseMapperDTO> getAuthor(@Valid @PathVariable UUID authorId) {
+    AuthorWithPostsDTO author = this.getAuthorById.execute(authorId);
 
-    AuthorReponseMapperDTO authorMapper = AuthorMapper.ToHttp(author);
+    AuthorWithPostsReponseMapperDTO authorMapper = AuthorWithPostsMapper.ToHttp(author);
 
     return ResponseEntity.ok(authorMapper);
   }

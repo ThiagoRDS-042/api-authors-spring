@@ -1,6 +1,7 @@
 package br.com.authors.api_authors.modules.authors.entities;
 
 import java.time.LocalDateTime;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.UUID;
 
@@ -24,7 +25,7 @@ import java.util.Objects;
 @Table(name = "authors")
 @NamedEntityGraph(name = "Author")
 @NamedEntityGraph(name = "Author.address", attributeNodes = @NamedAttributeNode("address"))
-public class Author {
+public class Author implements Serializable {
   private static final long serialVersionUID = -273282389L;
 
   @Id

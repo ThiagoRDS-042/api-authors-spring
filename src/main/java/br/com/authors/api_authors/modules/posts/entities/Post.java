@@ -1,5 +1,6 @@
 package br.com.authors.api_authors.modules.posts.entities;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -26,7 +27,7 @@ import java.util.Objects;
 @NamedEntityGraph(name = "Post")
 @NamedEntityGraph(name = "Post.author.address", attributeNodes = @NamedAttributeNode(value = "author", subgraph = "Author.address"), subgraphs = {
     @NamedSubgraph(name = "Author.address", attributeNodes = @NamedAttributeNode("address")) })
-public class Post {
+public class Post implements Serializable {
   private static final long serialVersionUID = -112237786L;
 
   @Id
