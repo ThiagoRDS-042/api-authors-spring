@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import br.com.authors.api_authors.modules.posts.dtos.ListPostsDTO;
 import br.com.authors.api_authors.modules.posts.entities.Post;
 import br.com.authors.api_authors.modules.posts.repositories.PostsRepository;
-import br.com.authors.api_authors.utils.GenericLikeSpecification;
+import br.com.authors.api_authors.providers.GerericSpecification;
 
 @Service
 public class ListPosts {
@@ -25,14 +25,20 @@ public class ListPosts {
   public List<Post> execute(ListPostsDTO filters) {
     Pageable pageable = PageRequest.of(filters.page(), filters.pageSize(), Direction.DESC, "like");
 
-    Specification<Post> titleLike = new GenericLikeSpecification<Post>().like(filters.title(), "title");
-    Specification<Post> keywordLike = new GenericLikeSpecification<Post>().like(filters.keywords(), "keywords");
-    Specification<Post> contentLike = new GenericLikeSpecification<Post>().like(filters.content(), "content");
-    Specification<Post> descriptionLike = new GenericLikeSpecification<Post>().like(filters.description(),
+    System.out.println(filters.toString());
+
+    Specification<Post> titleLike = new GerericSpecification<Post>().like(filters.title(), "title");
+    Specification<Post> keywordLike = new GerericSpecification<Post>().like(filters.keywords(), "keywords");
+    Specification<Post> contentLike = new GerericSpecification<Post>().like(filters.content(), "content");
+    Specification<Post> descriptionLike = new GerericSpecification<Post>().like(filters.description(),
         "description");
+    Specification<Post> authorEmailLike = new GerericSpecification<Post>().like(filters.authorEmail(),
+        "author.email");
+    Specification<Post> authorTagLike = new GerericSpecification<Post>().like(filters.authorTag(),
+        "author.tag");
 
     Page<Post> posts = this.postsRepository.findAll(
-        titleLike.and(keywordLike).and(contentLike).and(descriptionLike),
+        titleLike.and(keywordLike).and(contentLike).and(descriptionLike).and(authorEmailLike).and(authorTagLike),
         pageable);
 
     return posts.getContent();

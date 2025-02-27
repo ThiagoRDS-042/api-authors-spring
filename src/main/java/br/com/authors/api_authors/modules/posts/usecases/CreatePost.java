@@ -33,7 +33,7 @@ public class CreatePost {
       throw new AuthorNotFoundException();
     });
 
-    String keywords = Arrays.stream(data.keywords()).collect(Collectors.joining(";", "", "")).toString();
+    String keywords = Arrays.stream(data.keywords()).collect(Collectors.joining(";", "", ""));
 
     Post post = new Post(data.title(), data.content(), data.description(), keywords, data.authorId(), author);
 

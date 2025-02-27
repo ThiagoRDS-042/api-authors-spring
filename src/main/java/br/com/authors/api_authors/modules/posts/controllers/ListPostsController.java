@@ -23,11 +23,19 @@ public class ListPostsController {
 
   @GetMapping("")
   public ResponseEntity<List<PostResponseMapperDTO>> list(@RequestParam(required = false) String title,
-      @RequestParam(required = false) String content,
-      @RequestParam(required = false) String description, @RequestParam(required = false) String keywords,
-      @RequestParam Integer page, @RequestParam Integer pageSize) {
+      @RequestParam(required = false) String content, @RequestParam(required = false) String authorEmail,
+      @RequestParam(required = false) String authorTag, @RequestParam(required = false) String description,
+      @RequestParam(required = false) String keywords, @RequestParam Integer page, @RequestParam Integer pageSize) {
 
-    ListPostsDTO filters = new ListPostsDTO(title, keywords, description, content, page, pageSize);
+    ListPostsDTO filters = new ListPostsDTO(
+        title,
+        keywords,
+        description,
+        content,
+        authorEmail,
+        authorTag,
+        page,
+        pageSize);
 
     List<Post> posts = this.listPosts.execute(filters);
 
