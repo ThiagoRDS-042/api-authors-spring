@@ -2,11 +2,13 @@ package br.com.authors.api_authors.modules.authors.usecases;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
 import br.com.authors.api_authors.modules.authors.dtos.UpdateAuthorDTO;
 import br.com.authors.api_authors.modules.authors.entities.Address;
+import br.com.authors.api_authors.modules.authors.entities.Author;
 import br.com.authors.api_authors.modules.authors.exceptions.AuthorAlreadyRegisteredException;
 import br.com.authors.api_authors.modules.authors.exceptions.AuthorNotFoundException;
 import br.com.authors.api_authors.modules.authors.exceptions.InvalidAgeException;
@@ -25,25 +27,25 @@ public class UpdateAuthor {
   }
 
   public void execute(UpdateAuthorDTO data) {
-    var author = this.authorsRepository.findById(data.authorId()).orElseThrow(() -> {
+    Author author = this.authorsRepository.findById(data.authorId()).orElseThrow(() -> {
       throw new AuthorNotFoundException();
     });
 
-    var authorAlreadyRegistered = this.authorsRepository.findByEmail(data.email());
+    Optional<Author> authorAlreadyRegistered = this.authorsRepository.findByEmail(data.email());
 
     if (authorAlreadyRegistered.isPresent() && !authorAlreadyRegistered.get().getId().equals(author.getId())) {
       throw new AuthorAlreadyRegisteredException();
     }
 
-    var birthdate = LocalDate.parse(data.birthdate());
+    LocalDate birthdate = LocalDate.parse(data.birthdate());
 
-    var months = ChronoUnit.MONTHS.between(birthdate, LocalDate.now());
+    Long months = ChronoUnit.MONTHS.between(birthdate, LocalDate.now());
 
     if (months < ValidAge.VALUE) {
       throw new InvalidAgeException();
     }
 
-    var address = new Address(
+    Address address = new Address(
         data.address().city(),
         data.address().street(),
         data.address().zipCode(),

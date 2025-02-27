@@ -47,7 +47,7 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
   public ResponseEntity<Object> handleAppException(
       AppException exception) {
 
-    var error = new ErrorResponseDTO(exception.getMessage(), exception.getClass().getSimpleName());
+    ErrorResponseDTO error = new ErrorResponseDTO(exception.getMessage(), exception.getClass().getSimpleName());
 
     return ResponseEntity.status(exception.getStatusCode()).body(error);
   }

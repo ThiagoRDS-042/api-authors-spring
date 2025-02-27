@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.authors.api_authors.modules.authors.dtos.AuthorReponseMapperDTO;
 import br.com.authors.api_authors.modules.authors.dtos.RegisterAuthorDTO;
+import br.com.authors.api_authors.modules.authors.entities.Author;
 import br.com.authors.api_authors.modules.authors.mappers.AuthorMapper;
 import br.com.authors.api_authors.modules.authors.usecases.RegisterAuthor;
 import jakarta.validation.Valid;
@@ -23,9 +24,9 @@ public class RegisterAuthorController {
 
   @PostMapping()
   public ResponseEntity<AuthorReponseMapperDTO> register(@Valid @RequestBody RegisterAuthorDTO data) {
-    var author = this.registerAuthor.execute(data);
+    Author author = this.registerAuthor.execute(data);
 
-    var authorMapper = AuthorMapper.ToHttp(author);
+    AuthorReponseMapperDTO authorMapper = AuthorMapper.ToHttp(author);
 
     return ResponseEntity.ok(authorMapper);
   }

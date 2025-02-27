@@ -2,6 +2,7 @@ package br.com.authors.api_authors.modules.authors.usecases;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.util.Optional;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -33,17 +34,17 @@ public class RegisterAuthor {
           throw new AuthorAlreadyRegisteredException();
         });
 
-    var birthdate = LocalDate.parse(data.birthdate());
+    LocalDate birthdate = LocalDate.parse(data.birthdate());
 
-    var months = ChronoUnit.MONTHS.between(birthdate, LocalDate.now());
+    Long months = ChronoUnit.MONTHS.between(birthdate, LocalDate.now());
 
     if (months < ValidAge.VALUE) {
       throw new InvalidAgeException();
     }
 
-    var tag = this.generateTagProvider.generateTag(data.name());
+    String tag = this.generateTagProvider.generateTag(data.name());
 
-    var authorExists = this.authorsRepository.findByTag(tag);
+    Optional<Author> authorExists = this.authorsRepository.findByTag(tag);
 
     while (authorExists.isPresent()) {
       tag = this.generateTagProvider.generateTag(data.name());
@@ -51,9 +52,9 @@ public class RegisterAuthor {
       authorExists = this.authorsRepository.findByTag(tag);
     }
 
-    var passwordEncoded = this.passwordEncoder.encode(data.password());
+    String passwordEncoded = this.passwordEncoder.encode(data.password());
 
-    var author = new Author(data.name(), data.email(), tag, passwordEncoded, birthdate);
+    Author author = new Author(data.name(), data.email(), tag, passwordEncoded, birthdate);
 
     author = this.authorsRepository.save(author);
 

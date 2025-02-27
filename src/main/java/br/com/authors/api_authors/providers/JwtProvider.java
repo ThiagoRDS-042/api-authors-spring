@@ -19,26 +19,26 @@ public class JwtProvider {
   private String jwtSecret;
 
   public SignResponseDTO sign(String authorId) {
-    var expiresIn = Instant.now().plus(Duration.ofHours(2));
+    Instant expiresIn = Instant.now().plus(Duration.ofHours(2));
 
-    var algorithm = Algorithm.HMAC256(this.jwtSecret);
+    Algorithm algorithm = Algorithm.HMAC256(this.jwtSecret);
 
-    var token = JWT.create()
+    String token = JWT.create()
         .withIssuer("api-authors")
         .withExpiresAt(expiresIn)
         .withSubject(authorId)
         .sign(algorithm);
 
-    var response = new SignResponseDTO(token, expiresIn.toEpochMilli());
+    SignResponseDTO response = new SignResponseDTO(token, expiresIn.toEpochMilli());
 
     return response;
   }
 
   public DecodedJWT validate(String token) {
     try {
-      var algorithm = Algorithm.HMAC256(this.jwtSecret);
+      Algorithm algorithm = Algorithm.HMAC256(this.jwtSecret);
 
-      var decodedToken = JWT.require(algorithm).build().verify(token);
+      DecodedJWT decodedToken = JWT.require(algorithm).build().verify(token);
 
       return decodedToken;
     } catch (JWTVerificationException exception) {

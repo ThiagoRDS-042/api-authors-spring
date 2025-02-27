@@ -17,7 +17,7 @@ public class GetAuthorById {
   }
 
   public Author execute(UUID authorId) {
-    var author = this.authorsRepository.findById(authorId).orElseThrow(() -> {
+    Author author = this.authorsRepository.findById(authorId).orElseThrow(() -> {
       throw new AuthorNotFoundException();
     });
 

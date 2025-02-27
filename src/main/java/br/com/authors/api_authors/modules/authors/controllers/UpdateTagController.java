@@ -26,7 +26,7 @@ public class UpdateTagController {
   @PatchMapping("/tag")
   public ResponseEntity<Object> updateTag(HttpServletRequest request,
       @Valid @RequestBody UpdateTagDTO data) {
-    var authorId = request.getAttribute(SessionId.ID);
+    Object authorId = request.getAttribute(SessionId.ID);
 
     this.updateTag.execute(UUID.fromString(authorId.toString()), data.tag());
 

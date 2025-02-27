@@ -5,9 +5,11 @@ import org.springframework.stereotype.Service;
 
 import br.com.authors.api_authors.modules.authors.dtos.AuthenticateAuthorDTO;
 import br.com.authors.api_authors.modules.authors.dtos.AuthenticateAuthorResponseDTO;
+import br.com.authors.api_authors.modules.authors.entities.Author;
 import br.com.authors.api_authors.modules.authors.exceptions.InvalidCredentialsException;
 import br.com.authors.api_authors.modules.authors.repositories.AuthorsRepository;
 import br.com.authors.api_authors.providers.JwtProvider;
+import br.com.authors.api_authors.providers.dtos.SignResponseDTO;
 
 @Service
 public class AuthenticateAuthor {
@@ -23,19 +25,20 @@ public class AuthenticateAuthor {
   }
 
   public AuthenticateAuthorResponseDTO execute(AuthenticateAuthorDTO data) {
-    var author = this.authorsRepository.findByEmail(data.email()).orElseThrow(() -> {
+    Author author = this.authorsRepository.findByEmail(data.email()).orElseThrow(() -> {
       throw new InvalidCredentialsException();
     });
 
-    var passwordDoesMatches = this.passwordEncoder.matches(data.password(), author.getPassword());
+    boolean passwordDoesMatches = this.passwordEncoder.matches(data.password(), author.getPassword());
 
     if (!passwordDoesMatches) {
       throw new InvalidCredentialsException();
     }
 
-    var signToken = this.jwtProvider.sign(author.getId().toString());
+    SignResponseDTO signToken = this.jwtProvider.sign(author.getId().toString());
 
-    var response = new AuthenticateAuthorResponseDTO(signToken.token(), signToken.expiresIn());
+    AuthenticateAuthorResponseDTO response = new AuthenticateAuthorResponseDTO(signToken.token(),
+        signToken.expiresIn());
 
     return response;
   }

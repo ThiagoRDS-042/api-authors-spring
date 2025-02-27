@@ -27,9 +27,10 @@ public class UpdatePasswordController {
   @PatchMapping("/password")
   public ResponseEntity<Object> putMethodName(HttpServletRequest request,
       @Valid @RequestBody UpdatePasswordControllerDTO data) {
-    var authorId = request.getAttribute(SessionId.ID);
+    Object authorId = request.getAttribute(SessionId.ID);
 
-    var updatePasswordData = new UpdatePasswordDTO(UUID.fromString(authorId.toString()), data.oldPassword(),
+    UpdatePasswordDTO updatePasswordData = new UpdatePasswordDTO(UUID.fromString(authorId.toString()),
+        data.oldPassword(),
         data.newPassword(), data.confirmpassword());
 
     this.updatePassword.execute(updatePasswordData);

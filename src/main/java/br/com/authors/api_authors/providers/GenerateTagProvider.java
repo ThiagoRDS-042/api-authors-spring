@@ -13,11 +13,11 @@ public class GenerateTagProvider {
   private final Pattern WHITESPACE = Pattern.compile("[\\s]");
 
   public String generateTag(String username) {
-    var nowhitespace = WHITESPACE.matcher(username).replaceAll("-");
+    String nowhitespace = WHITESPACE.matcher(username).replaceAll("-");
 
-    var normalized = Normalizer.normalize(nowhitespace, Form.NFD);
+    String normalized = Normalizer.normalize(nowhitespace, Form.NFD);
 
-    var tag = NONLATIN.matcher(normalized).replaceAll("");
+    String tag = NONLATIN.matcher(normalized).replaceAll("");
 
     return tag + "-" + Instant.now().toEpochMilli();
   }

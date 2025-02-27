@@ -1,9 +1,11 @@
 package br.com.authors.api_authors.modules.authors.usecases;
 
+import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
+import br.com.authors.api_authors.modules.authors.entities.Author;
 import br.com.authors.api_authors.modules.authors.exceptions.AuthorAlreadyRegisteredException;
 import br.com.authors.api_authors.modules.authors.exceptions.AuthorNotFoundException;
 import br.com.authors.api_authors.modules.authors.repositories.AuthorsRepository;
@@ -17,11 +19,11 @@ public class UpdateTag {
   }
 
   public void execute(UUID authorId, String tag) {
-    var author = this.authorsRepository.findById(authorId).orElseThrow(() -> {
+    Author author = this.authorsRepository.findById(authorId).orElseThrow(() -> {
       throw new AuthorNotFoundException();
     });
 
-    var tagAlreadyRegistered = this.authorsRepository.findByTag(tag);
+    Optional<Author> tagAlreadyRegistered = this.authorsRepository.findByTag(tag);
 
     if (tagAlreadyRegistered.isPresent() && !tagAlreadyRegistered.get().getId().equals(author.getId())) {
       throw new AuthorAlreadyRegisteredException();

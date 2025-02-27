@@ -21,7 +21,7 @@ public class AuthenticateAuthorController {
 
   @PostMapping("/auth")
   public ResponseEntity<AuthenticateAuthorResponseDTO> auth(@Valid @RequestBody AuthenticateAuthorDTO data) {
-    var response = this.authenticateAuthor.execute(data);
+    AuthenticateAuthorResponseDTO response = this.authenticateAuthor.execute(data);
 
     return ResponseEntity.ok(response);
   }

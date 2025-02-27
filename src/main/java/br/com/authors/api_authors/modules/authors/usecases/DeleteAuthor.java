@@ -4,6 +4,7 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
+import br.com.authors.api_authors.modules.authors.entities.Author;
 import br.com.authors.api_authors.modules.authors.exceptions.AuthorNotFoundException;
 import br.com.authors.api_authors.modules.authors.repositories.AuthorsRepository;
 
@@ -16,7 +17,7 @@ public class DeleteAuthor {
   }
 
   public void execute(UUID authorId) {
-    var author = this.authorsRepository.findById(authorId).orElseThrow(() -> {
+    Author author = this.authorsRepository.findById(authorId).orElseThrow(() -> {
       throw new AuthorNotFoundException();
     });
 

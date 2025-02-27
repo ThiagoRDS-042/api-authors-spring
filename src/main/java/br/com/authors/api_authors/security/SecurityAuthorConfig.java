@@ -8,6 +8,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.auth0.jwt.interfaces.DecodedJWT;
+
 import br.com.authors.api_authors.providers.JwtProvider;
 import br.com.authors.api_authors.utils.SessionId;
 import jakarta.servlet.FilterChain;
@@ -25,12 +27,12 @@ public class SecurityAuthorConfig extends OncePerRequestFilter {
       throws ServletException, IOException {
     SecurityContextHolder.getContext().setAuthentication(null);
 
-    var header = request.getHeader("Authorization");
+    String header = request.getHeader("Authorization");
 
     if (header != null) {
-      var token = header.replace("Bearer ", "");
+      String token = header.replace("Bearer ", "");
 
-      var decodedToken = this.jwtProvider.validate(token);
+      DecodedJWT decodedToken = this.jwtProvider.validate(token);
 
       if (decodedToken == null) {
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
@@ -38,11 +40,11 @@ public class SecurityAuthorConfig extends OncePerRequestFilter {
         return;
       }
 
-      var authorId = decodedToken.getSubject();
+      String authorId = decodedToken.getSubject();
 
       request.setAttribute(SessionId.ID, authorId);
 
-      var auth = new UsernamePasswordAuthenticationToken(authorId, null, null);
+      UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(authorId, null, null);
 
       SecurityContextHolder.getContext().setAuthentication(auth);
     }

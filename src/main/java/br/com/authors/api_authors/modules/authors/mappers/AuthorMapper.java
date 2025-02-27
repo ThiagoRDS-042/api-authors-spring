@@ -5,7 +5,7 @@ import br.com.authors.api_authors.modules.authors.entities.Author;
 
 public record AuthorMapper() {
   public static AuthorReponseMapperDTO ToHttp(Author author) {
-    var authorMapper = new AuthorReponseMapperDTO(
+    AuthorReponseMapperDTO authorMapper = new AuthorReponseMapperDTO(
         author.getId(),
         author.getTag(),
         author.getName(),

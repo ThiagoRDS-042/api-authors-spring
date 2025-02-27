@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.authors.api_authors.modules.authors.dtos.AuthorReponseMapperDTO;
 import br.com.authors.api_authors.modules.authors.dtos.ListAuthorsDTO;
+import br.com.authors.api_authors.modules.authors.entities.Author;
 import br.com.authors.api_authors.modules.authors.mappers.AuthorMapper;
 import br.com.authors.api_authors.modules.authors.usecases.ListAuthors;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,11 +26,11 @@ public class ListAuthorsController {
       @RequestParam(required = false) String tag, @RequestParam Integer page,
       @RequestParam Integer pageSize) {
 
-    var filters = new ListAuthorsDTO(email, tag, page, pageSize);
+    ListAuthorsDTO filters = new ListAuthorsDTO(email, tag, page, pageSize);
 
-    var authors = this.listAuthors.execute(filters);
+    List<Author> authors = this.listAuthors.execute(filters);
 
-    var authorsMapper = authors.stream().map(AuthorMapper::ToHttp).toList();
+    List<AuthorReponseMapperDTO> authorsMapper = authors.stream().map(AuthorMapper::ToHttp).toList();
 
     return ResponseEntity.ok(authorsMapper);
   }

@@ -26,13 +26,14 @@ public class UpdateAuthorController {
 
   @PutMapping("/account")
   public ResponseEntity<Object> update(HttpServletRequest request, @Valid @RequestBody UpdateAuthorControllerDTO data) {
-    var authorId = request.getAttribute(SessionId.ID);
+    Object authorId = request.getAttribute(SessionId.ID);
 
-    var address = new AddressDTO(
+    AddressDTO address = new AddressDTO(
         data.address().city(), data.address().street(), data.address().zipCode(), data.address().stateCode(),
         data.address().complement(), data.address().neighborhood());
 
-    var updateAuthorData = new UpdateAuthorDTO(UUID.fromString(authorId.toString()), data.name(), data.email(), address,
+    UpdateAuthorDTO updateAuthorData = new UpdateAuthorDTO(UUID.fromString(authorId.toString()), data.name(),
+        data.email(), address,
         data.birthdate());
 
     this.updateAuthor.execute(updateAuthorData);

@@ -21,7 +21,7 @@ public class DeleteAuthorController {
 
   @DeleteMapping("")
   public ResponseEntity<Object> postMethodName(HttpServletRequest request) {
-    var authorId = request.getAttribute(SessionId.ID);
+    Object authorId = request.getAttribute(SessionId.ID);
 
     this.deleteAuthor.execute(UUID.fromString(authorId.toString()));
 

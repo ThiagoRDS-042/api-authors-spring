@@ -76,7 +76,7 @@ public class Author {
   }
 
   public Author(String name, String email, String tag, String password, LocalDate birthdate) {
-    var today = LocalDateTime.now();
+    LocalDateTime today = LocalDateTime.now();
 
     this.name = name;
     this.email = email;
