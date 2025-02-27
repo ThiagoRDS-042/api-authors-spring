@@ -1,6 +1,7 @@
 package br.com.authors.api_authors.modules.authors.usecases;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Optional;
 
@@ -63,6 +64,7 @@ public class UpdateAuthor {
     author.setName(data.name());
     author.setEmail(data.email());
     author.setBirthdate(birthdate);
+    author.setUpdtaedAt(LocalDateTime.now());
 
     this.authorsRepository.save(author);
   }

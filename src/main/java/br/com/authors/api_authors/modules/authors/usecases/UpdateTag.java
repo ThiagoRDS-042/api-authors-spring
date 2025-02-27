@@ -1,5 +1,6 @@
 package br.com.authors.api_authors.modules.authors.usecases;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -30,6 +31,7 @@ public class UpdateTag {
     }
 
     author.setTag(tag);
+    author.setUpdtaedAt(LocalDateTime.now());
 
     this.authorsRepository.save(author);
   }

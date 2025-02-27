@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import com.fasterxml.jackson.databind.exc.InvalidDefinitionException;
+
 import br.com.authors.api_authors.exceptions.dtos.ErrorMessageDTO;
 import br.com.authors.api_authors.exceptions.dtos.ErrorResponseDTO;
 
@@ -50,5 +52,14 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
     ErrorResponseDTO error = new ErrorResponseDTO(exception.getMessage(), exception.getClass().getSimpleName());
 
     return ResponseEntity.status(exception.getStatusCode()).body(error);
+  }
+
+  @ExceptionHandler(InvalidDefinitionException.class)
+  public ResponseEntity<Object> handleInvalidDefinitionException(
+      InvalidDefinitionException exception) {
+
+    ErrorResponseDTO error = new ErrorResponseDTO(exception.getMessage(), exception.getClass().getSimpleName());
+
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
   }
 }

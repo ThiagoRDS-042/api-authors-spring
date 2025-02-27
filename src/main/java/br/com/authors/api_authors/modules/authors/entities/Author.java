@@ -24,6 +24,8 @@ import java.util.Objects;
 @Table(name = "authors")
 @NamedEntityGraph(name = "Author.address", attributeNodes = @NamedAttributeNode("address"))
 public class Author {
+  private static final long serialVersionUID = -273282389L;
+
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)
   private UUID id;
@@ -54,6 +56,7 @@ public class Author {
   @Column(name = "created_at", nullable = false)
   private LocalDateTime createdAt;
 
+  @CreationTimestamp
   @Column(name = "updtaed_at", nullable = false)
   private LocalDateTime updtaedAt;
 
@@ -76,14 +79,11 @@ public class Author {
   }
 
   public Author(String name, String email, String tag, String password, LocalDate birthdate) {
-    LocalDateTime today = LocalDateTime.now();
-
     this.name = name;
     this.email = email;
     this.tag = tag;
     this.password = password;
     this.birthdate = birthdate;
-    this.updtaedAt = today;
   }
 
   public UUID getId() {
@@ -201,5 +201,4 @@ public class Author {
         ", updtaedAt='" + getUpdtaedAt() + "'" +
         "}";
   }
-
 }

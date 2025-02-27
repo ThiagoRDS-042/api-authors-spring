@@ -1,6 +1,6 @@
 package br.com.authors.api_authors.modules.authors.usecases;
 
-import java.util.Optional;
+import java.time.LocalDateTime;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -39,6 +39,7 @@ public class UpdatePassword {
     String passwordEncoded = this.passwordEncoder.encode(data.newPassword());
 
     author.setPassword(passwordEncoded);
+    author.setUpdtaedAt(LocalDateTime.now());
 
     this.authorsRepository.save(author);
   }

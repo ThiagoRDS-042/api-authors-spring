@@ -8,5 +8,4 @@ public class AuthorAlreadyRegisteredException extends AppException {
   public AuthorAlreadyRegisteredException() {
     super("Author already registered.", HttpStatus.CONFLICT);
   }
-
 }

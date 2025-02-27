@@ -14,6 +14,8 @@ import java.util.Objects;
 @Entity
 @Table(name = "addresses")
 public class Address {
+  private static final long serialVersionUID = -8332834589L;
+
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)
   private UUID id;
