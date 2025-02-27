@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import br.com.authors.api_authors.modules.posts.dtos.ListPostsDTO;
 import br.com.authors.api_authors.modules.posts.entities.Post;
 import br.com.authors.api_authors.modules.posts.repositories.PostsRepository;
-import br.com.authors.api_authors.providers.GerericSpecification;
+import br.com.authors.api_authors.providers.GerericWhereSpecification;
 
 @Service
 public class ListPosts {
@@ -23,22 +23,23 @@ public class ListPosts {
   }
 
   public List<Post> execute(ListPostsDTO filters) {
-    Pageable pageable = PageRequest.of(filters.page(), filters.pageSize(), Direction.DESC, "like");
+    Pageable pageable = PageRequest.of(filters.page(), filters.pageSize(), Direction.DESC, "like", "publishedAt");
 
-    System.out.println(filters.toString());
-
-    Specification<Post> titleLike = new GerericSpecification<Post>().like(filters.title(), "title");
-    Specification<Post> keywordLike = new GerericSpecification<Post>().like(filters.keywords(), "keywords");
-    Specification<Post> contentLike = new GerericSpecification<Post>().like(filters.content(), "content");
-    Specification<Post> descriptionLike = new GerericSpecification<Post>().like(filters.description(),
+    Specification<Post> titleLike = new GerericWhereSpecification<Post>().like(filters.title(), "title");
+    Specification<Post> keywordLike = new GerericWhereSpecification<Post>().like(filters.keywords(), "keywords");
+    Specification<Post> contentLike = new GerericWhereSpecification<Post>().like(filters.content(), "content");
+    Specification<Post> descriptionLike = new GerericWhereSpecification<Post>().like(filters.description(),
         "description");
-    Specification<Post> authorEmailLike = new GerericSpecification<Post>().like(filters.authorEmail(),
+    Specification<Post> authorEmailLike = new GerericWhereSpecification<Post>().like(filters.authorEmail(),
         "author.email");
-    Specification<Post> authorTagLike = new GerericSpecification<Post>().like(filters.authorTag(),
+    Specification<Post> authorTagLike = new GerericWhereSpecification<Post>().like(filters.authorTag(),
         "author.tag");
+    Specification<Post> publishedNotNull = new GerericWhereSpecification<Post>().notNull(
+        "publishedAt");
 
     Page<Post> posts = this.postsRepository.findAll(
-        titleLike.and(keywordLike).and(contentLike).and(descriptionLike).and(authorEmailLike).and(authorTagLike),
+        titleLike.and(keywordLike).and(contentLike).and(descriptionLike).and(authorEmailLike).and(authorTagLike)
+            .and(publishedNotNull),
         pageable);
 
     return posts.getContent();
