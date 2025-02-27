@@ -30,8 +30,8 @@ public class GetAuthorById {
     List<PostWithouAuthorDTO> posts = this.postsRepository.findByAuthorId(authorId);
 
     AuthorWithPostsDTO authorWithPosts = new AuthorWithPostsDTO(author.getId(), author.getName(),
-        author.getEmail(), author.getTag(), author.getPassword(), author.getBirthdate(), author.getAddressId(),
-        author.getAddress(), author.getUpdtaedAt(), author.getCreatedAt(), posts);
+        author.getEmail(), author.getTag(), author.getBirthdate(),
+        author.getAddress(), posts);
 
     return authorWithPosts;
   }
