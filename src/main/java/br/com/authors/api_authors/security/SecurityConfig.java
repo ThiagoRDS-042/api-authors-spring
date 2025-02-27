@@ -3,6 +3,7 @@ package br.com.authors.api_authors.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -20,9 +21,11 @@ public class SecurityConfig {
   @Bean
   SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     http.csrf(csrf -> csrf.disable()).authorizeHttpRequests(auth -> {
+
       auth.requestMatchers("/authors").permitAll()
           .requestMatchers("/authors/auth").permitAll()
           .requestMatchers("/authors/{authorId}").permitAll()
+          .requestMatchers(HttpMethod.GET, "/posts").permitAll()
           .requestMatchers("/posts/{postId}").permitAll();
 
       auth.anyRequest().authenticated();

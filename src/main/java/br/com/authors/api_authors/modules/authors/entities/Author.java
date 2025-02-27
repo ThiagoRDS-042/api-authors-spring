@@ -22,6 +22,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "authors")
+@NamedEntityGraph(name = "Author")
 @NamedEntityGraph(name = "Author.address", attributeNodes = @NamedAttributeNode("address"))
 public class Author {
   private static final long serialVersionUID = -273282389L;

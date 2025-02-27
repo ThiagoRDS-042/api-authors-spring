@@ -15,10 +15,12 @@ import br.com.authors.api_authors.modules.authors.entities.Author;
 
 @Repository
 public interface AuthorsRepository extends JpaRepository<Author, UUID>, JpaSpecificationExecutor<Author> {
+  @EntityGraph("Author")
   Optional<Author> findByEmail(String email);
 
   @EntityGraph("Author.address")
   Page<Author> findAll(Specification<Author> specification, Pageable pageable);
 
+  @EntityGraph("Author")
   Optional<Author> findByTag(String tag);
 }
