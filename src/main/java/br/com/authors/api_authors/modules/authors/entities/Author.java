@@ -13,6 +13,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.NamedAttributeNode;
+import jakarta.persistence.NamedEntityGraph;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
@@ -20,6 +22,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "authors")
+@NamedEntityGraph(name = "Author.address", attributeNodes = @NamedAttributeNode("address"))
 public class Author {
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)
