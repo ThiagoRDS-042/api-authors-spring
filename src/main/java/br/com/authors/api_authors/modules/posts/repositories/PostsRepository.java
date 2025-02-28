@@ -33,8 +33,10 @@ public interface PostsRepository extends JpaRepository<Post, UUID>, JpaSpecifica
   @EntityGraph("Post.author.address")
   Optional<Post> findByIdAndPublishedAtNotNull(UUID authorId);
 
-  @EntityGraph("Post")
-  void deleteAllById(Iterable<? extends UUID> postsIds);
+  @Transactional
+  @Modifying(clearAutomatically = true, flushAutomatically = true)
+  @Query("DELETE FROM Post p WHERE p.authorId = :authorId")
+  void deleteAllByAuthorId(UUID authorId);
 
   @Transactional
   @Modifying(clearAutomatically = true, flushAutomatically = true)
