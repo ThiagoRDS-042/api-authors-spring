@@ -23,8 +23,8 @@ public class ListAuthorsController {
 
   @GetMapping("")
   public ResponseEntity<List<AuthorReponseMapperDTO>> list(@RequestParam(required = false) String email,
-      @RequestParam(required = false) String tag, @RequestParam Integer page,
-      @RequestParam Integer pageSize) {
+      @RequestParam(required = false) String tag, @RequestParam(required = false, defaultValue = "0") Integer page,
+      @RequestParam(required = false, defaultValue = "10") Integer pageSize) {
 
     ListAuthorsDTO filters = new ListAuthorsDTO(email, tag, page, pageSize);
 

@@ -25,7 +25,8 @@ public class ListPostsController {
   public ResponseEntity<List<PostResponseMapperDTO>> list(@RequestParam(required = false) String title,
       @RequestParam(required = false) String content, @RequestParam(required = false) String authorEmail,
       @RequestParam(required = false) String authorTag, @RequestParam(required = false) String description,
-      @RequestParam(required = false) String keywords, @RequestParam Integer page, @RequestParam Integer pageSize) {
+      @RequestParam(required = false) String keywords, @RequestParam(required = false, defaultValue = "0") Integer page,
+      @RequestParam(required = false, defaultValue = "10") Integer pageSize) {
 
     ListPostsDTO filters = new ListPostsDTO(
         title,

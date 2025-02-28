@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.authors.api_authors.modules.authors.usecases.DeleteAllPostsByAuthorId;
 import br.com.authors.api_authors.modules.authors.usecases.DeleteAuthor;
 import br.com.authors.api_authors.utils.SessionId;
 import jakarta.servlet.http.HttpServletRequest;
@@ -19,11 +20,18 @@ public class DeleteAuthorController {
   @Autowired
   private DeleteAuthor deleteAuthor;
 
+  @Autowired
+  private DeleteAllPostsByAuthorId deleteAllPostsByAuthorId;
+
   @DeleteMapping("")
   public ResponseEntity<Object> postMethodName(HttpServletRequest request) {
-    Object authorId = request.getAttribute(SessionId.ID);
+    Object sessionId = request.getAttribute(SessionId.ID);
 
-    this.deleteAuthor.execute(UUID.fromString(authorId.toString()));
+    UUID authorId = UUID.fromString(sessionId.toString());
+
+    this.deleteAllPostsByAuthorId.execute(authorId);
+
+    this.deleteAuthor.execute(authorId);
 
     return ResponseEntity.noContent().build();
   }

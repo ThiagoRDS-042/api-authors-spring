@@ -28,4 +28,7 @@ public interface PostsRepository extends JpaRepository<Post, UUID>, JpaSpecifica
 
   @EntityGraph("Post.author.address")
   Optional<Post> findByIdAndPublishedAtNotNull(UUID authorId);
+
+  @EntityGraph("Post")
+  void deleteAllById(Iterable<? extends UUID> postsIds);
 }

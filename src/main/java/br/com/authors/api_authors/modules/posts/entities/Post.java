@@ -73,7 +73,7 @@ public class Post implements Serializable {
   @Column(nullable = false, name = "author_id")
   private UUID authorId;
 
-  @ManyToOne(cascade = CascadeType.ALL)
+  @ManyToOne(cascade = { CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH })
   @JoinColumn(name = "author_id", insertable = false, updatable = false)
   private Author author;
 
