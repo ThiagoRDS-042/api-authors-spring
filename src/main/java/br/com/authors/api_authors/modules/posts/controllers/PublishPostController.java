@@ -11,6 +11,7 @@ import br.com.authors.api_authors.modules.posts.dtos.PublishPostDTO;
 import br.com.authors.api_authors.modules.posts.usecases.PublishPost;
 import br.com.authors.api_authors.utils.SessionId;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,7 +23,7 @@ public class PublishPostController {
   private PublishPost publishPost;
 
   @PatchMapping("/{postId}/publish")
-  public ResponseEntity<Object> publish(HttpServletRequest request, @PathVariable UUID postId) {
+  public ResponseEntity<Object> publish(HttpServletRequest request, @Valid @PathVariable UUID postId) {
     Object authorId = request.getAttribute(SessionId.ID);
 
     PublishPostDTO postData = new PublishPostDTO(UUID.fromString(authorId.toString()), postId);

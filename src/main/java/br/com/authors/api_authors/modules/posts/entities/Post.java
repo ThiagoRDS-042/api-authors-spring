@@ -46,13 +46,9 @@ public class Post implements Serializable {
   @Column(nullable = false)
   private String keywords;
 
-  @Column(nullable = false, name = "`like`")
+  @Column(nullable = false)
   @ColumnDefault(value = "0")
-  private Integer like;
-
-  @Column(name = "des_like", nullable = false)
-  @ColumnDefault(value = "0")
-  private Integer desLike;
+  private Integer up;
 
   @Column(nullable = false)
   @ColumnDefault(value = "1")
@@ -80,7 +76,7 @@ public class Post implements Serializable {
   public Post() {
   }
 
-  public Post(UUID id, String title, String content, String description, String keywords, Integer like, Integer desLike,
+  public Post(UUID id, String title, String content, String description, String keywords, Integer up,
       Integer version, LocalDateTime createdAt, LocalDateTime publishedAt, LocalDateTime updtaedAt, UUID authorId,
       Author author) {
     this.id = id;
@@ -88,8 +84,7 @@ public class Post implements Serializable {
     this.content = content;
     this.description = description;
     this.keywords = keywords;
-    this.like = like;
-    this.desLike = desLike;
+    this.up = up;
     this.version = version;
     this.createdAt = createdAt;
     this.publishedAt = publishedAt;
@@ -105,8 +100,7 @@ public class Post implements Serializable {
     this.keywords = keywords;
     this.authorId = authorId;
     this.author = author;
-    this.like = 0;
-    this.desLike = 0;
+    this.up = 0;
     this.version = 1;
   }
 
@@ -150,20 +144,12 @@ public class Post implements Serializable {
     this.keywords = keywords;
   }
 
-  public Integer getLike() {
-    return this.like;
+  public Integer getUp() {
+    return this.up;
   }
 
-  public void setLike(Integer like) {
-    this.like = like;
-  }
-
-  public Integer getDesLike() {
-    return this.desLike;
-  }
-
-  public void setDesLike(Integer desLike) {
-    this.desLike = desLike;
+  public void setUp(Integer up) {
+    this.up = up;
   }
 
   public Integer getVersion() {
@@ -224,15 +210,15 @@ public class Post implements Serializable {
     Post post = (Post) o;
     return Objects.equals(id, post.id) && Objects.equals(title, post.title) && Objects.equals(content, post.content)
         && Objects.equals(description, post.description) && Objects.equals(keywords, post.keywords)
-        && Objects.equals(like, post.like) && Objects.equals(desLike, post.desLike)
-        && Objects.equals(version, post.version) && Objects.equals(createdAt, post.createdAt)
-        && Objects.equals(publishedAt, post.publishedAt) && Objects.equals(updtaedAt, post.updtaedAt)
-        && Objects.equals(authorId, post.authorId) && Objects.equals(author, post.author);
+        && Objects.equals(up, post.up) && Objects.equals(version, post.version)
+        && Objects.equals(createdAt, post.createdAt) && Objects.equals(publishedAt, post.publishedAt)
+        && Objects.equals(updtaedAt, post.updtaedAt) && Objects.equals(authorId, post.authorId)
+        && Objects.equals(author, post.author);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, title, content, description, keywords, like, desLike, version, createdAt, publishedAt,
+    return Objects.hash(id, title, content, description, keywords, up, version, createdAt, publishedAt,
         updtaedAt, authorId, author);
   }
 
@@ -244,8 +230,7 @@ public class Post implements Serializable {
         ", content='" + getContent() + "'" +
         ", description='" + getDescription() + "'" +
         ", keywords='" + getKeywords() + "'" +
-        ", like='" + getLike() + "'" +
-        ", desLike='" + getDesLike() + "'" +
+        ", up='" + getUp() + "'" +
         ", version='" + getVersion() + "'" +
         ", createdAt='" + getCreatedAt() + "'" +
         ", publishedAt='" + getPublishedAt() + "'" +

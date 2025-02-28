@@ -16,8 +16,7 @@ public class PostMapper {
         post.getDescription(),
         post.getKeywords().split(";"),
         author,
-        post.getLike(),
-        post.getDesLike(),
+        post.getUp(),
         post.getPublishedAt());
 
     return authorMapper;

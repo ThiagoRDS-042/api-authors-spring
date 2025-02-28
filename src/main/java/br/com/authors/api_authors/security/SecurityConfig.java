@@ -26,7 +26,8 @@ public class SecurityConfig {
           .requestMatchers("/authors/auth").permitAll()
           .requestMatchers("/authors/{authorId}").permitAll()
           .requestMatchers(HttpMethod.GET, "/posts").permitAll()
-          .requestMatchers("/posts/{postId}").permitAll();
+          .requestMatchers("/posts/{postId}").permitAll()
+          .requestMatchers("/posts/{postId}/up").permitAll();
 
       auth.anyRequest().authenticated();
     }).addFilterBefore(this.securityAuthorConfig, BasicAuthenticationFilter.class);

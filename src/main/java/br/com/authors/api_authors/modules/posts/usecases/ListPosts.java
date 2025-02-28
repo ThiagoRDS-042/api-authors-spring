@@ -23,7 +23,7 @@ public class ListPosts {
   }
 
   public List<Post> execute(ListPostsDTO filters) {
-    Pageable pageable = PageRequest.of(filters.page(), filters.pageSize(), Direction.DESC, "like", "publishedAt");
+    Pageable pageable = PageRequest.of(filters.page(), filters.pageSize(), Direction.DESC, "up", "publishedAt");
 
     Specification<Post> titleLike = new GerericWhereSpecification<Post>().like(filters.title(), "title");
     Specification<Post> keywordLike = new GerericWhereSpecification<Post>().like(filters.keywords(), "keywords");
