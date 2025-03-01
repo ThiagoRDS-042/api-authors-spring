@@ -7,6 +7,5 @@ import java.util.UUID;
 import br.com.authors.api_authors.modules.authors.entities.Address;
 
 public record AuthorWithPostsDTO(UUID id, String name, String email, String tag, LocalDate birthdate,
-    Address address, List<PostWithouAuthorDTO> posts) {
-
+        Address address, List<PostWithouAuthorDTO> posts) {
 }

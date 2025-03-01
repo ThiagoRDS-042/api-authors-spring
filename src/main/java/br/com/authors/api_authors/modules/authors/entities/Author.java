@@ -44,6 +44,9 @@ public class Author implements Serializable {
   @Column(nullable = false)
   private String password;
 
+  @Column(nullable = true)
+  private String avatar;
+
   @Column(nullable = false)
   private LocalDate birthdate;
 
@@ -65,7 +68,8 @@ public class Author implements Serializable {
   public Author() {
   }
 
-  public Author(UUID id, String name, String email, String tag, String password, LocalDate birthdate, UUID addressId,
+  public Author(UUID id, String name, String email, String tag, String password, String avatar, LocalDate birthdate,
+      UUID addressId,
       Address address,
       LocalDateTime updtaedAt, LocalDateTime createdAt) {
     this.id = id;
@@ -73,6 +77,7 @@ public class Author implements Serializable {
     this.email = email;
     this.tag = tag;
     this.password = password;
+    this.avatar = avatar;
     this.birthdate = birthdate;
     this.addressId = addressId;
     this.address = address;
@@ -128,6 +133,14 @@ public class Author implements Serializable {
     this.password = password;
   }
 
+  public String getAvatar() {
+    return this.avatar;
+  }
+
+  public void setAvatar(String avatar) {
+    this.avatar = avatar;
+  }
+
   public LocalDate getBirthdate() {
     return this.birthdate;
   }
@@ -178,14 +191,14 @@ public class Author implements Serializable {
     Author author = (Author) o;
     return Objects.equals(id, author.id) && Objects.equals(name, author.name) && Objects.equals(email, author.email)
         && Objects.equals(tag, author.tag) && Objects.equals(password, author.password)
-        && Objects.equals(birthdate, author.birthdate) && Objects.equals(addressId, author.addressId) &&
-        Objects.equals(address, author.address) && Objects.equals(createdAt, author.createdAt)
-        && Objects.equals(updtaedAt, author.updtaedAt);
+        && Objects.equals(avatar, author.avatar) && Objects.equals(birthdate, author.birthdate)
+        && Objects.equals(addressId, author.addressId) && Objects.equals(address, author.address)
+        && Objects.equals(createdAt, author.createdAt) && Objects.equals(updtaedAt, author.updtaedAt);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, name, email, tag, password, birthdate, addressId, address, createdAt, updtaedAt);
+    return Objects.hash(id, name, email, tag, password, avatar, birthdate, addressId, address, createdAt, updtaedAt);
   }
 
   @Override
@@ -196,6 +209,7 @@ public class Author implements Serializable {
         ", email='" + getEmail() + "'" +
         ", tag='" + getTag() + "'" +
         ", password='" + getPassword() + "'" +
+        ", avatar='" + getAvatar() + "'" +
         ", birthdate='" + getBirthdate() + "'" +
         ", addressId='" + getAddressId() + "'" +
         ", address='" + getAddress() + "'" +

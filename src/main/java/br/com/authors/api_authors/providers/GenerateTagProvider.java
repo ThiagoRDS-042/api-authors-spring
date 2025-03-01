@@ -2,7 +2,6 @@ package br.com.authors.api_authors.providers;
 
 import java.text.Normalizer;
 import java.text.Normalizer.Form;
-import java.time.Instant;
 import java.util.regex.Pattern;
 
 import org.springframework.stereotype.Service;
@@ -19,6 +18,6 @@ public class GenerateTagProvider {
 
     String tag = NONLATIN.matcher(normalized).replaceAll("");
 
-    return tag + "-" + Instant.now().toEpochMilli();
+    return tag + "-" + System.currentTimeMillis();
   }
 }

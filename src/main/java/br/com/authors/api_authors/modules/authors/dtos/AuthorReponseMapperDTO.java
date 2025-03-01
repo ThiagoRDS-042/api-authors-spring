@@ -6,10 +6,11 @@ import java.util.UUID;
 import br.com.authors.api_authors.modules.authors.entities.Address;
 
 public record AuthorReponseMapperDTO(
-        UUID id,
-        String tag,
-        String name,
-        String email,
-        Address address,
-        LocalDate birthdate) {
+                UUID id,
+                String tag,
+                String name,
+                String email,
+                Address address,
+                String avatarUrl,
+                LocalDate birthdate) {
 }
