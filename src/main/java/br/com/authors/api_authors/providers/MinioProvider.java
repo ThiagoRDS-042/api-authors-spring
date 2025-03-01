@@ -19,25 +19,17 @@ public class MinioProvider {
   @Autowired
   private MinioClient minioClient;
 
-  public void createBucket(String bucketName) {
-    MakeBucketArgs bucketArgs = MakeBucketArgs.builder().bucket(bucketName).build();
+  private void createBucket(String bucketName) {
+    BucketExistsArgs bucketExistsArgs = BucketExistsArgs.builder().bucket(bucketName).build();
 
     try {
-      this.minioClient.makeBucket(bucketArgs);
-    } catch (Exception exception) {
-      exception.printStackTrace();
+      boolean exists = this.minioClient.bucketExists(bucketExistsArgs);
 
-      throw new InternalServerErrorException();
-    }
-  }
+      if (!exists) {
+        MakeBucketArgs bucketArgs = MakeBucketArgs.builder().bucket(bucketName).build();
 
-  public boolean bucketExists(String bucketName) {
-    BucketExistsArgs bucketArgs = BucketExistsArgs.builder().bucket(bucketName).build();
-
-    try {
-      boolean exists = this.minioClient.bucketExists(bucketArgs);
-
-      return exists;
+        this.minioClient.makeBucket(bucketArgs);
+      }
     } catch (Exception exception) {
       exception.printStackTrace();
 
@@ -46,10 +38,12 @@ public class MinioProvider {
   }
 
   public InputStream getFile(String bucketName, String filename) {
+    this.createBucket(bucketName);
+
     GetObjectArgs getObjectArgs = GetObjectArgs.builder().bucket(bucketName).object(filename).build();
 
     try {
-      InputStream file = this.minioClient.getObject(getObjectArgs);
+      var file = this.minioClient.getObject(getObjectArgs);
 
       return file;
     } catch (Exception exception) {
@@ -60,6 +54,8 @@ public class MinioProvider {
   }
 
   public void uploadFile(String bucketName, MultipartFile file, String filename) {
+    this.createBucket(bucketName);
+
     try {
       InputStream inputStream = file.getInputStream();
 
@@ -75,6 +71,8 @@ public class MinioProvider {
   }
 
   public void deleteFile(String bucketName, String filename) {
+    this.createBucket(bucketName);
+
     RemoveObjectArgs removeObjectArgs = RemoveObjectArgs.builder().bucket(bucketName).object(filename).build();
 
     try {

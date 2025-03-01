@@ -23,4 +23,7 @@ public interface AuthorsRepository extends JpaRepository<Author, UUID>, JpaSpeci
 
   @EntityGraph("Author")
   Optional<Author> findByTag(String tag);
+
+  @EntityGraph("Author")
+  Optional<Author> findByAvatar(String avatar);
 }

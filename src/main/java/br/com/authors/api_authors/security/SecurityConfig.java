@@ -24,6 +24,7 @@ public class SecurityConfig {
 
       auth.requestMatchers("/authors").permitAll()
           .requestMatchers("/authors/auth").permitAll()
+          .requestMatchers("/authors/avatar/{avatar:.+}").permitAll()
           .requestMatchers("/authors/{authorId}").permitAll()
           .requestMatchers(HttpMethod.GET, "/posts").permitAll()
           .requestMatchers("/posts/{postId}").permitAll()
