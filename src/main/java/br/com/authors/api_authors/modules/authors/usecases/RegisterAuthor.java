@@ -12,20 +12,17 @@ import br.com.authors.api_authors.modules.authors.entities.Author;
 import br.com.authors.api_authors.modules.authors.exceptions.AuthorAlreadyRegisteredException;
 import br.com.authors.api_authors.modules.authors.exceptions.InvalidAgeException;
 import br.com.authors.api_authors.modules.authors.repositories.AuthorsRepository;
-import br.com.authors.api_authors.providers.GenerateTagProvider;
+import br.com.authors.api_authors.utils.GenerateTag;
 import br.com.authors.api_authors.utils.ValidAge;
 
 @Service
 public class RegisterAuthor {
   private final PasswordEncoder passwordEncoder;
   private final AuthorsRepository authorsRepository;
-  private final GenerateTagProvider generateTagProvider;
 
-  RegisterAuthor(AuthorsRepository authorsRepository, PasswordEncoder passwordEncoder,
-      GenerateTagProvider generateTagProvider) {
+  RegisterAuthor(AuthorsRepository authorsRepository, PasswordEncoder passwordEncoder) {
     this.passwordEncoder = passwordEncoder;
     this.authorsRepository = authorsRepository;
-    this.generateTagProvider = generateTagProvider;
   }
 
   public Author execute(RegisterAuthorDTO data) {
@@ -42,12 +39,12 @@ public class RegisterAuthor {
       throw new InvalidAgeException();
     }
 
-    String tag = this.generateTagProvider.generateTag(data.name());
+    String tag = GenerateTag.generate(data.name());
 
     Optional<Author> authorExists = this.authorsRepository.findByTag(tag);
 
     while (authorExists.isPresent()) {
-      tag = this.generateTagProvider.generateTag(data.name());
+      tag = GenerateTag.generate(data.name());
 
       authorExists = this.authorsRepository.findByTag(tag);
     }

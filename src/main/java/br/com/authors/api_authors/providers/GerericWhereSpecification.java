@@ -4,11 +4,13 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import jakarta.persistence.criteria.Expression;
 import jakarta.persistence.criteria.Path;
 
+@Service
 public class GerericWhereSpecification<G> {
   public Specification<G> like(String filter, String fieldPath) {
     List<String> paths = Arrays.asList(fieldPath.split("\\."));

@@ -1,17 +1,14 @@
-package br.com.authors.api_authors.providers;
+package br.com.authors.api_authors.utils;
 
 import java.text.Normalizer;
 import java.text.Normalizer.Form;
 import java.util.regex.Pattern;
 
-import org.springframework.stereotype.Service;
+public record GenerateTag() {
+  private static final Pattern NONLATIN = Pattern.compile("[^\\w-]");
+  private static final Pattern WHITESPACE = Pattern.compile("[\\s]");
 
-@Service
-public class GenerateTagProvider {
-  private final Pattern NONLATIN = Pattern.compile("[^\\w-]");
-  private final Pattern WHITESPACE = Pattern.compile("[\\s]");
-
-  public String generateTag(String username) {
+  public static String generate(String username) {
     String nowhitespace = WHITESPACE.matcher(username).replaceAll("-");
 
     String normalized = Normalizer.normalize(nowhitespace, Form.NFD);
