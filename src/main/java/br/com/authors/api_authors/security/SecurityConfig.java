@@ -25,9 +25,12 @@ public class SecurityConfig {
       auth.requestMatchers("/authors").permitAll()
           .requestMatchers("/authors/auth").permitAll()
           .requestMatchers("/authors/avatar/{avatar:.+}").permitAll()
-          .requestMatchers("/authors/{authorId}").permitAll()
+          .requestMatchers("/authors/forgot-password").permitAll()
+          .requestMatchers("/authors/password/reset").permitAll()
+          .requestMatchers("/authors/{authorId}").permitAll() // TODO: ajustar, o {authorId} pode ser qualquer coisa,
+                                                              // ele n entende
           .requestMatchers(HttpMethod.GET, "/posts").permitAll()
-          .requestMatchers("/posts/{postId}").permitAll()
+          .requestMatchers("/posts/{postId}").permitAll() // TODO: ajustar tambem
           .requestMatchers("/posts/{postId}/up").permitAll();
 
       auth.anyRequest().authenticated();

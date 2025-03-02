@@ -30,7 +30,7 @@ public class GetAvatarController {
 
     return ResponseEntity.ok()
         .contentType(MediaType.APPLICATION_OCTET_STREAM)
-        .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + avatar + "\"")
+        .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename='" + avatar + "'")
         .body(inputStreamResource);
   }
 }
