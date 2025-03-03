@@ -8,7 +8,7 @@
 		<version>3.4.3</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>br.com.authors</groupId>
+	<groupId>br.com.thiagoRDS</groupId>
 	<artifactId>api_authors</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>api_authors</name>
