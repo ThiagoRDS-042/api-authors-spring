@@ -1,0 +1,54 @@
+package br.com.thiagoRDS.api_authors.modules.authors.usecases;
+
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.when;
+
+import java.util.Optional;
+
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
+import br.com.thiagoRDS.api_authors.modules.authors.exceptions.AuthorAlreadyRegisteredException;
+import br.com.thiagoRDS.api_authors.modules.authors.exceptions.InvalidAgeException;
+import br.com.thiagoRDS.api_authors.modules.authors.repositories.AuthorsRepository;
+import br.com.thiagoRDS.api_authors.modules.utils.MakeAuthor;
+
+@ExtendWith(MockitoExtension.class)
+public class RegisterAuthorTest {
+  @InjectMocks
+  private RegisterAuthor registerAuthor;
+
+  @Mock
+  private PasswordEncoder passwordEncoder;
+
+  @Mock
+  private AuthorsRepository authorsRepository;
+
+  @Test
+  @DisplayName("Should be able to register a new author")
+  public void registerAuthor() {
+    this.registerAuthor.execute(MakeAuthor.REGISTER_AUTHOR_DTO);
+  }
+
+  @Test
+  @DisplayName("Should not be able to register a new author with same email another author")
+  public void emailAlreadyExists() {
+    when(this.authorsRepository.findByEmail(MakeAuthor.AUTHOR.getEmail()))
+        .thenReturn(Optional.of(MakeAuthor.AUTHOR));
+
+    assertThatThrownBy(() -> this.registerAuthor.execute(MakeAuthor.REGISTER_AUTHOR_DTO))
+        .isInstanceOf(AuthorAlreadyRegisteredException.class);
+  }
+
+  @Test
+  @DisplayName("Should not be able to register a new author with a invalid age")
+  public void invalidAge() {
+    assertThatThrownBy(() -> this.registerAuthor.execute(MakeAuthor.AUTHOR_INVALID_AGE))
+        .isInstanceOf(InvalidAgeException.class);
+  }
+}
