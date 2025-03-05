@@ -11,7 +11,7 @@ import jakarta.persistence.criteria.Expression;
 import jakarta.persistence.criteria.Path;
 
 @Service
-public class GerericWhereSpecification<G> {
+public class GerericWhereSpecificationProvider<G> {
   public Specification<G> like(String filter, String fieldPath) {
     List<String> paths = Arrays.asList(fieldPath.split("\\."));
 

@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import br.com.thiagoRDS.api_authors.modules.authors.dtos.ListAuthorsDTO;
 import br.com.thiagoRDS.api_authors.modules.authors.entities.Author;
 import br.com.thiagoRDS.api_authors.modules.authors.repositories.AuthorsRepository;
-import br.com.thiagoRDS.api_authors.providers.GerericWhereSpecification;
+import br.com.thiagoRDS.api_authors.providers.GerericWhereSpecificationProvider;
 
 @Service
 public class ListAuthors {
@@ -25,9 +25,9 @@ public class ListAuthors {
   public List<Author> execute(ListAuthorsDTO filters) {
     Pageable pageable = PageRequest.of(filters.page(), filters.pageSize(), Direction.DESC, "createdAt");
 
-    Specification<Author> emailLike = new GerericWhereSpecification<Author>().like(filters.email(), "email");
+    Specification<Author> emailLike = new GerericWhereSpecificationProvider<Author>().like(filters.email(), "email");
 
-    Specification<Author> tagLike = new GerericWhereSpecification<Author>().like(filters.tag(), "tag");
+    Specification<Author> tagLike = new GerericWhereSpecificationProvider<Author>().like(filters.tag(), "tag");
 
     Page<Author> authors = this.authorsRepository.findAll(emailLike.and(tagLike), pageable);
 
