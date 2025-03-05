@@ -3,25 +3,28 @@ package br.com.thiagoRDS.api_authors.modules.authors.usecases;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.thiagoRDS.api_authors.modules.authors.entities.Author;
 import br.com.thiagoRDS.api_authors.modules.authors.entities.RecoveryToken;
 import br.com.thiagoRDS.api_authors.modules.authors.exceptions.AuthorNotFoundException;
 import br.com.thiagoRDS.api_authors.modules.authors.repositories.AuthorsRepository;
 import br.com.thiagoRDS.api_authors.modules.authors.repositories.RecoveryTokensRepository;
+import br.com.thiagoRDS.api_authors.providers.CurrentContextProvider;
 import br.com.thiagoRDS.api_authors.providers.MailProvider;
 import br.com.thiagoRDS.api_authors.providers.dtos.SendMailDTO;
 
 @Service
 public class ForgotMailPassword {
   private final MailProvider mailProvider;
+  private final CurrentContextProvider getCurrentUri;
   private final AuthorsRepository authorsRepository;
   private final RecoveryTokensRepository recoveryTokensRepository;
 
-  public ForgotMailPassword(MailProvider mailProvider, AuthorsRepository authorsRepository,
-      RecoveryTokensRepository recoveryTokensRepository) {
+  public ForgotMailPassword(MailProvider mailProvider, CurrentContextProvider getCurrentUri,
+      AuthorsRepository authorsRepository, RecoveryTokensRepository recoveryTokensRepository) {
     this.mailProvider = mailProvider;
+    this.getCurrentUri = getCurrentUri;
     this.authorsRepository = authorsRepository;
     this.recoveryTokensRepository = recoveryTokensRepository;
   }
@@ -41,9 +44,9 @@ public class ForgotMailPassword {
 
     this.recoveryTokensRepository.save(token);
 
-    String uri = ServletUriComponentsBuilder.fromCurrentContextPath().path("/authors/password/reset")
-        .queryParam("code", token.getCode())
-        .toUriString();
+    UriComponentsBuilder currentUri = this.getCurrentUri.getUri();
+
+    String uri = currentUri.path("/authors/password/reset").queryParam("code", token.getCode()).toUriString();
 
     String text = String.format("Para criar uma nova senha acesse: <a href='%s'>Criar nova senha</a>", uri);
 
