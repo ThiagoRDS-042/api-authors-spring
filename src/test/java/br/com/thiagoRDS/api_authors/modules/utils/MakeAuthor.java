@@ -5,7 +5,6 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 import br.com.thiagoRDS.api_authors.modules.authors.dtos.RegisterAuthorDTO;
-import br.com.thiagoRDS.api_authors.modules.authors.entities.Address;
 import br.com.thiagoRDS.api_authors.modules.authors.entities.Author;
 
 public record MakeAuthor() {
@@ -17,8 +16,8 @@ public record MakeAuthor() {
                         "Test123",
                         "avatar.png",
                         LocalDate.now().minusYears(19),
-                        UUID.randomUUID(),
-                        new Address(),
+                        null,
+                        null,
                         LocalDateTime.now(),
                         LocalDateTime.now());
 
