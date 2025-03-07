@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import br.com.thiagoRDS.api_authors.modules.authors.dtos.PostWithouAuthorDTO;
 import br.com.thiagoRDS.api_authors.modules.authors.entities.Author;
+import br.com.thiagoRDS.api_authors.modules.posts.dtos.CreatePostDTO;
 import br.com.thiagoRDS.api_authors.modules.posts.entities.Post;
 
 public record MakePost() {
@@ -22,6 +23,13 @@ public record MakePost() {
       LocalDateTime.now(),
       UUID.randomUUID(),
       new Author());
+
+  public static final CreatePostDTO CREATE_POST_DTO = new CreatePostDTO(
+      POST.getTitle(),
+      POST.getContent(),
+      POST.getDescription(),
+      POST.getKeywords().split(";"),
+      POST.getAuthorId());
 
   public static final PostWithouAuthorDTO POST_WITHOUT_AUTHOR = new PostWithouAuthorDTO(
       POST.getId(),

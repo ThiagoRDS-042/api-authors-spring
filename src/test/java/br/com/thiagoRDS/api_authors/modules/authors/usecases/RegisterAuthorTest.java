@@ -1,7 +1,8 @@
 package br.com.thiagoRDS.api_authors.modules.authors.usecases;
 
-import static org.assertj.core.api.Assertions.assertThatCode;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
@@ -16,6 +17,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import br.com.thiagoRDS.api_authors.modules.authors.dtos.RegisterAuthorDTO;
+import br.com.thiagoRDS.api_authors.modules.authors.entities.Author;
 import br.com.thiagoRDS.api_authors.modules.authors.exceptions.AuthorAlreadyRegisteredException;
 import br.com.thiagoRDS.api_authors.modules.authors.exceptions.InvalidAgeException;
 import br.com.thiagoRDS.api_authors.modules.authors.repositories.AuthorsRepository;
@@ -39,8 +41,11 @@ public class RegisterAuthorTest {
 
     when(this.authorsRepository.findByEmail(authorDTO.email())).thenReturn(Optional.empty());
     when(this.authorsRepository.findByTag(anyString())).thenReturn(Optional.empty());
+    when(this.authorsRepository.save(any(Author.class))).thenReturn(MakeAuthor.AUTHOR);
 
-    assertThatCode(() -> this.registerAuthor.execute(authorDTO)).doesNotThrowAnyException();
+    Author author = this.registerAuthor.execute(authorDTO);
+
+    assertThat(author).isEqualTo(MakeAuthor.AUTHOR);
   }
 
   @Test
