@@ -1,7 +1,6 @@
 package br.com.thiagoRDS.api_authors.modules.utils;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -33,5 +32,5 @@ public record MakePost() {
       POST.getUp(),
       POST.getPublishedAt());
 
-  public static final List<PostWithouAuthorDTO> POSTS_WITHOUT_AUTHOR = Arrays.asList(POST_WITHOUT_AUTHOR);
+  public static final List<PostWithouAuthorDTO> POSTS_WITHOUT_AUTHOR = List.of(POST_WITHOUT_AUTHOR);
 }

@@ -1,12 +1,13 @@
 package br.com.thiagoRDS.api_authors.modules.authors.usecases;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.when;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Optional;
-import java.util.UUID;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -56,13 +57,19 @@ public class ResetPasswordTest {
     when(this.recoveryTokensRepository.findByCode(recoveryToken.getCode())).thenReturn(Optional.of(recoveryToken));
     when(this.passwordEncoder.encode(password)).thenReturn("encoded" + password);
 
-    this.resetPassword.execute(resetPassword);
+    assertThatCode(() -> this.resetPassword.execute(resetPassword)).doesNotThrowAnyException();
+    assertThat(author.getPassword()).isEqualTo("encoded" + password);
+    assertThat(author.getUpdtaedAt()).isInstanceOf(LocalDateTime.class);
   }
 
   @Test
   @DisplayName("Should not be able to reset password with non-existing token recovery")
   public void tokenRecoveryNotFound() {
-    ResetPasswordDTO resetPassword = new ResetPasswordDTO(UUID.randomUUID(), "New-password123");
+    RecoveryToken recoveryToken = MakeRecoveryToken.RECOVERY_TOKEN;
+
+    ResetPasswordDTO resetPassword = new ResetPasswordDTO(recoveryToken.getCode(), "New-password123");
+
+    when(this.recoveryTokensRepository.findByCode(recoveryToken.getCode())).thenReturn(Optional.empty());
 
     assertThatThrownBy(() -> this.resetPassword.execute(resetPassword))
         .isInstanceOf(RecoveryTokenNotFountException.class);

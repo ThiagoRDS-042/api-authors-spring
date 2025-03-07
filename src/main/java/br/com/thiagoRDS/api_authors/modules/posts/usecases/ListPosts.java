@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -16,33 +16,43 @@ import br.com.thiagoRDS.api_authors.providers.GerericWhereSpecificationProvider;
 
 @Service
 public class ListPosts {
-  private final PostsRepository postsRepository;
+        private final PostsRepository postsRepository;
+        private final GerericWhereSpecificationProvider<Post> gerericWhereSpecificationProvider;
 
-  public ListPosts(PostsRepository postsRepository) {
-    this.postsRepository = postsRepository;
-  }
+        public ListPosts(PostsRepository postsRepository,
+                        GerericWhereSpecificationProvider<Post> gerericWhereSpecificationProvider) {
+                this.postsRepository = postsRepository;
+                this.gerericWhereSpecificationProvider = gerericWhereSpecificationProvider;
+        }
 
-  public List<Post> execute(ListPostsDTO filters) {
-    Pageable pageable = PageRequest.of(filters.page(), filters.pageSize(), Direction.DESC, "up", "publishedAt");
+        public List<Post> execute(ListPostsDTO filters) {
+                Sort sortBy = Sort.by("up").descending().and(Sort.by("publishedAt").descending());
+                Pageable pageable = PageRequest.of(filters.page(), filters.pageSize(), sortBy);
 
-    Specification<Post> titleLike = new GerericWhereSpecificationProvider<Post>().like(filters.title(), "title");
-    Specification<Post> keywordLike = new GerericWhereSpecificationProvider<Post>().like(filters.keywords(),
-        "keywords");
-    Specification<Post> contentLike = new GerericWhereSpecificationProvider<Post>().like(filters.content(), "content");
-    Specification<Post> descriptionLike = new GerericWhereSpecificationProvider<Post>().like(filters.description(),
-        "description");
-    Specification<Post> authorEmailLike = new GerericWhereSpecificationProvider<Post>().like(filters.authorEmail(),
-        "author.email");
-    Specification<Post> authorTagLike = new GerericWhereSpecificationProvider<Post>().like(filters.authorTag(),
-        "author.tag");
-    Specification<Post> publishedNotNull = new GerericWhereSpecificationProvider<Post>().notNull(
-        "publishedAt");
+                Specification<Post> titleLike = this.gerericWhereSpecificationProvider.like(filters.title(),
+                                "title");
+                Specification<Post> keywordLike = this.gerericWhereSpecificationProvider.like(filters.keywords(),
+                                "keywords");
+                Specification<Post> contentLike = this.gerericWhereSpecificationProvider.like(filters.content(),
+                                "content");
+                Specification<Post> descriptionLike = this.gerericWhereSpecificationProvider.like(
+                                filters.description(),
+                                "description");
+                Specification<Post> authorEmailLike = this.gerericWhereSpecificationProvider.like(
+                                filters.authorEmail(),
+                                "author.email");
+                Specification<Post> authorTagLike = this.gerericWhereSpecificationProvider.like(
+                                filters.authorTag(),
+                                "author.tag");
+                Specification<Post> publishedNotNull = this.gerericWhereSpecificationProvider.notNull(
+                                "publishedAt");
 
-    Page<Post> posts = this.postsRepository.findAll(
-        titleLike.and(keywordLike).and(contentLike).and(descriptionLike).and(authorEmailLike).and(authorTagLike)
-            .and(publishedNotNull),
-        pageable);
+                Page<Post> posts = this.postsRepository.findAll(
+                                titleLike.and(keywordLike).and(contentLike).and(descriptionLike).and(authorEmailLike)
+                                                .and(authorTagLike)
+                                                .and(publishedNotNull),
+                                pageable);
 
-    return posts.getContent();
-  }
+                return posts.getContent();
+        }
 }

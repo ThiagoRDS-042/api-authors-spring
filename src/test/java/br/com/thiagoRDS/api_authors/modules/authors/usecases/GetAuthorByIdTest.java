@@ -55,9 +55,8 @@ public class GetAuthorByIdTest {
         author.getAddress(),
         posts);
 
-    when(this.postsRepository.findByAuthorId(author.getId())).thenReturn(posts);
-
     when(this.authorsRepository.findById(author.getId())).thenReturn(Optional.of(author));
+    when(this.postsRepository.findByAuthorId(author.getId())).thenReturn(posts);
 
     AuthorWithPostsDTO authorWithPostsResponse = this.getAuthorById.execute(author.getId());
 
@@ -67,7 +66,11 @@ public class GetAuthorByIdTest {
   @Test
   @DisplayName("Should not be able to get a non-existing author")
   public void authorNotFound() {
-    assertThatThrownBy(() -> this.getAuthorById.execute(UUID.randomUUID()))
+    UUID authorId = UUID.randomUUID();
+
+    when(this.authorsRepository.findById(authorId)).thenReturn(Optional.empty());
+
+    assertThatThrownBy(() -> this.getAuthorById.execute(authorId))
         .isInstanceOf(AuthorNotFoundException.class);
   }
 }

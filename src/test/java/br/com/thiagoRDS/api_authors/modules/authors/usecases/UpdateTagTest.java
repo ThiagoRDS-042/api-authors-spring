@@ -1,5 +1,7 @@
 package br.com.thiagoRDS.api_authors.modules.authors.usecases;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.when;
 
@@ -36,14 +38,20 @@ public class UpdateTagTest {
     Author author = MakeAuthor.AUTHOR;
 
     when(this.authorsRepository.findById(author.getId())).thenReturn(Optional.of(author));
+    when(this.authorsRepository.findByTag(author.getTag())).thenReturn(Optional.empty());
 
-    this.updateTag.execute(author.getId(), author.getTag());
+    assertThatCode(() -> this.updateTag.execute(author.getId(), author.getTag())).doesNotThrowAnyException();
+    assertThat(author.getUpdtaedAt()).isInstanceOf(LocalDateTime.class);
   }
 
   @Test
   @DisplayName("Should not be able to update author tag with non-exsiting author")
   public void authorNotFound() {
-    assertThatThrownBy(() -> this.updateTag.execute(UUID.randomUUID(), "author-tag"))
+    UUID authorId = UUID.randomUUID();
+
+    when(this.authorsRepository.findById(authorId)).thenReturn(Optional.empty());
+
+    assertThatThrownBy(() -> this.updateTag.execute(authorId, "author-tag"))
         .isInstanceOf(AuthorNotFoundException.class);
   }
 

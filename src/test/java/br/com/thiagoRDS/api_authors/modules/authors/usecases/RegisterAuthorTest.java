@@ -1,6 +1,8 @@
 package br.com.thiagoRDS.api_authors.modules.authors.usecases;
 
+import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 import java.util.Optional;
@@ -13,6 +15,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import br.com.thiagoRDS.api_authors.modules.authors.dtos.RegisterAuthorDTO;
 import br.com.thiagoRDS.api_authors.modules.authors.exceptions.AuthorAlreadyRegisteredException;
 import br.com.thiagoRDS.api_authors.modules.authors.exceptions.InvalidAgeException;
 import br.com.thiagoRDS.api_authors.modules.authors.repositories.AuthorsRepository;
@@ -32,23 +35,34 @@ public class RegisterAuthorTest {
   @Test
   @DisplayName("Should be able to register a new author")
   public void registerAuthor() {
-    this.registerAuthor.execute(MakeAuthor.REGISTER_AUTHOR_DTO);
+    RegisterAuthorDTO authorDTO = MakeAuthor.REGISTER_AUTHOR_DTO;
+
+    when(this.authorsRepository.findByEmail(authorDTO.email())).thenReturn(Optional.empty());
+    when(this.authorsRepository.findByTag(anyString())).thenReturn(Optional.empty());
+
+    assertThatCode(() -> this.registerAuthor.execute(authorDTO)).doesNotThrowAnyException();
   }
 
   @Test
   @DisplayName("Should not be able to register a new author with same email another author")
   public void emailAlreadyExists() {
-    when(this.authorsRepository.findByEmail(MakeAuthor.AUTHOR.getEmail()))
+    RegisterAuthorDTO authorDTO = MakeAuthor.REGISTER_AUTHOR_DTO;
+
+    when(this.authorsRepository.findByEmail(authorDTO.email()))
         .thenReturn(Optional.of(MakeAuthor.AUTHOR));
 
-    assertThatThrownBy(() -> this.registerAuthor.execute(MakeAuthor.REGISTER_AUTHOR_DTO))
+    assertThatThrownBy(() -> this.registerAuthor.execute(authorDTO))
         .isInstanceOf(AuthorAlreadyRegisteredException.class);
   }
 
   @Test
   @DisplayName("Should not be able to register a new author with a invalid age")
   public void invalidAge() {
-    assertThatThrownBy(() -> this.registerAuthor.execute(MakeAuthor.AUTHOR_INVALID_AGE))
+    RegisterAuthorDTO authorDTO = MakeAuthor.AUTHOR_INVALID_AGE;
+
+    when(this.authorsRepository.findByEmail(authorDTO.email())).thenReturn(Optional.empty());
+
+    assertThatThrownBy(() -> this.registerAuthor.execute(authorDTO))
         .isInstanceOf(InvalidAgeException.class);
   }
 }

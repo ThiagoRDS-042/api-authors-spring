@@ -53,7 +53,11 @@ public class GetAvatarTest {
   @Test
   @DisplayName("Should not be able to get a author avatar with non-existing author")
   public void authorNotFound() {
-    assertThatThrownBy(() -> this.getAvatar.execute("non-existing-avatar.png"))
+    String avatar = "non-existing-avatar.png";
+
+    when(this.authorsRepository.findByAvatar(avatar)).thenReturn(Optional.empty());
+
+    assertThatThrownBy(() -> this.getAvatar.execute(avatar))
         .isInstanceOf(AuthorNotFoundException.class);
   }
 }

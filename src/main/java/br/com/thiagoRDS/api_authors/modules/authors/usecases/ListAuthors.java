@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -17,17 +17,21 @@ import br.com.thiagoRDS.api_authors.providers.GerericWhereSpecificationProvider;
 @Service
 public class ListAuthors {
   private final AuthorsRepository authorsRepository;
+  private final GerericWhereSpecificationProvider<Author> gerericWhereSpecificationProvider;
 
-  public ListAuthors(AuthorsRepository authorsRepository) {
+  public ListAuthors(AuthorsRepository authorsRepository,
+      GerericWhereSpecificationProvider<Author> gerericWhereSpecificationProvider) {
     this.authorsRepository = authorsRepository;
+    this.gerericWhereSpecificationProvider = gerericWhereSpecificationProvider;
   }
 
   public List<Author> execute(ListAuthorsDTO filters) {
-    Pageable pageable = PageRequest.of(filters.page(), filters.pageSize(), Direction.DESC, "createdAt");
+    Sort sortBy = Sort.by("createdAt").descending();
+    Pageable pageable = PageRequest.of(filters.page(), filters.pageSize(), sortBy);
 
-    Specification<Author> emailLike = new GerericWhereSpecificationProvider<Author>().like(filters.email(), "email");
+    Specification<Author> emailLike = this.gerericWhereSpecificationProvider.like(filters.email(), "email");
 
-    Specification<Author> tagLike = new GerericWhereSpecificationProvider<Author>().like(filters.tag(), "tag");
+    Specification<Author> tagLike = this.gerericWhereSpecificationProvider.like(filters.tag(), "tag");
 
     Page<Author> authors = this.authorsRepository.findAll(emailLike.and(tagLike), pageable);
 

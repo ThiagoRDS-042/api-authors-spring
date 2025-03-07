@@ -1,5 +1,7 @@
 package br.com.thiagoRDS.api_authors.modules.authors.usecases;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.when;
 
@@ -29,134 +31,139 @@ import br.com.thiagoRDS.api_authors.modules.utils.MakeAuthor;
 
 @ExtendWith(MockitoExtension.class)
 public class UpdateAuthorTest {
-  @InjectMocks
-  private UpdateAuthor updateAuthor;
+        @InjectMocks
+        private UpdateAuthor updateAuthor;
 
-  @Mock
-  private AuthorsRepository authorsRepository;
+        @Mock
+        private AuthorsRepository authorsRepository;
 
-  @Mock
-  private AddressesRepository addressesRepository;
+        @Mock
+        private AddressesRepository addressesRepository;
 
-  @Test
-  @DisplayName("Should be able to update a author account and create address")
-  public void updateAuthor() {
-    Author author = MakeAuthor.AUTHOR;
-    Address address = MakeAddress.ADDRESS;
-    address.setId(null);
-    author.setBirthdate(LocalDate.now().minusYears(19));
+        @Test
+        @DisplayName("Should be able to update a author account and create address")
+        public void updateAuthor() {
+                Author author = MakeAuthor.AUTHOR;
+                Address address = MakeAddress.ADDRESS;
+                address.setId(null);
+                author.setBirthdate(LocalDate.now().minusYears(19));
 
-    AddressDTO addressDTO = new AddressDTO(
-        address.getCity(),
-        address.getStreet(),
-        address.getZipCode(),
-        address.getStateCode(),
-        address.getComplement(),
-        address.getNeighborhood());
+                AddressDTO addressDTO = new AddressDTO(
+                                address.getCity(),
+                                address.getStreet(),
+                                address.getZipCode(),
+                                address.getStateCode(),
+                                address.getComplement(),
+                                address.getNeighborhood());
 
-    UpdateAuthorDTO updateAuthor = new UpdateAuthorDTO(
-        author.getId(),
-        author.getName(),
-        author.getEmail(),
-        addressDTO,
-        author.getBirthdate().toString());
+                UpdateAuthorDTO updateAuthor = new UpdateAuthorDTO(
+                                author.getId(),
+                                author.getName(),
+                                author.getEmail(),
+                                addressDTO,
+                                author.getBirthdate().toString());
 
-    when(this.authorsRepository.findById(author.getId())).thenReturn(Optional.of(author));
-    when(this.addressesRepository.save(address)).thenReturn(address);
+                when(this.authorsRepository.findById(author.getId())).thenReturn(Optional.of(author));
+                when(this.authorsRepository.findByEmail(author.getEmail())).thenReturn(Optional.empty());
+                when(this.addressesRepository.save(address)).thenReturn(address);
 
-    this.updateAuthor.execute(updateAuthor);
-  }
+                assertThatCode(() -> this.updateAuthor.execute(updateAuthor)).doesNotThrowAnyException();
+                assertThat(author.getUpdtaedAt()).isInstanceOf(LocalDateTime.class);
+        }
 
-  @Test
-  @DisplayName("Should not be able to update a author account with non-existing author")
-  public void authorNotFound() {
-    Author author = MakeAuthor.AUTHOR;
-    Address address = MakeAddress.ADDRESS;
+        @Test
+        @DisplayName("Should not be able to update a author account with non-existing author")
+        public void authorNotFound() {
+                Author author = MakeAuthor.AUTHOR;
+                Address address = MakeAddress.ADDRESS;
 
-    AddressDTO addressDTO = new AddressDTO(
-        address.getCity(),
-        address.getStreet(),
-        address.getZipCode(),
-        address.getStateCode(),
-        address.getComplement(),
-        address.getNeighborhood());
+                AddressDTO addressDTO = new AddressDTO(
+                                address.getCity(),
+                                address.getStreet(),
+                                address.getZipCode(),
+                                address.getStateCode(),
+                                address.getComplement(),
+                                address.getNeighborhood());
 
-    UpdateAuthorDTO updateAuthor = new UpdateAuthorDTO(
-        author.getId(),
-        author.getName(),
-        author.getEmail(),
-        addressDTO,
-        author.getBirthdate().toString());
+                UpdateAuthorDTO updateAuthor = new UpdateAuthorDTO(
+                                author.getId(),
+                                author.getName(),
+                                author.getEmail(),
+                                addressDTO,
+                                author.getBirthdate().toString());
 
-    assertThatThrownBy(() -> this.updateAuthor.execute(updateAuthor))
-        .isInstanceOf(AuthorNotFoundException.class);
-  }
+                when(this.authorsRepository.findById(author.getId())).thenReturn(Optional.empty());
 
-  @Test
-  @DisplayName("Should not be able to update a author account with same email another author")
-  public void authorAlreadyRegistered() {
-    Author author = MakeAuthor.AUTHOR;
-    Address address = MakeAddress.ADDRESS;
-    Author anotherAuthor = new Author(
-        UUID.randomUUID(),
-        "author",
-        "another-author@example.com",
-        "Test-123",
-        "Test123",
-        "avatar.png",
-        LocalDate.now().minusYears(19),
-        UUID.randomUUID(),
-        new Address(),
-        LocalDateTime.now(),
-        LocalDateTime.now());
+                assertThatThrownBy(() -> this.updateAuthor.execute(updateAuthor))
+                                .isInstanceOf(AuthorNotFoundException.class);
+        }
 
-    AddressDTO addressDTO = new AddressDTO(
-        address.getCity(),
-        address.getStreet(),
-        address.getZipCode(),
-        address.getStateCode(),
-        address.getComplement(),
-        address.getNeighborhood());
+        @Test
+        @DisplayName("Should not be able to update a author account with same email another author")
+        public void authorAlreadyRegistered() {
+                Author author = MakeAuthor.AUTHOR;
+                Address address = MakeAddress.ADDRESS;
+                Author anotherAuthor = new Author(
+                                UUID.randomUUID(),
+                                "author",
+                                "another-author@example.com",
+                                "Test-123",
+                                "Test123",
+                                "avatar.png",
+                                LocalDate.now().minusYears(19),
+                                UUID.randomUUID(),
+                                new Address(),
+                                LocalDateTime.now(),
+                                LocalDateTime.now());
 
-    UpdateAuthorDTO updateAuthor = new UpdateAuthorDTO(
-        author.getId(),
-        author.getName(),
-        anotherAuthor.getEmail(),
-        addressDTO,
-        author.getBirthdate().toString());
+                AddressDTO addressDTO = new AddressDTO(
+                                address.getCity(),
+                                address.getStreet(),
+                                address.getZipCode(),
+                                address.getStateCode(),
+                                address.getComplement(),
+                                address.getNeighborhood());
 
-    when(this.authorsRepository.findById(author.getId())).thenReturn(Optional.of(author));
-    when(this.authorsRepository.findByEmail(anotherAuthor.getEmail())).thenReturn(Optional.of(anotherAuthor));
+                UpdateAuthorDTO updateAuthor = new UpdateAuthorDTO(
+                                author.getId(),
+                                author.getName(),
+                                anotherAuthor.getEmail(),
+                                addressDTO,
+                                author.getBirthdate().toString());
 
-    assertThatThrownBy(() -> this.updateAuthor.execute(updateAuthor))
-        .isInstanceOf(AuthorAlreadyRegisteredException.class);
-  }
+                when(this.authorsRepository.findById(author.getId())).thenReturn(Optional.of(author));
+                when(this.authorsRepository.findByEmail(anotherAuthor.getEmail()))
+                                .thenReturn(Optional.of(anotherAuthor));
 
-  @Test
-  @DisplayName("Should be able to update a author account with a invalid age")
-  public void invalidAge() {
-    Author author = MakeAuthor.AUTHOR;
-    Address address = MakeAddress.ADDRESS;
-    author.setBirthdate(LocalDate.now().minusYears(10));
+                assertThatThrownBy(() -> this.updateAuthor.execute(updateAuthor))
+                                .isInstanceOf(AuthorAlreadyRegisteredException.class);
+        }
 
-    AddressDTO addressDTO = new AddressDTO(
-        address.getCity(),
-        address.getStreet(),
-        address.getZipCode(),
-        address.getStateCode(),
-        address.getComplement(),
-        address.getNeighborhood());
+        @Test
+        @DisplayName("Should be able to update a author account with a invalid age")
+        public void invalidAge() {
+                Author author = MakeAuthor.AUTHOR;
+                Address address = MakeAddress.ADDRESS;
+                author.setBirthdate(LocalDate.now().minusYears(10));
 
-    UpdateAuthorDTO updateAuthor = new UpdateAuthorDTO(
-        author.getId(),
-        author.getName(),
-        author.getEmail(),
-        addressDTO,
-        author.getBirthdate().toString());
+                AddressDTO addressDTO = new AddressDTO(
+                                address.getCity(),
+                                address.getStreet(),
+                                address.getZipCode(),
+                                address.getStateCode(),
+                                address.getComplement(),
+                                address.getNeighborhood());
 
-    when(this.authorsRepository.findById(author.getId())).thenReturn(Optional.of(author));
+                UpdateAuthorDTO updateAuthor = new UpdateAuthorDTO(
+                                author.getId(),
+                                author.getName(),
+                                author.getEmail(),
+                                addressDTO,
+                                author.getBirthdate().toString());
 
-    assertThatThrownBy(() -> this.updateAuthor.execute(updateAuthor))
-        .isInstanceOf(InvalidAgeException.class);
-  }
+                when(this.authorsRepository.findById(author.getId())).thenReturn(Optional.of(author));
+
+                assertThatThrownBy(() -> this.updateAuthor.execute(updateAuthor))
+                                .isInstanceOf(InvalidAgeException.class);
+        }
 }

@@ -1,8 +1,11 @@
 package br.com.thiagoRDS.api_authors.modules.authors.usecases;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.when;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -49,7 +52,9 @@ public class UpdatePasswordTest {
     when(this.passwordEncoder.matches(author.getPassword(), author.getPassword())).thenReturn(true);
     when(this.passwordEncoder.encode(newPassword)).thenReturn("encoded" + newPassword);
 
-    this.updatePassword.execute(updatePassword);
+    assertThatCode(() -> this.updatePassword.execute(updatePassword)).doesNotThrowAnyException();
+    assertThat(author.getPassword()).isEqualTo("encoded" + newPassword);
+    assertThat(author.getUpdtaedAt()).isInstanceOf(LocalDateTime.class);
   }
 
   @Test
@@ -77,6 +82,8 @@ public class UpdatePasswordTest {
         author.getPassword(),
         newPassword,
         newPassword);
+
+    when(this.authorsRepository.findById(author.getId())).thenReturn(Optional.empty());
 
     assertThatThrownBy(() -> this.updatePassword.execute(updatePassword))
         .isInstanceOf(AuthorNotFoundException.class);

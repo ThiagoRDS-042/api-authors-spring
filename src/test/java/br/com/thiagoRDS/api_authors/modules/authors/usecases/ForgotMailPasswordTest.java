@@ -1,5 +1,6 @@
 package br.com.thiagoRDS.api_authors.modules.authors.usecases;
 
+import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.when;
 
@@ -48,9 +49,10 @@ public class ForgotMailPasswordTest {
     UriComponentsBuilder currentContext = UriComponentsBuilder.fromPath("http://localhost:8080");
 
     when(this.authorsRepository.findByEmail(author.getEmail())).thenReturn(Optional.of(author));
+    when(this.recoveryTokensRepository.findByAuthorId(author.getId())).thenReturn(Optional.empty());
     when(this.currentContextProvider.getUri()).thenReturn(currentContext);
 
-    this.forgotMailPassword.execute(author.getEmail());
+    assertThatCode(() -> this.forgotMailPassword.execute(author.getEmail())).doesNotThrowAnyException();
   }
 
   @Test
@@ -65,13 +67,17 @@ public class ForgotMailPasswordTest {
     when(this.recoveryTokensRepository.findByAuthorId(author.getId())).thenReturn(Optional.of(recoveryToken));
     when(this.currentContextProvider.getUri()).thenReturn(currentContext);
 
-    this.forgotMailPassword.execute(author.getEmail());
+    assertThatCode(() -> this.forgotMailPassword.execute(author.getEmail())).doesNotThrowAnyException();
   }
 
   @Test
   @DisplayName("Should not be able to create a new recovery token with non-existing author")
   public void authorNotFound() {
-    assertThatThrownBy(() -> this.forgotMailPassword.execute("non-existing-author@example.com"))
+    String email = "non-existing-author@example.com";
+
+    when(this.authorsRepository.findByEmail(email)).thenReturn(Optional.empty());
+
+    assertThatThrownBy(() -> this.forgotMailPassword.execute(email))
         .isInstanceOf(AuthorNotFoundException.class);
   }
 }

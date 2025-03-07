@@ -14,7 +14,7 @@ public record MakeAuthor() {
                         "author@example.com",
                         "Test-123",
                         "Test123",
-                        "avatar.png",
+                        null,
                         LocalDate.now().minusYears(19),
                         null,
                         null,

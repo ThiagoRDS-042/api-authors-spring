@@ -65,9 +65,12 @@ public class AuthenticateAuthorTest {
   @Test
   @DisplayName("Should not be able to authenticate a author with invalid email")
   public void invalidEmail() {
+    String wrongEmail = "wrong-emailg@example.com";
     AuthenticateAuthorDTO authenticateAuthor = new AuthenticateAuthorDTO(
-        "wrong-emailg@example.com",
+        wrongEmail,
         "password");
+
+    when(this.authorsRepository.findByEmail(wrongEmail)).thenReturn(Optional.empty());
 
     assertThatThrownBy(() -> this.authenticateAuthor.execute(authenticateAuthor))
         .isInstanceOf(InvalidCredentialsException.class);
