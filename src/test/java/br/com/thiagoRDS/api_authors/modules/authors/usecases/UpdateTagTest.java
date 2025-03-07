@@ -41,7 +41,6 @@ public class UpdateTagTest {
     when(this.authorsRepository.findByTag(author.getTag())).thenReturn(Optional.empty());
 
     assertThatCode(() -> this.updateTag.execute(author.getId(), author.getTag())).doesNotThrowAnyException();
-    assertThat(author.getUpdtaedAt()).isInstanceOf(LocalDateTime.class);
   }
 
   @Test

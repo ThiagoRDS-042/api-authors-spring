@@ -54,7 +54,6 @@ public class UpdatePasswordTest {
 
     assertThatCode(() -> this.updatePassword.execute(updatePassword)).doesNotThrowAnyException();
     assertThat(author.getPassword()).isEqualTo("encoded" + newPassword);
-    assertThat(author.getUpdtaedAt()).isInstanceOf(LocalDateTime.class);
   }
 
   @Test

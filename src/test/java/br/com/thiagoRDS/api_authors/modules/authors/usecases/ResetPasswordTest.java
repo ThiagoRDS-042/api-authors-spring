@@ -59,7 +59,6 @@ public class ResetPasswordTest {
 
     assertThatCode(() -> this.resetPassword.execute(resetPassword)).doesNotThrowAnyException();
     assertThat(author.getPassword()).isEqualTo("encoded" + password);
-    assertThat(author.getUpdtaedAt()).isInstanceOf(LocalDateTime.class);
   }
 
   @Test

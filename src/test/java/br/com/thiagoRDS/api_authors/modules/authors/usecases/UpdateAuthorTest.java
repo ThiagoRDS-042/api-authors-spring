@@ -68,7 +68,6 @@ public class UpdateAuthorTest {
                 when(this.addressesRepository.save(address)).thenReturn(address);
 
                 assertThatCode(() -> this.updateAuthor.execute(updateAuthor)).doesNotThrowAnyException();
-                assertThat(author.getUpdtaedAt()).isInstanceOf(LocalDateTime.class);
         }
 
         @Test

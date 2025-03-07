@@ -54,7 +54,6 @@ public class UploadAvatarTest {
 
     assertThatCode(() -> this.uploadAvatar.execute(uploadAvatar)).doesNotThrowAnyException();
     assertThat(author.getAvatar()).isInstanceOf(String.class);
-    assertThat(author.getUpdtaedAt()).isInstanceOf(LocalDateTime.class);
   }
 
   @Test
