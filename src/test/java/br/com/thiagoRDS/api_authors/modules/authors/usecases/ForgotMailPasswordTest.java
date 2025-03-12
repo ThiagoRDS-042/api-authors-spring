@@ -2,6 +2,8 @@ package br.com.thiagoRDS.api_authors.modules.authors.usecases;
 
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.Optional;
@@ -53,6 +55,7 @@ public class ForgotMailPasswordTest {
     when(this.currentContextProvider.getUri()).thenReturn(currentContext);
 
     assertThatCode(() -> this.forgotMailPassword.execute(author.getEmail())).doesNotThrowAnyException();
+    verify(mailProvider).sendMail(any());
   }
 
   @Test

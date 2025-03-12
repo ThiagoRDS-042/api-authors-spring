@@ -51,6 +51,7 @@ public class GetAuthorByIdTest {
         author.getName(),
         author.getEmail(),
         author.getTag(),
+        author.getAvatar(),
         author.getBirthdate(),
         author.getAddress(),
         posts);

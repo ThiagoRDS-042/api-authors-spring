@@ -28,7 +28,7 @@ import br.com.thiagoRDS.api_authors.modules.utils.MakeAuthor;
 @ActiveProfiles("test")
 @TestInstance(Lifecycle.PER_CLASS)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-public class CreateAuthorControllerTest {
+public class RegisterAuthorControllerTest {
   private MockMvc mvc;
 
   @Autowired
