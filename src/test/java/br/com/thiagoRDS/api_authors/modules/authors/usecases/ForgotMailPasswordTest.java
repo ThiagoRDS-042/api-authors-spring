@@ -46,7 +46,7 @@ public class ForgotMailPasswordTest {
   @Test
   @DisplayName("Should be able to create a new recovery token")
   public void createNewRecoveryToken() {
-    Author author = MakeAuthor.AUTHOR;
+    Author author = MakeAuthor.AUTHOR.clone();
 
     UriComponentsBuilder currentContext = UriComponentsBuilder.fromPath("http://localhost:8080");
 
@@ -61,8 +61,8 @@ public class ForgotMailPasswordTest {
   @Test
   @DisplayName("Should be able to update a recovery token")
   public void updateRecoveryToken() {
-    Author author = MakeAuthor.AUTHOR;
-    RecoveryToken recoveryToken = MakeRecoveryToken.RECOVERY_TOKEN;
+    Author author = MakeAuthor.AUTHOR.clone();
+    RecoveryToken recoveryToken = MakeRecoveryToken.RECOVERY_TOKEN.clone();
 
     UriComponentsBuilder currentContext = UriComponentsBuilder.fromPath("http://localhost:8080");
 

@@ -30,7 +30,7 @@ public class UpPostTest {
   @Test
   @DisplayName("Should be able to up a post")
   public void upPost() {
-    Post post = MakePost.POST;
+    Post post = MakePost.POST.clone();
 
     when(this.postsRepository.findById(post.getId())).thenReturn(Optional.of(post));
 

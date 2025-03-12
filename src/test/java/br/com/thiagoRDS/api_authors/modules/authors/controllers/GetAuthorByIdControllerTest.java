@@ -59,17 +59,17 @@ public class GetAuthorByIdControllerTest {
   @Test
   @DisplayName("Should be able to get the author by id")
   public void getAuthor() throws Exception {
-    Address address = MakeAddress.ADDRESS;
+    Address address = MakeAddress.ADDRESS.clone();
     address.setId(null);
     address = this.addressesRepository.saveAndFlush(address);
 
-    Author author = MakeAuthor.AUTHOR;
+    Author author = MakeAuthor.AUTHOR.clone();
     author.setId(null);
     author.setAddress(address);
     author.setAddressId(address.getId());
     author = this.authorsRepository.saveAndFlush(author);
 
-    Post post = MakePost.POST;
+    Post post = MakePost.POST.clone();
     post.setId(null);
     post.setAuthor(author);
     post.setAuthorId(author.getId());

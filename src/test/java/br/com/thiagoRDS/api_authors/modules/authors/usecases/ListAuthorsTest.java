@@ -26,48 +26,48 @@ import br.com.thiagoRDS.api_authors.providers.GerericWhereSpecificationProvider;
 
 @ExtendWith(MockitoExtension.class)
 public class ListAuthorsTest {
-    @InjectMocks
-    private ListAuthors listAuthors;
+        @InjectMocks
+        private ListAuthors listAuthors;
 
-    @Mock
-    private AuthorsRepository authorsRepository;
+        @Mock
+        private AuthorsRepository authorsRepository;
 
-    @Mock
-    private GerericWhereSpecificationProvider<Author> gerericWhereSpecificationProvider;
+        @Mock
+        private GerericWhereSpecificationProvider<Author> gerericWhereSpecificationProvider;
 
-    @Test
-    @DisplayName("Should be able to list an authors by filters")
-    public void listAuthors() {
-        Author author = MakeAuthor.AUTHOR;
-        Integer pageSize = 2;
+        @Test
+        @DisplayName("Should be able to list an authors by filters")
+        public void listAuthors() {
+                Author author = MakeAuthor.AUTHOR.clone();
+                Integer pageSize = 2;
 
-        ListAuthorsDTO listAuthors = new ListAuthorsDTO(
-                author.getEmail(),
-                author.getTag(),
-                0,
-                pageSize);
+                ListAuthorsDTO listAuthors = new ListAuthorsDTO(
+                                author.getEmail(),
+                                author.getTag(),
+                                0,
+                                pageSize);
 
-        Sort sortBy = Sort.by("createdAt").descending();
+                Sort sortBy = Sort.by("createdAt").descending();
 
-        Pageable pageable = PageRequest.of(listAuthors.page(), listAuthors.pageSize(), sortBy);
+                Pageable pageable = PageRequest.of(listAuthors.page(), listAuthors.pageSize(), sortBy);
 
-        GerericWhereSpecificationProvider<Author> gerericWhere = new GerericWhereSpecificationProvider<Author>();
+                GerericWhereSpecificationProvider<Author> gerericWhere = new GerericWhereSpecificationProvider<Author>();
 
-        Specification<Author> emailLike = gerericWhere.like(listAuthors.email(),
-                "email");
-        Specification<Author> tagLike = gerericWhere.like(listAuthors.tag(), "tag");
+                Specification<Author> emailLike = gerericWhere.like(listAuthors.email(),
+                                "email");
+                Specification<Author> tagLike = gerericWhere.like(listAuthors.tag(), "tag");
 
-        when(this.gerericWhereSpecificationProvider.like(listAuthors.email(),
-                "email")).thenReturn(emailLike);
-        when(this.gerericWhereSpecificationProvider.like(listAuthors.tag(),
-                "tag")).thenReturn(tagLike);
-        when(this.authorsRepository.findAll(Mockito.<Specification<Author>>any(),
-                Mockito.eq(pageable)))
-                .thenReturn(new PageImpl<Author>(List.of(author, author), pageable, pageSize));
+                when(this.gerericWhereSpecificationProvider.like(listAuthors.email(),
+                                "email")).thenReturn(emailLike);
+                when(this.gerericWhereSpecificationProvider.like(listAuthors.tag(),
+                                "tag")).thenReturn(tagLike);
+                when(this.authorsRepository.findAll(Mockito.<Specification<Author>>any(),
+                                Mockito.eq(pageable)))
+                                .thenReturn(new PageImpl<Author>(List.of(author, author), pageable, pageSize));
 
-        List<Author> authors = this.listAuthors.execute(listAuthors);
+                List<Author> authors = this.listAuthors.execute(listAuthors);
 
-        assertThat(authors).hasSize(pageSize);
-        assertThat(authors).isEqualTo(List.of(author, author));
-    }
+                assertThat(authors).hasSize(pageSize);
+                assertThat(authors).isEqualTo(List.of(author, author));
+        }
 }

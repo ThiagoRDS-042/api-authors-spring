@@ -57,7 +57,7 @@ public class ForgotMailPasswordControllerTest {
   @Test
   @DisplayName("Should be able to forgot mail password")
   public void forgotMailPassword() throws Exception {
-    Author author = MakeAuthor.AUTHOR;
+    Author author = MakeAuthor.AUTHOR.clone();
     author.setId(null);
 
     author = this.authorsRepository.saveAndFlush(author);

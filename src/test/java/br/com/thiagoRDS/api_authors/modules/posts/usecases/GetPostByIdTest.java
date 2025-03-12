@@ -31,7 +31,7 @@ public class GetPostByIdTest {
   @Test
   @DisplayName("Should be able to get a post by id")
   public void getPost() {
-    Post post = MakePost.POST;
+    Post post = MakePost.POST.clone();
     post.setPublishedAt(LocalDateTime.now());
 
     when(this.postsRepository.findByIdAndPublishedAtNotNull(post.getId())).thenReturn(Optional.of(post));

@@ -41,7 +41,7 @@ public class UploadAvatarTest {
   @Test
   @DisplayName("Should be able to upload a new avatar")
   public void uploadAvatar() {
-    Author author = MakeAuthor.AUTHOR;
+    Author author = MakeAuthor.AUTHOR.clone();
 
     byte[] inputArray = "avatar.png".getBytes();
 
@@ -58,7 +58,7 @@ public class UploadAvatarTest {
   @Test
   @DisplayName("Should not be able to upload a new avatar with file has a invalid mimetype")
   public void invalidFileMimetype() {
-    Author author = MakeAuthor.AUTHOR;
+    Author author = MakeAuthor.AUTHOR.clone();
 
     byte[] inputArray = "avatar.png".getBytes();
 
@@ -73,7 +73,7 @@ public class UploadAvatarTest {
   @Test
   @DisplayName("Should not be able to upload a new avatar with non-existing author")
   public void authorNotFound() {
-    Author author = MakeAuthor.AUTHOR;
+    Author author = MakeAuthor.AUTHOR.clone();
 
     byte[] inputArray = "avatar.png".getBytes();
 

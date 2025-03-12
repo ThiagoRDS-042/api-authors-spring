@@ -67,17 +67,17 @@ public class DeleteAuthorControllerTest {
   @Test
   @DisplayName("Should be able to a author and your dependencies")
   public void deleteAllPostsByAuthor() throws Exception {
-    Address address = MakeAddress.ADDRESS;
+    Address address = MakeAddress.ADDRESS.clone();
     address.setId(null);
     address = this.addressesRepository.saveAndFlush(address);
 
-    Author author = MakeAuthor.AUTHOR;
+    Author author = MakeAuthor.AUTHOR.clone();
     author.setId(null);
     author.setAddressId(address.getId());
     author.setAddress(address);
     author = this.authorsRepository.saveAndFlush(author);
 
-    Post post = MakePost.POST;
+    Post post = MakePost.POST.clone();
     post.setId(null);
     post.setAuthorId(author.getId());
     post.setAuthor(author);

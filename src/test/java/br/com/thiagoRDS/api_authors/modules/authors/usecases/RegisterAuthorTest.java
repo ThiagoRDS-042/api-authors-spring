@@ -41,11 +41,11 @@ public class RegisterAuthorTest {
 
     when(this.authorsRepository.findByEmail(authorDTO.email())).thenReturn(Optional.empty());
     when(this.authorsRepository.findByTag(anyString())).thenReturn(Optional.empty());
-    when(this.authorsRepository.save(any(Author.class))).thenReturn(MakeAuthor.AUTHOR);
+    when(this.authorsRepository.save(any(Author.class))).thenReturn(MakeAuthor.AUTHOR.clone());
 
     Author author = this.registerAuthor.execute(authorDTO);
 
-    assertThat(author).isEqualTo(MakeAuthor.AUTHOR);
+    assertThat(author).isEqualTo(MakeAuthor.AUTHOR.clone());
   }
 
   @Test
@@ -54,7 +54,7 @@ public class RegisterAuthorTest {
     RegisterAuthorDTO authorDTO = MakeAuthor.REGISTER_AUTHOR_DTO;
 
     when(this.authorsRepository.findByEmail(authorDTO.email()))
-        .thenReturn(Optional.of(MakeAuthor.AUTHOR));
+        .thenReturn(Optional.of(MakeAuthor.AUTHOR.clone()));
 
     assertThatThrownBy(() -> this.registerAuthor.execute(authorDTO))
         .isInstanceOf(AuthorAlreadyRegisteredException.class);

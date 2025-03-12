@@ -34,7 +34,7 @@ public class PrivePostTest {
   @Test
   @DisplayName("Should be able to prive a post")
   public void privePost() {
-    Post post = MakePost.POST;
+    Post post = MakePost.POST.clone();
     post.setPublishedAt(LocalDateTime.now());
 
     PrivePostDTO privePost = new PrivePostDTO(post.getAuthorId(), post.getId());
@@ -62,7 +62,7 @@ public class PrivePostTest {
   public void authorNotAllowed() {
     UUID authorId = UUID.randomUUID();
 
-    Post post = MakePost.POST;
+    Post post = MakePost.POST.clone();
 
     PrivePostDTO privePost = new PrivePostDTO(authorId, post.getId());
 

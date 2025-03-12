@@ -41,7 +41,7 @@ public class GetAvatarTest {
 
     InputStream nullFile = InputStream.nullInputStream();
 
-    when(this.authorsRepository.findByAvatar(avatar)).thenReturn(Optional.of(MakeAuthor.AUTHOR));
+    when(this.authorsRepository.findByAvatar(avatar)).thenReturn(Optional.of(MakeAuthor.AUTHOR.clone()));
     when(this.minioProvider.getFile(this.minioConfig.getBucketName(), avatar))
         .thenReturn(nullFile);
 

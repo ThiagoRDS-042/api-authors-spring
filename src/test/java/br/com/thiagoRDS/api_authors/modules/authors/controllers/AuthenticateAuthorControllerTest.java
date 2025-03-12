@@ -54,7 +54,7 @@ public class AuthenticateAuthorControllerTest {
   @Test
   @DisplayName("[E2E] Should be able to authenticate a author")
   public void autenticateAuthor() throws Exception {
-    Author author = MakeAuthor.AUTHOR;
+    Author author = MakeAuthor.AUTHOR.clone();
 
     String password = "Password-123";
 

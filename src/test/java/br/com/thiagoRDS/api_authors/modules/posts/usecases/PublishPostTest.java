@@ -34,7 +34,7 @@ public class PublishPostTest {
   @Test
   @DisplayName("Should be able to publish a post")
   public void publishPost() {
-    Post post = MakePost.POST;
+    Post post = MakePost.POST.clone();
     post.setPublishedAt(null);
 
     PublishPostDTO publishPost = new PublishPostDTO(post.getAuthorId(), post.getId());
@@ -62,7 +62,7 @@ public class PublishPostTest {
   public void authorNotAllowed() {
     UUID authorId = UUID.randomUUID();
 
-    Post post = MakePost.POST;
+    Post post = MakePost.POST.clone();
 
     PublishPostDTO publishPost = new PublishPostDTO(authorId, post.getId());
 

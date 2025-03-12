@@ -14,6 +14,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.thiagoRDS.api_authors.modules.authors.dtos.AuthorWithPostsDTO;
 import br.com.thiagoRDS.api_authors.modules.authors.dtos.PostWithouAuthorDTO;
@@ -25,6 +26,7 @@ import br.com.thiagoRDS.api_authors.modules.posts.repositories.PostsRepository;
 import br.com.thiagoRDS.api_authors.modules.utils.MakeAddress;
 import br.com.thiagoRDS.api_authors.modules.utils.MakeAuthor;
 import br.com.thiagoRDS.api_authors.modules.utils.MakePost;
+import br.com.thiagoRDS.api_authors.providers.CurrentContextProvider;
 
 @ExtendWith(MockitoExtension.class)
 public class GetAuthorByIdTest {
@@ -37,14 +39,19 @@ public class GetAuthorByIdTest {
   @Mock
   private AuthorsRepository authorsRepository;
 
+  @Mock
+  private CurrentContextProvider currentContextProvider;
+
   @Test
   @DisplayName("Should be able to get a author by id")
   public void getAuthorById() {
-    Author author = MakeAuthor.AUTHOR;
-    Address address = MakeAddress.ADDRESS;
+    Author author = MakeAuthor.AUTHOR.clone();
+    Address address = MakeAddress.ADDRESS.clone();
     List<PostWithouAuthorDTO> posts = MakePost.POSTS_WITHOUT_AUTHOR;
 
     author.setAddress(address);
+
+    UriComponentsBuilder currentContext = UriComponentsBuilder.fromPath("http://localhost:8080");
 
     AuthorWithPostsDTO authorWithPosts = new AuthorWithPostsDTO(
         author.getId(),
@@ -58,6 +65,7 @@ public class GetAuthorByIdTest {
 
     when(this.authorsRepository.findById(author.getId())).thenReturn(Optional.of(author));
     when(this.postsRepository.findByAuthorId(author.getId())).thenReturn(posts);
+    when(this.currentContextProvider.getUri()).thenReturn(currentContext);
 
     AuthorWithPostsDTO authorWithPostsResponse = this.getAuthorById.execute(author.getId());
 

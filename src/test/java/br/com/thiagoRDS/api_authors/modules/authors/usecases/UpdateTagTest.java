@@ -34,7 +34,7 @@ public class UpdateTagTest {
   @Test
   @DisplayName("Should be able to update author tag")
   public void updateTag() {
-    Author author = MakeAuthor.AUTHOR;
+    Author author = MakeAuthor.AUTHOR.clone();
 
     when(this.authorsRepository.findById(author.getId())).thenReturn(Optional.of(author));
     when(this.authorsRepository.findByTag(author.getTag())).thenReturn(Optional.empty());
@@ -56,7 +56,7 @@ public class UpdateTagTest {
   @Test
   @DisplayName("Should not be able to update author tag with same tag anoter author")
   public void tagAlreadyExists() {
-    Author author = MakeAuthor.AUTHOR;
+    Author author = MakeAuthor.AUTHOR.clone();
     Author anotherAuthor = new Author(
         UUID.randomUUID(),
         "author",

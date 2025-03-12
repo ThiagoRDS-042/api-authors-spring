@@ -23,6 +23,7 @@ public class DeleteAllPostsByAuthorIdTest {
   @Test
   @DisplayName("Should be able to delete all posts by author id")
   public void deleteAllPosts() {
-    assertThatCode(() -> this.deleteAllPostsByAuthorId.execute(MakePost.POST.getAuthorId())).doesNotThrowAnyException();
+    assertThatCode(() -> this.deleteAllPostsByAuthorId.execute(MakePost.POST.clone().getAuthorId()))
+        .doesNotThrowAnyException();
   }
 }

@@ -35,7 +35,7 @@ public class UpdatePostTest {
   @Test
   @DisplayName("Should be able to update a post")
   public void updatePost() {
-    Post post = MakePost.POST;
+    Post post = MakePost.POST.clone();
 
     UpdatePostDTO updatePost = new UpdatePostDTO(
         post.getId(),
@@ -54,7 +54,7 @@ public class UpdatePostTest {
   @Test
   @DisplayName("Should not be able to update a non-existing post")
   public void postNotFound() {
-    Post post = MakePost.POST;
+    Post post = MakePost.POST.clone();
 
     UpdatePostDTO updatePost = new UpdatePostDTO(
         post.getId(),
@@ -73,7 +73,7 @@ public class UpdatePostTest {
   @DisplayName("Should not be able to update a post with not allowed author")
   public void authorNotAllowed() {
     UUID authorId = UUID.randomUUID();
-    Post post = MakePost.POST;
+    Post post = MakePost.POST.clone();
 
     UpdatePostDTO updatePost = new UpdatePostDTO(
         post.getId(),
@@ -91,7 +91,7 @@ public class UpdatePostTest {
   @Test
   @DisplayName("Should not be able to update a post with same title another post")
   public void postAlreadyRegistered() {
-    Post post = MakePost.POST;
+    Post post = MakePost.POST.clone();
     Post anotherPost = new Post(
         UUID.randomUUID(),
         "another title",

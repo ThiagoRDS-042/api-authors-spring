@@ -30,7 +30,7 @@ public class DeleteAuthorTest {
   @Test
   @DisplayName("Should be able to delete a author")
   public void deleteAuthor() {
-    Author author = MakeAuthor.AUTHOR;
+    Author author = MakeAuthor.AUTHOR.clone();
 
     when(this.authorsRepository.findById(author.getId())).thenReturn(Optional.of(author));
 

@@ -42,7 +42,7 @@ public class AuthenticateAuthorTest {
   @Test
   @DisplayName("Should be able to authenticate a author")
   public void authenticateAuthor() {
-    Author author = MakeAuthor.AUTHOR;
+    Author author = MakeAuthor.AUTHOR.clone();
 
     AuthenticateAuthorDTO authenticateAuthor = new AuthenticateAuthorDTO(
         author.getEmail(),
@@ -52,7 +52,7 @@ public class AuthenticateAuthorTest {
 
     SignResponseDTO signResponse = new SignResponseDTO("token", expiresIn);
 
-    when(this.authorsRepository.findByEmail(author.getEmail())).thenReturn(Optional.of(MakeAuthor.AUTHOR));
+    when(this.authorsRepository.findByEmail(author.getEmail())).thenReturn(Optional.of(MakeAuthor.AUTHOR.clone()));
     when(this.passwordEncoder.matches(author.getPassword(), author.getPassword())).thenReturn(true);
     when(this.jwtProvider.sign(author.getId().toString())).thenReturn(signResponse);
 
@@ -79,13 +79,13 @@ public class AuthenticateAuthorTest {
   @Test
   @DisplayName("Should not be able to authenticate a author with invalid password")
   public void invalidPassword() {
-    Author author = MakeAuthor.AUTHOR;
+    Author author = MakeAuthor.AUTHOR.clone();
 
     AuthenticateAuthorDTO authenticateAuthor = new AuthenticateAuthorDTO(
         author.getEmail(),
         "wrong-password");
 
-    when(this.authorsRepository.findByEmail(author.getEmail())).thenReturn(Optional.of(MakeAuthor.AUTHOR));
+    when(this.authorsRepository.findByEmail(author.getEmail())).thenReturn(Optional.of(MakeAuthor.AUTHOR.clone()));
     when(this.passwordEncoder.matches("wrong-password", author.getPassword())).thenReturn(false);
 
     assertThatThrownBy(() -> this.authenticateAuthor.execute(authenticateAuthor))

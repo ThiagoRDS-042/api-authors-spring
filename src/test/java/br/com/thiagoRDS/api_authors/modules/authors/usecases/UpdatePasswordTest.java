@@ -37,7 +37,7 @@ public class UpdatePasswordTest {
   @Test
   @DisplayName("Should be able to update the author password")
   public void updatePassword() {
-    Author author = MakeAuthor.AUTHOR;
+    Author author = MakeAuthor.AUTHOR.clone();
 
     String newPassword = "New-password123";
 
@@ -71,7 +71,7 @@ public class UpdatePasswordTest {
   @Test
   @DisplayName("Should not be able to update the author password with non-existing author")
   public void authorNotFound() {
-    Author author = MakeAuthor.AUTHOR;
+    Author author = MakeAuthor.AUTHOR.clone();
 
     String newPassword = "New-password123";
 
@@ -90,7 +90,7 @@ public class UpdatePasswordTest {
   @Test
   @DisplayName("Should not be able to update the author password with new password and old password does not matches")
   public void passwordDoesNotMatches() {
-    Author author = MakeAuthor.AUTHOR;
+    Author author = MakeAuthor.AUTHOR.clone();
 
     String newPassword = "New-password123";
 

@@ -42,8 +42,8 @@ public class UpdateAuthorTest {
         @Test
         @DisplayName("Should be able to update a author account and create address")
         public void updateAuthor() {
-                Author author = MakeAuthor.AUTHOR;
-                Address address = MakeAddress.ADDRESS;
+                Author author = MakeAuthor.AUTHOR.clone();
+                Address address = MakeAddress.ADDRESS.clone();
                 address.setId(null);
                 author.setBirthdate(LocalDate.now().minusYears(19));
 
@@ -72,8 +72,8 @@ public class UpdateAuthorTest {
         @Test
         @DisplayName("Should not be able to update a author account with non-existing author")
         public void authorNotFound() {
-                Author author = MakeAuthor.AUTHOR;
-                Address address = MakeAddress.ADDRESS;
+                Author author = MakeAuthor.AUTHOR.clone();
+                Address address = MakeAddress.ADDRESS.clone();
 
                 AddressDTO addressDTO = new AddressDTO(
                                 address.getCity(),
@@ -99,8 +99,8 @@ public class UpdateAuthorTest {
         @Test
         @DisplayName("Should not be able to update a author account with same email another author")
         public void authorAlreadyRegistered() {
-                Author author = MakeAuthor.AUTHOR;
-                Address address = MakeAddress.ADDRESS;
+                Author author = MakeAuthor.AUTHOR.clone();
+                Address address = MakeAddress.ADDRESS.clone();
                 Author anotherAuthor = new Author(
                                 UUID.randomUUID(),
                                 "author",
@@ -140,8 +140,8 @@ public class UpdateAuthorTest {
         @Test
         @DisplayName("Should be able to update a author account with a invalid age")
         public void invalidAge() {
-                Author author = MakeAuthor.AUTHOR;
-                Address address = MakeAddress.ADDRESS;
+                Author author = MakeAuthor.AUTHOR.clone();
+                Address address = MakeAddress.ADDRESS.clone();
                 author.setBirthdate(LocalDate.now().minusYears(10));
 
                 AddressDTO addressDTO = new AddressDTO(

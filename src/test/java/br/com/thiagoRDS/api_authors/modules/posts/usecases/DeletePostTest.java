@@ -32,7 +32,7 @@ public class DeletePostTest {
   @Test
   @DisplayName("Should be able to delete a post")
   public void deletePost() {
-    Post post = MakePost.POST;
+    Post post = MakePost.POST.clone();
 
     DeletePostByIdDTO deletePost = new DeletePostByIdDTO(post.getAuthorId(), post.getId());
 
@@ -58,7 +58,7 @@ public class DeletePostTest {
   public void authorIsNotAllowed() {
     UUID authorId = UUID.randomUUID();
 
-    Post post = MakePost.POST;
+    Post post = MakePost.POST.clone();
 
     DeletePostByIdDTO deletePost = new DeletePostByIdDTO(authorId, post.getId());
 

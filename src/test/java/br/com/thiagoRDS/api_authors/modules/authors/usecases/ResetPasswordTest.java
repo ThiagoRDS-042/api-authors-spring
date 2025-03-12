@@ -44,8 +44,8 @@ public class ResetPasswordTest {
   @Test
   @DisplayName("Should be able to reset password")
   public void resetPassword() {
-    RecoveryToken recoveryToken = MakeRecoveryToken.RECOVERY_TOKEN;
-    Author author = MakeAuthor.AUTHOR;
+    RecoveryToken recoveryToken = MakeRecoveryToken.RECOVERY_TOKEN.clone();
+    Author author = MakeAuthor.AUTHOR.clone();
 
     String password = "New-password123";
 
@@ -64,7 +64,7 @@ public class ResetPasswordTest {
   @Test
   @DisplayName("Should not be able to reset password with non-existing token recovery")
   public void tokenRecoveryNotFound() {
-    RecoveryToken recoveryToken = MakeRecoveryToken.RECOVERY_TOKEN;
+    RecoveryToken recoveryToken = MakeRecoveryToken.RECOVERY_TOKEN.clone();
 
     ResetPasswordDTO resetPassword = new ResetPasswordDTO(recoveryToken.getCode(), "New-password123");
 
@@ -77,8 +77,8 @@ public class ResetPasswordTest {
   @Test
   @DisplayName("Should not be able to reset password with expired token recovery")
   public void tokenRecoveryExpired() {
-    RecoveryToken recoveryToken = MakeRecoveryToken.RECOVERY_TOKEN;
-    Author author = MakeAuthor.AUTHOR;
+    RecoveryToken recoveryToken = MakeRecoveryToken.RECOVERY_TOKEN.clone();
+    Author author = MakeAuthor.AUTHOR.clone();
 
     String password = "New-password123";
 

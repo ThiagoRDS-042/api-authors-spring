@@ -40,12 +40,12 @@ public class CreatePostTest {
     CreatePostDTO createPost = MakePost.CREATE_POST_DTO;
 
     when(this.postsRepository.findByTitle(createPost.title())).thenReturn(Optional.empty());
-    when(this.authorsRepository.findById(createPost.authorId())).thenReturn(Optional.of(MakeAuthor.AUTHOR));
-    when(this.postsRepository.save(any(Post.class))).thenReturn(MakePost.POST);
+    when(this.authorsRepository.findById(createPost.authorId())).thenReturn(Optional.of(MakeAuthor.AUTHOR.clone()));
+    when(this.postsRepository.save(any(Post.class))).thenReturn(MakePost.POST.clone());
 
     Post post = this.createPost.execute(createPost);
 
-    assertThat(post).isEqualTo(MakePost.POST);
+    assertThat(post).isEqualTo(MakePost.POST.clone());
   }
 
   @Test
@@ -53,7 +53,7 @@ public class CreatePostTest {
   public void postAlreadyRegistered() {
     CreatePostDTO createPost = MakePost.CREATE_POST_DTO;
 
-    when(this.postsRepository.findByTitle(createPost.title())).thenReturn(Optional.of(MakePost.POST));
+    when(this.postsRepository.findByTitle(createPost.title())).thenReturn(Optional.of(MakePost.POST.clone()));
 
     assertThatThrownBy(() -> this.createPost.execute(createPost)).isInstanceOf(PostAlreadyRegisteredException.class);
   }
