@@ -69,9 +69,7 @@ public class Author implements Serializable {
   }
 
   public Author(UUID id, String name, String email, String tag, String password, String avatar, LocalDate birthdate,
-      UUID addressId,
-      Address address,
-      LocalDateTime updtaedAt, LocalDateTime createdAt) {
+      UUID addressId, Address address, LocalDateTime updtaedAt, LocalDateTime createdAt) {
     this.id = id;
     this.name = name;
     this.email = email;
@@ -216,5 +214,15 @@ public class Author implements Serializable {
         ", createdAt='" + getCreatedAt() + "'" +
         ", updtaedAt='" + getUpdtaedAt() + "'" +
         "}";
+  }
+
+  @Override
+  public Author clone() {
+    try {
+      return (Author) super.clone();
+    } catch (CloneNotSupportedException e) {
+      return new Author(this.id, this.name, this.email, this.tag, this.password, this.avatar, this.birthdate,
+          this.addressId, this.address, this.updtaedAt, this.createdAt);
+    }
   }
 }

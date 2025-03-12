@@ -136,4 +136,13 @@ public class RecoveryToken implements Serializable {
         ", expiresAt='" + getExpiresAt() + "'" +
         "}";
   }
+
+  @Override
+  public RecoveryToken clone() {
+    try {
+      return (RecoveryToken) super.clone();
+    } catch (CloneNotSupportedException e) {
+      return new RecoveryToken(this.id, this.code, this.authorId, this.author, this.expiresAt);
+    }
+  }
 }

@@ -239,4 +239,14 @@ public class Post implements Serializable {
         ", author='" + getAuthor() + "'" +
         "}";
   }
+
+  @Override
+  public Post clone() {
+    try {
+      return (Post) super.clone();
+    } catch (CloneNotSupportedException e) {
+      return new Post(this.id, this.title, this.content, this.description, this.keywords, this.up, this.version,
+          this.createdAt, this.publishedAt, this.updtaedAt, this.authorId, this.author);
+    }
+  }
 }
