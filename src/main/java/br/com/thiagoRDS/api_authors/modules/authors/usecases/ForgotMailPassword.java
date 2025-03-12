@@ -17,15 +17,15 @@ import br.com.thiagoRDS.api_authors.providers.dtos.SendMailDTO;
 @Service
 public class ForgotMailPassword {
   private final MailProvider mailProvider;
-  private final CurrentContextProvider getCurrentUri;
   private final AuthorsRepository authorsRepository;
+  private final CurrentContextProvider currentContextProvider;
   private final RecoveryTokensRepository recoveryTokensRepository;
 
-  public ForgotMailPassword(MailProvider mailProvider, CurrentContextProvider getCurrentUri,
-      AuthorsRepository authorsRepository, RecoveryTokensRepository recoveryTokensRepository) {
+  public ForgotMailPassword(MailProvider mailProvider, AuthorsRepository authorsRepository,
+      CurrentContextProvider currentContextProvider, RecoveryTokensRepository recoveryTokensRepository) {
     this.mailProvider = mailProvider;
-    this.getCurrentUri = getCurrentUri;
     this.authorsRepository = authorsRepository;
+    this.currentContextProvider = currentContextProvider;
     this.recoveryTokensRepository = recoveryTokensRepository;
   }
 
@@ -44,7 +44,7 @@ public class ForgotMailPassword {
 
     this.recoveryTokensRepository.save(token);
 
-    UriComponentsBuilder currentUri = this.getCurrentUri.getUri();
+    UriComponentsBuilder currentUri = this.currentContextProvider.getUri();
 
     String uri = currentUri.path("/authors/password/reset").queryParam("code", token.getCode()).toUriString();
 
