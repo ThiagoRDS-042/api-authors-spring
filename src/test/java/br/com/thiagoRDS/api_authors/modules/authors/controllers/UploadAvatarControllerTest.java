@@ -1,9 +1,7 @@
 package br.com.thiagoRDS.api_authors.modules.authors.controllers;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -14,6 +12,7 @@ import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers;
@@ -27,17 +26,22 @@ import br.com.thiagoRDS.api_authors.config.MinioConfig;
 import br.com.thiagoRDS.api_authors.modules.authors.entities.Author;
 import br.com.thiagoRDS.api_authors.modules.authors.repositories.AuthorsRepository;
 import br.com.thiagoRDS.api_authors.modules.utils.MakeAuthor;
+import br.com.thiagoRDS.api_authors.providers.JwtProvider;
 import br.com.thiagoRDS.api_authors.providers.MinioProvider;
+import br.com.thiagoRDS.api_authors.providers.dtos.SignResponseDTO;
 
 @Transactional
 @ActiveProfiles("test")
 @TestInstance(Lifecycle.PER_CLASS)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-public class GetAvatarControllerTest {
+public class UploadAvatarControllerTest {
   private MockMvc mvc;
 
   @Autowired
   private WebApplicationContext context;
+
+  @Autowired
+  private JwtProvider jwtProvider;
 
   @Autowired
   private MinioConfig minioconfig;
@@ -64,26 +68,25 @@ public class GetAvatarControllerTest {
   }
 
   @Test
-  @DisplayName("Should be able to get a author avatar")
-  public void getAvatar() throws Exception {
+  @DisplayName("Should be able to upload a author avatar")
+  public void uploadAvatar() throws Exception {
     Author author = MakeAuthor.AUTHOR.clone();
-    author.setAvatar("avatar.png");
     author.setId(null);
-    this.authorsRepository.saveAndFlush(author);
+    author.setAvatar("avatar.png");
+    author = this.authorsRepository.saveAndFlush(author);
+
+    SignResponseDTO response = this.jwtProvider.sign(author.getId().toString());
 
     byte[] inputArray = author.getAvatar().getBytes();
 
     MockMultipartFile mockMultipartFile = new MockMultipartFile("file", author.getAvatar(), MediaType.IMAGE_PNG_VALUE,
         inputArray);
 
-    String bucketName = this.minioconfig.getBucketName();
+    this.mvc.perform(multipart(HttpMethod.PATCH, "/authors/avatar")
+        .file(mockMultipartFile)
+        .header("Authorization", "Bearer " + response.token()))
+        .andExpect(status().isNoContent());
 
-    this.minioProvider.uploadFile(bucketName, mockMultipartFile, author.getAvatar());
-
-    this.mvc.perform(get("/authors/avatar/" + author.getAvatar()))
-        .andExpect(status().isOk())
-        .andExpect(content().contentType(MediaType.APPLICATION_OCTET_STREAM));
-
-    this.minioProvider.deleteFile(bucketName, author.getAvatar());
+    this.minioProvider.deleteFile(this.minioconfig.getBucketName(), author.getAvatar());
   }
 }

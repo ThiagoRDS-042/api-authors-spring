@@ -45,16 +45,16 @@ public class DeleteAuthorControllerTest {
   private WebApplicationContext context;
 
   @Autowired
-  private AuthorsRepository authorsRepository;
-
-  @Autowired
-  private AddressesRepository addressesRepository;
+  private JwtProvider jwtProvider;
 
   @Autowired
   private PostsRepository postsRepository;
 
   @Autowired
-  private JwtProvider jwtProvider;
+  private AuthorsRepository authorsRepository;
+
+  @Autowired
+  private AddressesRepository addressesRepository;
 
   @BeforeAll
   public void setup() {

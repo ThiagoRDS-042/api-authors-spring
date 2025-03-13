@@ -1,11 +1,8 @@
 package br.com.thiagoRDS.api_authors.modules.authors.controllers;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.http.MediaType;
-import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
@@ -23,27 +19,26 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
-import br.com.thiagoRDS.api_authors.config.MinioConfig;
+import br.com.thiagoRDS.api_authors.modules.authors.dtos.UpdateTagDTO;
 import br.com.thiagoRDS.api_authors.modules.authors.entities.Author;
 import br.com.thiagoRDS.api_authors.modules.authors.repositories.AuthorsRepository;
+import br.com.thiagoRDS.api_authors.modules.utils.Convert;
 import br.com.thiagoRDS.api_authors.modules.utils.MakeAuthor;
-import br.com.thiagoRDS.api_authors.providers.MinioProvider;
+import br.com.thiagoRDS.api_authors.providers.JwtProvider;
+import br.com.thiagoRDS.api_authors.providers.dtos.SignResponseDTO;
 
 @Transactional
 @ActiveProfiles("test")
 @TestInstance(Lifecycle.PER_CLASS)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-public class GetAvatarControllerTest {
+public class UpdateTagControllerTest {
   private MockMvc mvc;
 
   @Autowired
   private WebApplicationContext context;
 
   @Autowired
-  private MinioConfig minioconfig;
-
-  @Autowired
-  private MinioProvider minioProvider;
+  private JwtProvider jwtProvider;
 
   @Autowired
   private AuthorsRepository authorsRepository;
@@ -54,36 +49,23 @@ public class GetAvatarControllerTest {
         .webAppContextSetup(this.context)
         .apply(SecurityMockMvcConfigurers.springSecurity())
         .build();
-
-    this.minioProvider.createBucket(this.minioconfig.getBucketName());
-  }
-
-  @AfterAll
-  public void teardown() {
-    this.minioProvider.deleteBucket(this.minioconfig.getBucketName());
   }
 
   @Test
-  @DisplayName("Should be able to get a author avatar")
-  public void getAvatar() throws Exception {
+  @DisplayName("Should be able to update a author tag")
+  public void updateTag() throws Exception {
     Author author = MakeAuthor.AUTHOR.clone();
-    author.setAvatar("avatar.png");
     author.setId(null);
-    this.authorsRepository.saveAndFlush(author);
+    author = this.authorsRepository.saveAndFlush(author);
 
-    byte[] inputArray = author.getAvatar().getBytes();
+    SignResponseDTO response = this.jwtProvider.sign(author.getId().toString());
 
-    MockMultipartFile mockMultipartFile = new MockMultipartFile("file", author.getAvatar(), MediaType.IMAGE_PNG_VALUE,
-        inputArray);
+    UpdateTagDTO updateTag = new UpdateTagDTO("New-Tag-1");
 
-    String bucketName = this.minioconfig.getBucketName();
-
-    this.minioProvider.uploadFile(bucketName, mockMultipartFile, author.getAvatar());
-
-    this.mvc.perform(get("/authors/avatar/" + author.getAvatar()))
-        .andExpect(status().isOk())
-        .andExpect(content().contentType(MediaType.APPLICATION_OCTET_STREAM));
-
-    this.minioProvider.deleteFile(bucketName, author.getAvatar());
+    this.mvc.perform(patch("/authors/tag")
+        .header("Authorization", "Bearer " + response.token())
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(Convert.objectToJSON(updateTag)))
+        .andExpect(status().isNoContent());
   }
 }

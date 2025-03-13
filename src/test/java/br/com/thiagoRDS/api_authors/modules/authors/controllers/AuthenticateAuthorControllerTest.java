@@ -38,10 +38,10 @@ public class AuthenticateAuthorControllerTest {
   private WebApplicationContext context;
 
   @Autowired
-  private AuthorsRepository authorsRepository;
+  private PasswordEncoder passwordEncoder;
 
   @Autowired
-  private PasswordEncoder passwordEncoder;
+  private AuthorsRepository authorsRepository;
 
   @BeforeAll
   public void setup() {

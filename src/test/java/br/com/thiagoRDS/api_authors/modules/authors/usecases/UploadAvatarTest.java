@@ -13,6 +13,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 
 import br.com.thiagoRDS.api_authors.config.MinioConfig;
@@ -45,7 +46,8 @@ public class UploadAvatarTest {
 
     byte[] inputArray = "avatar.png".getBytes();
 
-    MockMultipartFile mockMultipartFile = new MockMultipartFile("file", "avatar.png", "image/png", inputArray);
+    MockMultipartFile mockMultipartFile = new MockMultipartFile("file", "avatar.png", MediaType.IMAGE_PNG_VALUE,
+        inputArray);
 
     UploadAvatarDTO uploadAvatar = new UploadAvatarDTO(author.getId(), mockMultipartFile);
 
@@ -77,7 +79,8 @@ public class UploadAvatarTest {
 
     byte[] inputArray = "avatar.png".getBytes();
 
-    MockMultipartFile mockMultipartFile = new MockMultipartFile("file", "avatar.png", "image/png", inputArray);
+    MockMultipartFile mockMultipartFile = new MockMultipartFile("file", "avatar.png", MediaType.IMAGE_PNG_VALUE,
+        inputArray);
 
     UploadAvatarDTO uploadAvatar = new UploadAvatarDTO(author.getId(), mockMultipartFile);
 
