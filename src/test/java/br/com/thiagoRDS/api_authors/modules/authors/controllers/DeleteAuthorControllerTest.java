@@ -94,8 +94,8 @@ public class DeleteAuthorControllerTest {
     Optional<Post> postResponse = this.postsRepository.findById(post.getId());
 
     assertAll(
-        () -> assertThat(addressResponse.isEmpty()).isTrue(),
-        () -> assertThat(authorResponse.isEmpty()).isTrue(),
-        () -> assertThat(postResponse.isEmpty()).isTrue());
+        () -> assertThat(addressResponse).isEmpty(),
+        () -> assertThat(authorResponse).isEmpty(),
+        () -> assertThat(postResponse).isEmpty());
   }
 }

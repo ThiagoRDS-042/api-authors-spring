@@ -72,6 +72,6 @@ public class ForgotMailPasswordControllerTest {
 
     Optional<RecoveryToken> token = this.recoveryTokensRepository.findByAuthorId(author.getId());
 
-    assertThat(token.isPresent()).isTrue();
+    assertThat(token).isPresent();
   }
 }
