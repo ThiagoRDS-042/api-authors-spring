@@ -9,7 +9,7 @@ public class PostMapper {
   public static PostResponseMapperDTO ToHttp(Post post) {
     AuthorReponseMapperDTO author = AuthorMapper.ToHttp(post.getAuthor());
 
-    PostResponseMapperDTO authorMapper = new PostResponseMapperDTO(
+    PostResponseMapperDTO postMapper = new PostResponseMapperDTO(
         post.getId(),
         post.getTitle(),
         post.getContent(),
@@ -19,6 +19,6 @@ public class PostMapper {
         post.getUp(),
         post.getPublishedAt());
 
-    return authorMapper;
+    return postMapper;
   }
 }

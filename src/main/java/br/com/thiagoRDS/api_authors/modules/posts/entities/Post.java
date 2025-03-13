@@ -102,6 +102,7 @@ public class Post implements Serializable {
     this.author = author;
     this.up = 0;
     this.version = 1;
+    this.publishedAt = LocalDateTime.now();
   }
 
   public UUID getId() {
