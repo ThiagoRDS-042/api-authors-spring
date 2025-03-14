@@ -17,7 +17,7 @@ public class UpPost {
   }
 
   public void execute(UUID postId) {
-    Post post = this.postsRepository.findById(postId).orElseThrow(() -> {
+    Post post = this.postsRepository.findByIdAndPublishedAtNotNull(postId).orElseThrow(() -> {
       throw new PostNotFoundException();
     });
 

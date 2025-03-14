@@ -8,6 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import br.com.thiagoRDS.api_authors.exceptions.InternalServerErrorException;
 import io.minio.BucketExistsArgs;
+import io.minio.RemoveBucketArgs;
 import io.minio.GetObjectArgs;
 import io.minio.MakeBucketArgs;
 import io.minio.MinioClient;
@@ -19,7 +20,7 @@ public class MinioProvider {
   @Autowired
   private MinioClient minioClient;
 
-  private void createBucket(String bucketName) {
+  public void createBucket(String bucketName) {
     BucketExistsArgs bucketExistsArgs = BucketExistsArgs.builder().bucket(bucketName).build();
 
     try {
@@ -30,6 +31,18 @@ public class MinioProvider {
 
         this.minioClient.makeBucket(bucketArgs);
       }
+    } catch (Exception exception) {
+      exception.printStackTrace();
+
+      throw new InternalServerErrorException();
+    }
+  }
+
+  public void deleteBucket(String bucketName) {
+    RemoveBucketArgs removeBucketArgs = RemoveBucketArgs.builder().bucket(bucketName).build();
+
+    try {
+      this.minioClient.removeBucket(removeBucketArgs);
     } catch (Exception exception) {
       exception.printStackTrace();
 

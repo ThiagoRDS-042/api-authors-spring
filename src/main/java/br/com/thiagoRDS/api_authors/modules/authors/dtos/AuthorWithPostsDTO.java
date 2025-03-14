@@ -6,6 +6,13 @@ import java.util.UUID;
 
 import br.com.thiagoRDS.api_authors.modules.authors.entities.Address;
 
-public record AuthorWithPostsDTO(UUID id, String name, String email, String tag, LocalDate birthdate,
-                Address address, List<PostWithouAuthorDTO> posts) {
+public record AuthorWithPostsDTO(
+    UUID id,
+    String name,
+    String email,
+    String tag,
+    String avatarUrl,
+    LocalDate birthdate,
+    Address address,
+    List<PostWithouAuthorDTO> posts) {
 }

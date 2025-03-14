@@ -102,6 +102,7 @@ public class Post implements Serializable {
     this.author = author;
     this.up = 0;
     this.version = 1;
+    this.publishedAt = LocalDateTime.now();
   }
 
   public UUID getId() {
@@ -238,5 +239,15 @@ public class Post implements Serializable {
         ", authorId='" + getAuthorId() + "'" +
         ", author='" + getAuthor() + "'" +
         "}";
+  }
+
+  @Override
+  public Post clone() {
+    try {
+      return (Post) super.clone();
+    } catch (CloneNotSupportedException e) {
+      return new Post(this.id, this.title, this.content, this.description, this.keywords, this.up, this.version,
+          this.createdAt, this.publishedAt, this.updtaedAt, this.authorId, this.author);
+    }
   }
 }

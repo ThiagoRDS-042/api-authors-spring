@@ -151,4 +151,13 @@ public class Address implements Serializable {
         "}";
   }
 
+  @Override
+  public Address clone() {
+    try {
+      return (Address) super.clone();
+    } catch (CloneNotSupportedException e) {
+      return new Address(this.id, this.city, this.street, this.zipCode, this.stateCode, this.complement,
+          this.neighborhood);
+    }
+  }
 }

@@ -1,6 +1,5 @@
 package br.com.thiagoRDS.api_authors.providers;
 
-import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.data.jpa.domain.Specification;
@@ -11,9 +10,9 @@ import jakarta.persistence.criteria.Expression;
 import jakarta.persistence.criteria.Path;
 
 @Service
-public class GerericWhereSpecification<G> {
+public class GerericWhereSpecificationProvider<G> {
   public Specification<G> like(String filter, String fieldPath) {
-    List<String> paths = Arrays.asList(fieldPath.split("\\."));
+    List<String> paths = List.of(fieldPath.split("\\."));
 
     boolean isEmpty = !StringUtils.hasLength(filter);
 
@@ -34,7 +33,7 @@ public class GerericWhereSpecification<G> {
   }
 
   public Specification<G> notNull(String fieldPath) {
-    List<String> paths = Arrays.asList(fieldPath.split("\\."));
+    List<String> paths = List.of(fieldPath.split("\\."));
 
     Specification<G> likeSpecification = Specification.where(
         (root, query, builder) -> {

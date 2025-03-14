@@ -7,7 +7,6 @@ import br.com.thiagoRDS.api_authors.config.MinioConfig;
 import br.com.thiagoRDS.api_authors.modules.authors.dtos.UploadAvatarDTO;
 import br.com.thiagoRDS.api_authors.modules.authors.entities.Author;
 import br.com.thiagoRDS.api_authors.modules.authors.exceptions.AuthorNotFoundException;
-import br.com.thiagoRDS.api_authors.modules.authors.exceptions.FileNotReceivedException;
 import br.com.thiagoRDS.api_authors.modules.authors.exceptions.FileTooLargeException;
 import br.com.thiagoRDS.api_authors.modules.authors.exceptions.InvalidFileMimetypeException;
 import br.com.thiagoRDS.api_authors.modules.authors.repositories.AuthorsRepository;
@@ -29,10 +28,6 @@ public class UploadAvatar {
 
   public void execute(UploadAvatarDTO data) {
     MultipartFile file = data.file();
-
-    if (file.isEmpty()) {
-      throw new FileNotReceivedException();
-    }
 
     if (file.getSize() > FileStorage.MAX_FILE_SIZE) {
       throw new FileTooLargeException();

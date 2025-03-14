@@ -1,6 +1,7 @@
 package br.com.thiagoRDS.api_authors.modules.authors.entities;
 
 import java.io.Serializable;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -24,7 +25,7 @@ import java.util.Objects;
 public class RecoveryToken implements Serializable {
   private static final long serialVersionUID = 1233227153L;
 
-  private static final Integer DURATION_IN_SECONDS = 60 * 5; // 5 minutes in seconds
+  public static final Integer DURATION_IN_MINUTES = 5;
 
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)
@@ -58,13 +59,13 @@ public class RecoveryToken implements Serializable {
     this.id = id;
     this.code = code;
     this.authorId = authorId;
-    this.expiresAt = LocalDateTime.now().plusSeconds(DURATION_IN_SECONDS);
+    this.expiresAt = LocalDateTime.now().plus(Duration.ofMinutes(DURATION_IN_MINUTES));
   }
 
   public RecoveryToken(UUID code, UUID authorId) {
     this.code = code;
     this.authorId = authorId;
-    this.expiresAt = LocalDateTime.now().plusSeconds(DURATION_IN_SECONDS);
+    this.expiresAt = LocalDateTime.now().plus(Duration.ofMinutes(DURATION_IN_MINUTES));
   }
 
   public UUID getId() {
@@ -134,5 +135,14 @@ public class RecoveryToken implements Serializable {
         ", author='" + getAuthor() + "'" +
         ", expiresAt='" + getExpiresAt() + "'" +
         "}";
+  }
+
+  @Override
+  public RecoveryToken clone() {
+    try {
+      return (RecoveryToken) super.clone();
+    } catch (CloneNotSupportedException e) {
+      return new RecoveryToken(this.id, this.code, this.authorId, this.author, this.expiresAt);
+    }
   }
 }

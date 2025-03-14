@@ -9,10 +9,10 @@ import br.com.thiagoRDS.api_authors.modules.posts.exceptions.PostNotFoundExcepti
 import br.com.thiagoRDS.api_authors.modules.posts.repositories.PostsRepository;
 
 @Service
-public class DeletePostById {
+public class DeletePost {
   private final PostsRepository postsRepository;
 
-  public DeletePostById(PostsRepository postsRepository) {
+  public DeletePost(PostsRepository postsRepository) {
     this.postsRepository = postsRepository;
   }
 
