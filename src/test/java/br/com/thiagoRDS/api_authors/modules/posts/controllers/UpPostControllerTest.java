@@ -1,7 +1,7 @@
 package br.com.thiagoRDS.api_authors.modules.posts.controllers;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.Optional;
@@ -27,27 +27,22 @@ import br.com.thiagoRDS.api_authors.modules.posts.entities.Post;
 import br.com.thiagoRDS.api_authors.modules.posts.repositories.PostsRepository;
 import br.com.thiagoRDS.api_authors.modules.utils.MakeAuthor;
 import br.com.thiagoRDS.api_authors.modules.utils.MakePost;
-import br.com.thiagoRDS.api_authors.providers.JwtProvider;
-import br.com.thiagoRDS.api_authors.providers.dtos.SignResponseDTO;
 
 @Transactional
 @ActiveProfiles("test")
 @TestInstance(Lifecycle.PER_CLASS)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-public class DeletePostControllerTest {
+public class UpPostControllerTest {
   private MockMvc mvc;
 
   @Autowired
   private WebApplicationContext context;
 
   @Autowired
-  private JwtProvider jwtProvider;
+  private PostsRepository postsRepository;
 
   @Autowired
   private AuthorsRepository authorsRepository;
-
-  @Autowired
-  private PostsRepository postsRepository;
 
   @BeforeAll
   public void setup() {
@@ -58,26 +53,23 @@ public class DeletePostControllerTest {
   }
 
   @Test
-  @DisplayName("Should be able to delete a post")
-  public void deletePost() throws Exception {
+  @DisplayName("Should be able to up a post")
+  public void upPost() throws Exception {
     Author author = MakeAuthor.AUTHOR.clone();
     author.setId(null);
     author = this.authorsRepository.saveAndFlush(author);
 
     Post post = MakePost.POST.clone();
     post.setId(null);
-    post.setAuthor(author);
     post.setAuthorId(author.getId());
+    post.setAuthor(author);
     post = this.postsRepository.saveAndFlush(post);
 
-    SignResponseDTO response = this.jwtProvider.sign(author.getId().toString());
-
-    this.mvc.perform(delete("/posts/" + post.getId())
-        .header("Authorization", "Bearer " + response.token()))
+    this.mvc.perform(patch("/posts/" + post.getId() + "/up"))
         .andExpect(status().isNoContent());
 
-    Optional<Post> postResponse = this.postsRepository.findById(post.getId());
+    Optional<Post> responsePost = this.postsRepository.findById(post.getId());
 
-    assertThat(postResponse).isEmpty();
+    assertThat(responsePost.get().getUp()).isEqualTo(1);
   }
 }

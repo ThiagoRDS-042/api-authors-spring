@@ -1,7 +1,7 @@
 package br.com.thiagoRDS.api_authors.modules.posts.controllers;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.Optional;
@@ -34,7 +34,7 @@ import br.com.thiagoRDS.api_authors.providers.dtos.SignResponseDTO;
 @ActiveProfiles("test")
 @TestInstance(Lifecycle.PER_CLASS)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-public class DeletePostControllerTest {
+public class PrivePostControllerTest {
   private MockMvc mvc;
 
   @Autowired
@@ -44,10 +44,10 @@ public class DeletePostControllerTest {
   private JwtProvider jwtProvider;
 
   @Autowired
-  private AuthorsRepository authorsRepository;
+  private PostsRepository postsRepository;
 
   @Autowired
-  private PostsRepository postsRepository;
+  private AuthorsRepository authorsRepository;
 
   @BeforeAll
   public void setup() {
@@ -58,26 +58,26 @@ public class DeletePostControllerTest {
   }
 
   @Test
-  @DisplayName("Should be able to delete a post")
-  public void deletePost() throws Exception {
+  @DisplayName("Should be able to prive a post")
+  public void privePost() throws Exception {
     Author author = MakeAuthor.AUTHOR.clone();
     author.setId(null);
     author = this.authorsRepository.saveAndFlush(author);
 
     Post post = MakePost.POST.clone();
     post.setId(null);
-    post.setAuthor(author);
     post.setAuthorId(author.getId());
+    post.setAuthor(author);
     post = this.postsRepository.saveAndFlush(post);
 
     SignResponseDTO response = this.jwtProvider.sign(author.getId().toString());
 
-    this.mvc.perform(delete("/posts/" + post.getId())
+    this.mvc.perform(patch("/posts/" + post.getId() + "/prive")
         .header("Authorization", "Bearer " + response.token()))
         .andExpect(status().isNoContent());
 
-    Optional<Post> postResponse = this.postsRepository.findById(post.getId());
+    Optional<Post> responsePost = this.postsRepository.findById(post.getId());
 
-    assertThat(postResponse).isEmpty();
+    assertThat(responsePost.get().getPublishedAt()).isNull();
   }
 }

@@ -1,10 +1,10 @@
 package br.com.thiagoRDS.api_authors.modules.posts.controllers;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.util.Optional;
+import java.util.List;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -27,27 +27,22 @@ import br.com.thiagoRDS.api_authors.modules.posts.entities.Post;
 import br.com.thiagoRDS.api_authors.modules.posts.repositories.PostsRepository;
 import br.com.thiagoRDS.api_authors.modules.utils.MakeAuthor;
 import br.com.thiagoRDS.api_authors.modules.utils.MakePost;
-import br.com.thiagoRDS.api_authors.providers.JwtProvider;
-import br.com.thiagoRDS.api_authors.providers.dtos.SignResponseDTO;
 
 @Transactional
 @ActiveProfiles("test")
 @TestInstance(Lifecycle.PER_CLASS)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-public class DeletePostControllerTest {
+public class ListPostsControllerTest {
   private MockMvc mvc;
 
   @Autowired
   private WebApplicationContext context;
 
   @Autowired
-  private JwtProvider jwtProvider;
+  private PostsRepository postsRepository;
 
   @Autowired
   private AuthorsRepository authorsRepository;
-
-  @Autowired
-  private PostsRepository postsRepository;
 
   @BeforeAll
   public void setup() {
@@ -58,26 +53,54 @@ public class DeletePostControllerTest {
   }
 
   @Test
-  @DisplayName("Should be able to delete a post")
-  public void deletePost() throws Exception {
+  @DisplayName("Should be able to list all posts")
+  public void listPosts() throws Exception {
+    String baseTitle = "base-title";
+    String baseContent = "base-content";
+    String baseKeywords = "base-keywords";
+    String baseDescription = "base-description";
+    String baseAuthorTag = "base-author-tag";
+    String baseAuthorEmail = "base-author-email";
+
     Author author = MakeAuthor.AUTHOR.clone();
     author.setId(null);
+    author.setEmail(baseAuthorEmail + "@example.com");
+    author.setTag(baseAuthorTag + "author-1");
     author = this.authorsRepository.saveAndFlush(author);
 
     Post post = MakePost.POST.clone();
     post.setId(null);
-    post.setAuthor(author);
+    post.setTitle(baseTitle + "title");
+    post.setContent(baseContent + "content");
+    post.setDescription(baseDescription + "description");
+    post.setKeywords(baseKeywords + "keywords");
     post.setAuthorId(author.getId());
-    post = this.postsRepository.saveAndFlush(post);
+    post.setAuthor(author);
 
-    SignResponseDTO response = this.jwtProvider.sign(author.getId().toString());
+    Post anotherPost = MakePost.POST.clone();
+    anotherPost.setId(null);
+    anotherPost.setTitle("another title");
+    anotherPost.setTitle(baseTitle + "another title");
+    anotherPost.setContent(baseContent + "another content");
+    anotherPost.setDescription(baseDescription + "another description");
+    anotherPost.setKeywords(baseKeywords + "another keywords");
+    anotherPost.setAuthorId(author.getId());
+    anotherPost.setAuthor(author);
 
-    this.mvc.perform(delete("/posts/" + post.getId())
-        .header("Authorization", "Bearer " + response.token()))
-        .andExpect(status().isNoContent());
+    List<Post> posts = List.of(post, anotherPost);
 
-    Optional<Post> postResponse = this.postsRepository.findById(post.getId());
+    this.postsRepository.saveAllAndFlush(posts);
 
-    assertThat(postResponse).isEmpty();
+    this.mvc.perform(get("/posts")
+        .queryParam("page", "0")
+        .queryParam("pageSize", "10")
+        .queryParam("title", baseTitle)
+        .queryParam("authorEmail", baseAuthorEmail)
+        .queryParam("description", baseDescription)
+        .queryParam("content", baseContent)
+        .queryParam("authorTag", baseAuthorTag)
+        .queryParam("keywords", baseKeywords))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.length()").value(2));
   }
 }

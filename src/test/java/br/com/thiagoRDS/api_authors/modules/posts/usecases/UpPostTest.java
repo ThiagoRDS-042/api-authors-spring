@@ -32,7 +32,7 @@ public class UpPostTest {
   public void upPost() {
     Post post = MakePost.POST.clone();
 
-    when(this.postsRepository.findById(post.getId())).thenReturn(Optional.of(post));
+    when(this.postsRepository.findByIdAndPublishedAtNotNull(post.getId())).thenReturn(Optional.of(post));
 
     assertThatCode(() -> this.upPost.execute(post.getId())).doesNotThrowAnyException();
   }
@@ -42,7 +42,7 @@ public class UpPostTest {
   public void postNotFound() {
     UUID postId = UUID.randomUUID();
 
-    when(this.postsRepository.findById(postId)).thenReturn(Optional.empty());
+    when(this.postsRepository.findByIdAndPublishedAtNotNull(postId)).thenReturn(Optional.empty());
 
     assertThatThrownBy(() -> this.upPost.execute(postId)).isInstanceOf(PostNotFoundException.class);
   }

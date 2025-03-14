@@ -1,10 +1,8 @@
 package br.com.thiagoRDS.api_authors.modules.posts.controllers;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -27,27 +25,22 @@ import br.com.thiagoRDS.api_authors.modules.posts.entities.Post;
 import br.com.thiagoRDS.api_authors.modules.posts.repositories.PostsRepository;
 import br.com.thiagoRDS.api_authors.modules.utils.MakeAuthor;
 import br.com.thiagoRDS.api_authors.modules.utils.MakePost;
-import br.com.thiagoRDS.api_authors.providers.JwtProvider;
-import br.com.thiagoRDS.api_authors.providers.dtos.SignResponseDTO;
 
 @Transactional
 @ActiveProfiles("test")
 @TestInstance(Lifecycle.PER_CLASS)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-public class DeletePostControllerTest {
+public class GetPostByIdControllerTest {
   private MockMvc mvc;
 
   @Autowired
   private WebApplicationContext context;
 
   @Autowired
-  private JwtProvider jwtProvider;
+  private PostsRepository postsRepository;
 
   @Autowired
   private AuthorsRepository authorsRepository;
-
-  @Autowired
-  private PostsRepository postsRepository;
 
   @BeforeAll
   public void setup() {
@@ -58,26 +51,34 @@ public class DeletePostControllerTest {
   }
 
   @Test
-  @DisplayName("Should be able to delete a post")
-  public void deletePost() throws Exception {
+  @DisplayName("Should be able to get a post by id")
+  public void getPost() throws Exception {
     Author author = MakeAuthor.AUTHOR.clone();
     author.setId(null);
     author = this.authorsRepository.saveAndFlush(author);
 
     Post post = MakePost.POST.clone();
     post.setId(null);
-    post.setAuthor(author);
     post.setAuthorId(author.getId());
+    post.setAuthor(author);
     post = this.postsRepository.saveAndFlush(post);
 
-    SignResponseDTO response = this.jwtProvider.sign(author.getId().toString());
-
-    this.mvc.perform(delete("/posts/" + post.getId())
-        .header("Authorization", "Bearer " + response.token()))
-        .andExpect(status().isNoContent());
-
-    Optional<Post> postResponse = this.postsRepository.findById(post.getId());
-
-    assertThat(postResponse).isEmpty();
+    this.mvc.perform(get("/posts/" + post.getId()))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.id").isString())
+        .andExpect(jsonPath("$.title").value(post.getTitle()))
+        .andExpect(jsonPath("$.content").value(post.getContent()))
+        .andExpect(jsonPath("$.description").value(post.getDescription()))
+        .andExpect(jsonPath("$.keywords").isArray())
+        .andExpect(jsonPath("$.author.id").value(author.getId().toString()))
+        .andExpect(jsonPath("$.author.tag").value(author.getTag()))
+        .andExpect(jsonPath("$.author.name").value(author.getName()))
+        .andExpect(jsonPath("$.author.email").value(author.getEmail()))
+        .andExpect(jsonPath("$.author.address").doesNotExist())
+        .andExpect(jsonPath("$.author.avatarUrl").doesNotExist())
+        .andExpect(jsonPath("$.author.password").doesNotExist())
+        .andExpect(jsonPath("$.author.birthdate").value(author.getBirthdate().toString()))
+        .andExpect(jsonPath("$.up").value(post.getUp()))
+        .andExpect(jsonPath("$.publishedAt").isString());
   }
 }
