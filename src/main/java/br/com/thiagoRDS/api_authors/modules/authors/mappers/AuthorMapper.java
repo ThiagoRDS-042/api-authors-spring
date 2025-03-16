@@ -2,6 +2,7 @@ package br.com.thiagoRDS.api_authors.modules.authors.mappers;
 
 import org.springframework.web.util.UriComponentsBuilder;
 
+import br.com.thiagoRDS.api_authors.modules.authors.dtos.AddressResponseMapperDTO;
 import br.com.thiagoRDS.api_authors.modules.authors.dtos.AuthorReponseMapperDTO;
 import br.com.thiagoRDS.api_authors.modules.authors.entities.Author;
 import br.com.thiagoRDS.api_authors.providers.CurrentContextProvider;
@@ -17,12 +18,14 @@ public record AuthorMapper() {
       avatarUrl = currentUri.path("/authors/avatar/").path(author.getAvatar()).toUriString();
     }
 
+    AddressResponseMapperDTO address = author.getAddress() != null ? AddressMapper.ToHttp(author.getAddress()) : null;
+
     AuthorReponseMapperDTO authorMapper = new AuthorReponseMapperDTO(
         author.getId(),
         author.getTag(),
         author.getName(),
         author.getEmail(),
-        author.getAddress(),
+        address,
         avatarUrl,
         author.getBirthdate());
 
