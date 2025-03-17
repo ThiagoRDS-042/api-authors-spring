@@ -3,6 +3,9 @@ package br.com.thiagoRDS.api_authors.modules.posts.controllers;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -76,7 +79,7 @@ public class UpdatePostControllerTest {
         post.getTitle(),
         post.getContent(),
         post.getDescription(),
-        post.getKeywords().split(";"));
+        Stream.of(post.getKeywords().split(";")).collect(Collectors.toList()));
 
     this.mvc.perform(put("/posts/" + post.getId())
         .header("Authorization", "Bearer " + response.token())

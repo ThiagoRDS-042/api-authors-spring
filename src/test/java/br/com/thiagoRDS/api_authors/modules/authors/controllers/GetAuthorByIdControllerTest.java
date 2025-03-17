@@ -4,6 +4,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.time.LocalDateTime;
+
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -73,6 +75,7 @@ public class GetAuthorByIdControllerTest {
     post.setId(null);
     post.setAuthor(author);
     post.setAuthorId(author.getId());
+    post.setPublishedAt(LocalDateTime.now());
     post = this.postsRepository.saveAndFlush(post);
 
     this.mvc.perform(get("/authors/" + author.getId()))

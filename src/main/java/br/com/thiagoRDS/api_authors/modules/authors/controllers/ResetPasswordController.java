@@ -30,29 +30,29 @@ import org.springframework.web.bind.annotation.RequestBody;
 @RestController
 @RequestMapping("/authors")
 public class ResetPasswordController {
-  @Autowired
-  private ResetPassword resetPassword;
+    @Autowired
+    private ResetPassword resetPassword;
 
-  @Operation(summary = "Reset the author password", description = "Reset the author password")
-  @ApiResponses({
-      @ApiResponse(responseCode = "204", description = "Success"),
-      @ApiResponse(responseCode = "400", content = {
-          @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, array = @ArraySchema(schema = @Schema(implementation = ErrorMessageDTO.class)))
-      }, description = "Validation failed."),
-      @ApiResponse(responseCode = "404", content = {
-          @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = ErrorResponseDTO.class))
-      }, description = "Recovery token does not exists."),
-      @ApiResponse(responseCode = "403", content = {
-          @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = ErrorResponseDTO.class))
-      }, description = "Recovery token expired."),
-  })
-  @PatchMapping("/password/reset")
-  public ResponseEntity<Object> putMethodName(@RequestParam UUID code,
-      @Valid @RequestBody ResetPasswordControllerDTO data) {
-    ResetPasswordDTO resetPasswordData = new ResetPasswordDTO(code, data.password());
+    @Operation(summary = "Reset the author password", description = "Reset the author password")
+    @ApiResponses({
+            @ApiResponse(responseCode = "204", description = "Success"),
+            @ApiResponse(responseCode = "400", content = {
+                    @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, array = @ArraySchema(schema = @Schema(implementation = ErrorMessageDTO.class)))
+            }, description = "Validation failed."),
+            @ApiResponse(responseCode = "403", content = {
+                    @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = ErrorResponseDTO.class))
+            }, description = "Recovery token expired."),
+            @ApiResponse(responseCode = "404", content = {
+                    @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = ErrorResponseDTO.class))
+            }, description = "Recovery token does not exists."),
+    })
+    @PatchMapping("/password/reset")
+    public ResponseEntity<Object> putMethodName(@RequestParam UUID code,
+            @Valid @RequestBody ResetPasswordControllerDTO data) {
+        ResetPasswordDTO resetPasswordData = new ResetPasswordDTO(code, data.password());
 
-    this.resetPassword.execute(resetPasswordData);
+        this.resetPassword.execute(resetPasswordData);
 
-    return ResponseEntity.noContent().build();
-  }
+        return ResponseEntity.noContent().build();
+    }
 }

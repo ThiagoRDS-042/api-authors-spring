@@ -1,5 +1,8 @@
 package br.com.thiagoRDS.api_authors.modules.posts.mappers;
 
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import br.com.thiagoRDS.api_authors.modules.authors.dtos.AuthorReponseMapperDTO;
 import br.com.thiagoRDS.api_authors.modules.authors.mappers.AuthorMapper;
 import br.com.thiagoRDS.api_authors.modules.posts.dtos.PostResponseMapperDTO;
@@ -14,7 +17,7 @@ public class PostMapper {
         post.getTitle(),
         post.getContent(),
         post.getDescription(),
-        post.getKeywords().split(";"),
+        Stream.of(post.getKeywords().split(";")).collect(Collectors.toList()),
         author,
         post.getUp(),
         post.getPublishedAt());
