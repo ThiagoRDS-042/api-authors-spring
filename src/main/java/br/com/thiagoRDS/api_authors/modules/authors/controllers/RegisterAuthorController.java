@@ -25,35 +25,35 @@ import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+@Tag(name = "Author", description = "Manage authors")
 @RestController
 @RequestMapping("/authors")
-@Tag(name = "Author", description = "Manage authors")
 public class RegisterAuthorController {
 
-  @Autowired
-  private RegisterAuthor registerAuthor;
+    @Autowired
+    private RegisterAuthor registerAuthor;
 
-  @Operation(summary = "Register a new author", description = "Register a new author")
-  @ApiResponses({
-      @ApiResponse(responseCode = "200", content = {
-          @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = AuthorReponseMapperDTO.class))
-      }, description = "Success"),
-      @ApiResponse(responseCode = "400", content = {
-          @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, array = @ArraySchema(schema = @Schema(implementation = ErrorMessageDTO.class)))
-      }, description = "Validation failed."),
-      @ApiResponse(responseCode = "409", content = {
-          @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = ErrorResponseDTO.class))
-      }, description = "Author already registered."),
-      @ApiResponse(responseCode = "422", content = {
-          @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = ErrorResponseDTO.class))
-      }, description = "Minimum age not reached."),
-  })
-  @PostMapping()
-  public ResponseEntity<AuthorReponseMapperDTO> register(@Valid @RequestBody RegisterAuthorDTO data) {
-    Author author = this.registerAuthor.execute(data);
+    @Operation(summary = "Register a new author", description = "Register a new author")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", content = {
+                    @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = AuthorReponseMapperDTO.class))
+            }, description = "Success"),
+            @ApiResponse(responseCode = "400", content = {
+                    @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, array = @ArraySchema(schema = @Schema(implementation = ErrorMessageDTO.class)))
+            }, description = "Validation failed."),
+            @ApiResponse(responseCode = "409", content = {
+                    @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = ErrorResponseDTO.class))
+            }, description = "Author already registered."),
+            @ApiResponse(responseCode = "422", content = {
+                    @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = ErrorResponseDTO.class))
+            }, description = "Minimum age not reached."),
+    })
+    @PostMapping()
+    public ResponseEntity<AuthorReponseMapperDTO> register(@Valid @RequestBody RegisterAuthorDTO data) {
+        Author author = this.registerAuthor.execute(data);
 
-    AuthorReponseMapperDTO authorMapper = AuthorMapper.ToHttp(author);
+        AuthorReponseMapperDTO authorMapper = AuthorMapper.ToHttp(author);
 
-    return ResponseEntity.ok(authorMapper);
-  }
+        return ResponseEntity.ok(authorMapper);
+    }
 }

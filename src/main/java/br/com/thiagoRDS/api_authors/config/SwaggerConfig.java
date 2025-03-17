@@ -9,7 +9,7 @@ import io.swagger.v3.oas.models.security.SecurityScheme;
 
 @Configuration
 public class SwaggerConfig {
-  private static final String SECURITY_SCHEME_NAME = "jwt_auth";
+  public static final String SECURITY_SCHEME_NAME = "jwt_auth";
 
   @Bean
   OpenAPI openAPI() {
