@@ -1,9 +1,7 @@
 package br.com.thiagoRDS.api_authors.modules.posts.usecases;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
@@ -37,7 +35,7 @@ public class UpdatePost {
       throw new PostAlreadyRegisteredException();
     }
 
-    String keywords = Arrays.stream(data.keywords()).collect(Collectors.joining(";", "", ""));
+    String keywords = String.join(";", data.keywords());
 
     post.setDescription(data.description());
     post.setContent(data.content());

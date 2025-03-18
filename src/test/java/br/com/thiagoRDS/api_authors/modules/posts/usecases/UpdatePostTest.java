@@ -7,6 +7,8 @@ import static org.mockito.Mockito.when;
 import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -42,7 +44,7 @@ public class UpdatePostTest {
         post.getTitle(),
         post.getContent(),
         post.getDescription(),
-        post.getKeywords().split(";"),
+        Stream.of(post.getKeywords().split(";")).collect(Collectors.toList()),
         post.getAuthorId());
 
     when(this.postsRepository.findById(post.getId())).thenReturn(Optional.of(post));
@@ -61,7 +63,7 @@ public class UpdatePostTest {
         post.getTitle(),
         post.getContent(),
         post.getDescription(),
-        post.getKeywords().split(";"),
+        Stream.of(post.getKeywords().split(";")).collect(Collectors.toList()),
         post.getAuthorId());
 
     when(this.postsRepository.findById(post.getId())).thenReturn(Optional.empty());
@@ -80,7 +82,7 @@ public class UpdatePostTest {
         post.getTitle(),
         post.getContent(),
         post.getDescription(),
-        post.getKeywords().split(";"),
+        Stream.of(post.getKeywords().split(";")).collect(Collectors.toList()),
         authorId);
 
     when(this.postsRepository.findById(post.getId())).thenReturn(Optional.of(post));
@@ -111,7 +113,7 @@ public class UpdatePostTest {
         anotherPost.getTitle(),
         post.getContent(),
         post.getDescription(),
-        post.getKeywords().split(";"),
+        Stream.of(post.getKeywords().split(";")).collect(Collectors.toList()),
         post.getAuthorId());
 
     when(this.postsRepository.findById(post.getId())).thenReturn(Optional.of(post));

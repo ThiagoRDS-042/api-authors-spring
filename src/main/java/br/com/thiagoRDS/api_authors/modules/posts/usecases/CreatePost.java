@@ -1,8 +1,5 @@
 package br.com.thiagoRDS.api_authors.modules.posts.usecases;
 
-import java.util.Arrays;
-import java.util.stream.Collectors;
-
 import org.springframework.stereotype.Service;
 
 import br.com.thiagoRDS.api_authors.modules.authors.entities.Author;
@@ -33,7 +30,7 @@ public class CreatePost {
       throw new AuthorNotFoundException();
     });
 
-    String keywords = Arrays.stream(data.keywords()).collect(Collectors.joining(";", "", ""));
+    String keywords = String.join(";", data.keywords());
 
     Post post = new Post(data.title(), data.content(), data.description(), keywords, data.authorId(), author);
 

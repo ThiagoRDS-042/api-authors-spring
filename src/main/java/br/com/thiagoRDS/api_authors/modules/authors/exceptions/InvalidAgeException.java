@@ -6,6 +6,6 @@ import br.com.thiagoRDS.api_authors.exceptions.AppException;
 
 public class InvalidAgeException extends AppException {
   public InvalidAgeException() {
-    super("Minimum age not reached.", HttpStatus.BAD_REQUEST);
+    super("Minimum age not reached.", HttpStatus.UNPROCESSABLE_ENTITY);
   }
 }

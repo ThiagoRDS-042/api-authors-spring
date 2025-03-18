@@ -14,15 +14,22 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 @Configuration
 @EnableMethodSecurity
 public class SecurityConfig {
-
   @Autowired
   private SecurityAuthorConfig securityAuthorConfig;
+
+  private static final String[] PERMITED_LIST = {
+      "/swagger-ui/**",
+      "/v3/api-docs/**",
+      "/swagger-resouces/**",
+      "/actuator/**",
+  };
 
   @Bean
   SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     http.csrf(csrf -> csrf.disable()).authorizeHttpRequests(auth -> {
 
-      auth.requestMatchers("/authors").permitAll()
+      auth.requestMatchers(PERMITED_LIST).permitAll()
+          .requestMatchers("/authors").permitAll()
           .requestMatchers("/authors/auth").permitAll()
           .requestMatchers("/authors/avatar/{avatar:.+}").permitAll()
           .requestMatchers("/authors/forgot-password").permitAll()
