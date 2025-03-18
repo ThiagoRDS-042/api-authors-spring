@@ -55,7 +55,7 @@ public class ForgotMailPasswordTest {
     when(this.currentContextProvider.getUri()).thenReturn(currentContext);
 
     assertThatCode(() -> this.forgotMailPassword.execute(author.getEmail())).doesNotThrowAnyException();
-    verify(mailProvider).sendMail(any());
+    verify(this.mailProvider).sendMail(any());
   }
 
   @Test

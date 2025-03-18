@@ -38,12 +38,13 @@ public class GetAvatarTest {
   @DisplayName("Should be able to get a author avatar")
   public void getAvatar() {
     String avatar = "avatar.png";
+    String bucketName = "api-authors";
 
     InputStream nullFile = InputStream.nullInputStream();
 
     when(this.authorsRepository.findByAvatar(avatar)).thenReturn(Optional.of(MakeAuthor.AUTHOR.clone()));
-    when(this.minioProvider.getFile(this.minioConfig.getBucketName(), avatar))
-        .thenReturn(nullFile);
+    when(this.minioConfig.getBucketName()).thenReturn(bucketName);
+    when(this.minioProvider.getFile(bucketName, avatar)).thenReturn(nullFile);
 
     InputStream file = this.getAvatar.execute(avatar);
 

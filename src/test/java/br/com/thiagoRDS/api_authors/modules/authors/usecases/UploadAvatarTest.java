@@ -3,6 +3,7 @@ package br.com.thiagoRDS.api_authors.modules.authors.usecases;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.Optional;
@@ -42,19 +43,26 @@ public class UploadAvatarTest {
   @Test
   @DisplayName("Should be able to upload a new avatar")
   public void uploadAvatar() {
+    String bucketName = "api-authors";
+    String avatar = "avatar.png";
+
     Author author = MakeAuthor.AUTHOR.clone();
+    author.setAvatar(avatar);
 
-    byte[] inputArray = "avatar.png".getBytes();
+    byte[] inputArray = avatar.getBytes();
 
-    MockMultipartFile mockMultipartFile = new MockMultipartFile("file", "avatar.png", MediaType.IMAGE_PNG_VALUE,
+    MockMultipartFile mockMultipartFile = new MockMultipartFile("file", avatar, MediaType.IMAGE_PNG_VALUE,
         inputArray);
 
     UploadAvatarDTO uploadAvatar = new UploadAvatarDTO(author.getId(), mockMultipartFile);
 
     when(this.authorsRepository.findById(author.getId())).thenReturn(Optional.of(author));
+    when(this.minioConfig.getBucketName()).thenReturn(bucketName);
 
     assertThatCode(() -> this.uploadAvatar.execute(uploadAvatar)).doesNotThrowAnyException();
     assertThat(author.getAvatar()).isInstanceOf(String.class);
+    verify(this.minioProvider).deleteFile(bucketName, avatar);
+    verify(this.minioProvider).uploadFile(bucketName, uploadAvatar.file(), author.getAvatar());
   }
 
   @Test
