@@ -3,7 +3,7 @@ version: "3.3"
 services:
   db:
     container_name: api_authors_db
-    image: postgres
+    image: bitnami/postgresql:latest
     ports:
       - 5435:5432
     environment:
@@ -15,28 +15,16 @@ services:
 
   storage:
     container_name: api_authors_storage
-    image: minio/minio:latest
-    volumes:
-      - storage_data:/data
-      - storage_minio:/minio
-      - storage_config:/root/.minio
-    environment:
-      TZ: America/Sao_Paulo
-      LANG: pt_BR.UTF-8
-      MINIO_PROMETHEUS_AUTH_TYPE: "public"
-      MINIO_ACCESS_KEY: "admin"
-      MINIO_SECRET_KEY: "Admin123456"
-    command: server /data  --console-address ":9001"
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "100m"
+    image: bitnami/minio:latest
     ports:
       - "9000:9000"
       - "9001:9001"
+    environment:
+      MINIO_ROOT_USER: "admin"
+      MINIO_ROOT_PASSWORD: "Admin123456"
+    volumes:
+      - storage_data:/bitnami/minio/data
 
 volumes:
   db_data:
   storage_data:
-  storage_minio:
-  storage_config:
