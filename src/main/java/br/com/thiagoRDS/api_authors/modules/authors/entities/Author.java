@@ -62,7 +62,7 @@ public class Author implements Serializable {
   private LocalDateTime createdAt;
 
   @CreationTimestamp
-  @Column(name = "updtaed_at", nullable = false)
+  @Column(name = "updated_at", nullable = false)
   private LocalDateTime updtaedAt;
 
   public Author() {

@@ -63,7 +63,7 @@ public class Post implements Serializable {
   private LocalDateTime publishedAt;
 
   @CreationTimestamp
-  @Column(name = "updtaed_at", nullable = false)
+  @Column(name = "updated_at", nullable = false)
   private LocalDateTime updtaedAt;
 
   @Column(nullable = false, name = "author_id")
