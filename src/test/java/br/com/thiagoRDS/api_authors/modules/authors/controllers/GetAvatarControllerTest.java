@@ -1,11 +1,13 @@
 package br.com.thiagoRDS.api_authors.modules.authors.controllers;
 
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.io.InputStream;
+
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,9 +17,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.http.MediaType;
-import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,7 +44,7 @@ public class GetAvatarControllerTest {
   @Autowired
   private MinioConfig minioconfig;
 
-  @Autowired
+  @MockitoBean
   private MinioProvider minioProvider;
 
   @Autowired
@@ -54,13 +56,6 @@ public class GetAvatarControllerTest {
         .webAppContextSetup(this.context)
         .apply(SecurityMockMvcConfigurers.springSecurity())
         .build();
-
-    this.minioProvider.createBucket(this.minioconfig.getBucketName());
-  }
-
-  @AfterAll
-  public void teardown() {
-    this.minioProvider.deleteBucket(this.minioconfig.getBucketName());
   }
 
   @Test
@@ -71,19 +66,15 @@ public class GetAvatarControllerTest {
     author.setId(null);
     this.authorsRepository.saveAndFlush(author);
 
-    byte[] inputArray = author.getAvatar().getBytes();
-
-    MockMultipartFile mockMultipartFile = new MockMultipartFile("file", author.getAvatar(), MediaType.IMAGE_PNG_VALUE,
-        inputArray);
-
     String bucketName = this.minioconfig.getBucketName();
 
-    this.minioProvider.uploadFile(bucketName, mockMultipartFile, author.getAvatar());
+    InputStream nullFile = InputStream.nullInputStream();
+
+    when(this.minioProvider.getFile(bucketName, author.getAvatar()))
+        .thenReturn(nullFile);
 
     this.mvc.perform(get("/authors/avatar/" + author.getAvatar()))
         .andExpect(status().isOk())
         .andExpect(content().contentType(MediaType.APPLICATION_OCTET_STREAM));
-
-    this.minioProvider.deleteFile(bucketName, author.getAvatar());
   }
 }

@@ -3,7 +3,6 @@ package br.com.thiagoRDS.api_authors.modules.authors.controllers;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -17,12 +16,12 @@ import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
-import br.com.thiagoRDS.api_authors.config.MinioConfig;
 import br.com.thiagoRDS.api_authors.modules.authors.entities.Author;
 import br.com.thiagoRDS.api_authors.modules.authors.repositories.AuthorsRepository;
 import br.com.thiagoRDS.api_authors.modules.utils.MakeAuthor;
@@ -43,10 +42,7 @@ public class UploadAvatarControllerTest {
   @Autowired
   private JwtProvider jwtProvider;
 
-  @Autowired
-  private MinioConfig minioconfig;
-
-  @Autowired
+  @MockitoBean
   private MinioProvider minioProvider;
 
   @Autowired
@@ -58,13 +54,6 @@ public class UploadAvatarControllerTest {
         .webAppContextSetup(this.context)
         .apply(SecurityMockMvcConfigurers.springSecurity())
         .build();
-
-    this.minioProvider.createBucket(this.minioconfig.getBucketName());
-  }
-
-  @AfterAll
-  public void teardown() {
-    this.minioProvider.deleteBucket(this.minioconfig.getBucketName());
   }
 
   @Test
@@ -86,7 +75,5 @@ public class UploadAvatarControllerTest {
         .file(mockMultipartFile)
         .header("Authorization", "Bearer " + response.token()))
         .andExpect(status().isNoContent());
-
-    this.minioProvider.deleteFile(this.minioconfig.getBucketName(), author.getAvatar());
   }
 }

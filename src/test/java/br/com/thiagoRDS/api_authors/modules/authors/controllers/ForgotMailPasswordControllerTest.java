@@ -17,6 +17,7 @@ import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,6 +30,7 @@ import br.com.thiagoRDS.api_authors.modules.authors.repositories.AuthorsReposito
 import br.com.thiagoRDS.api_authors.modules.authors.repositories.RecoveryTokensRepository;
 import br.com.thiagoRDS.api_authors.modules.utils.Convert;
 import br.com.thiagoRDS.api_authors.modules.utils.MakeAuthor;
+import br.com.thiagoRDS.api_authors.providers.MailProvider;
 
 @Transactional
 @ActiveProfiles("test")
@@ -39,6 +41,9 @@ public class ForgotMailPasswordControllerTest {
 
   @Autowired
   private WebApplicationContext context;
+
+  @MockitoBean
+  private MailProvider mailProvider;
 
   @Autowired
   private AuthorsRepository authorsRepository;
