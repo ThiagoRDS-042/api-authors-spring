@@ -11,7 +11,7 @@ import br.com.thiagoRDS.api_authors.modules.authors.exceptions.AuthorNotFoundExc
 import br.com.thiagoRDS.api_authors.modules.authors.repositories.AuthorsRepository;
 import br.com.thiagoRDS.api_authors.modules.authors.repositories.RecoveryTokensRepository;
 import br.com.thiagoRDS.api_authors.providers.CurrentContextProvider;
-import br.com.thiagoRDS.api_authors.providers.MailProvider;
+import br.com.thiagoRDS.api_authors.providers.MailProvider.MailProvider;
 import br.com.thiagoRDS.api_authors.providers.dtos.SendMailDTO;
 
 @Service
