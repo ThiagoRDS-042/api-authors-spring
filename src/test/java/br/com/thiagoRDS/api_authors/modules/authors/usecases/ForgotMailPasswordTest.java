@@ -23,8 +23,8 @@ import br.com.thiagoRDS.api_authors.modules.authors.repositories.AuthorsReposito
 import br.com.thiagoRDS.api_authors.modules.authors.repositories.RecoveryTokensRepository;
 import br.com.thiagoRDS.api_authors.modules.utils.MakeAuthor;
 import br.com.thiagoRDS.api_authors.modules.utils.MakeRecoveryToken;
-import br.com.thiagoRDS.api_authors.providers.CurrentContextProvider;
-import br.com.thiagoRDS.api_authors.providers.MailProvider;
+import br.com.thiagoRDS.api_authors.providers.CurrentContextProvider.CurrentContextProvider;
+import br.com.thiagoRDS.api_authors.providers.MailProvider.MailProvider;
 
 @ExtendWith(MockitoExtension.class)
 public class ForgotMailPasswordTest {

@@ -1,4 +1,4 @@
-package br.com.thiagoRDS.api_authors.providers;
+package br.com.thiagoRDS.api_authors.providers.JwtProvider.Impl;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -11,10 +11,11 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 
-import br.com.thiagoRDS.api_authors.providers.dtos.SignResponseDTO;
+import br.com.thiagoRDS.api_authors.providers.JwtProvider.JwtProvider;
+import br.com.thiagoRDS.api_authors.providers.JwtProvider.dtos.SignResponseDTO;
 
 @Service
-public class JwtProvider {
+public class JwtProviderImpl extends JwtProvider {
   @Value("${security.jwt.token.secret}")
   private String jwtSecret;
 

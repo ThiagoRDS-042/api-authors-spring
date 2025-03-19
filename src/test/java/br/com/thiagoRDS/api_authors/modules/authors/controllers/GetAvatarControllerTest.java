@@ -25,11 +25,10 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
-import br.com.thiagoRDS.api_authors.config.MinioConfig;
 import br.com.thiagoRDS.api_authors.modules.authors.entities.Author;
 import br.com.thiagoRDS.api_authors.modules.authors.repositories.AuthorsRepository;
 import br.com.thiagoRDS.api_authors.modules.utils.MakeAuthor;
-import br.com.thiagoRDS.api_authors.providers.MinioProvider;
+import br.com.thiagoRDS.api_authors.providers.StorageProvider.StorageProvider;
 
 @Transactional
 @ActiveProfiles("test")
@@ -41,11 +40,8 @@ public class GetAvatarControllerTest {
   @Autowired
   private WebApplicationContext context;
 
-  @Autowired
-  private MinioConfig minioconfig;
-
   @MockitoBean
-  private MinioProvider minioProvider;
+  private StorageProvider storageProvider;
 
   @Autowired
   private AuthorsRepository authorsRepository;
@@ -66,11 +62,9 @@ public class GetAvatarControllerTest {
     author.setId(null);
     this.authorsRepository.saveAndFlush(author);
 
-    String bucketName = this.minioconfig.getBucketName();
-
     InputStream nullFile = InputStream.nullInputStream();
 
-    when(this.minioProvider.getFile(bucketName, author.getAvatar()))
+    when(this.storageProvider.getFile(author.getAvatar()))
         .thenReturn(nullFile);
 
     this.mvc.perform(get("/authors/avatar/" + author.getAvatar()))

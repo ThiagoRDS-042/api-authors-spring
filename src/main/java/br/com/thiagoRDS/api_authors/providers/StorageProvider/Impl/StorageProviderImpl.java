@@ -1,12 +1,14 @@
-package br.com.thiagoRDS.api_authors.providers;
+package br.com.thiagoRDS.api_authors.providers.StorageProvider.Impl;
 
 import java.io.InputStream;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import br.com.thiagoRDS.api_authors.exceptions.InternalServerErrorException;
+import br.com.thiagoRDS.api_authors.providers.StorageProvider.StorageProvider;
 import io.minio.BucketExistsArgs;
 import io.minio.GetObjectArgs;
 import io.minio.MakeBucketArgs;
@@ -15,18 +17,21 @@ import io.minio.PutObjectArgs;
 import io.minio.RemoveObjectArgs;
 
 @Service
-public class MinioProvider {
+public class StorageProviderImpl extends StorageProvider {
+  @Value("${minio.bucket-name}")
+  private String bucketName;
+
   @Autowired
   private MinioClient minioClient;
 
-  public void createBucket(String bucketName) {
-    BucketExistsArgs bucketExistsArgs = BucketExistsArgs.builder().bucket(bucketName).build();
+  public void createBucket() {
+    BucketExistsArgs bucketExistsArgs = BucketExistsArgs.builder().bucket(this.bucketName).build();
 
     try {
       boolean exists = this.minioClient.bucketExists(bucketExistsArgs);
 
       if (!exists) {
-        MakeBucketArgs bucketArgs = MakeBucketArgs.builder().bucket(bucketName).build();
+        MakeBucketArgs bucketArgs = MakeBucketArgs.builder().bucket(this.bucketName).build();
 
         this.minioClient.makeBucket(bucketArgs);
       }
@@ -37,10 +42,10 @@ public class MinioProvider {
     }
   }
 
-  public InputStream getFile(String bucketName, String filename) {
-    this.createBucket(bucketName);
+  public InputStream getFile(String filename) {
+    this.createBucket();
 
-    GetObjectArgs getObjectArgs = GetObjectArgs.builder().bucket(bucketName).object(filename).build();
+    GetObjectArgs getObjectArgs = GetObjectArgs.builder().bucket(this.bucketName).object(filename).build();
 
     try {
       var file = this.minioClient.getObject(getObjectArgs);
@@ -53,13 +58,13 @@ public class MinioProvider {
     }
   }
 
-  public void uploadFile(String bucketName, MultipartFile file, String filename) {
-    this.createBucket(bucketName);
+  public void uploadFile(MultipartFile file, String filename) {
+    this.createBucket();
 
     try {
       InputStream inputStream = file.getInputStream();
 
-      PutObjectArgs putObjectArgs = PutObjectArgs.builder().bucket(bucketName).object(filename)
+      PutObjectArgs putObjectArgs = PutObjectArgs.builder().bucket(this.bucketName).object(filename)
           .contentType(file.getContentType()).stream(inputStream, inputStream.available(), -1).build();
 
       this.minioClient.putObject(putObjectArgs);
@@ -70,10 +75,10 @@ public class MinioProvider {
     }
   }
 
-  public void deleteFile(String bucketName, String filename) {
-    this.createBucket(bucketName);
+  public void deleteFile(String filename) {
+    this.createBucket();
 
-    RemoveObjectArgs removeObjectArgs = RemoveObjectArgs.builder().bucket(bucketName).object(filename).build();
+    RemoveObjectArgs removeObjectArgs = RemoveObjectArgs.builder().bucket(this.bucketName).object(filename).build();
 
     try {
       this.minioClient.removeObject(removeObjectArgs);

@@ -1,18 +1,19 @@
-package br.com.thiagoRDS.api_authors.providers;
+package br.com.thiagoRDS.api_authors.providers.MailProvider.Impl;
 
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
 import br.com.thiagoRDS.api_authors.exceptions.InternalServerErrorException;
-import br.com.thiagoRDS.api_authors.providers.dtos.SendMailDTO;
+import br.com.thiagoRDS.api_authors.providers.MailProvider.MailProvider;
+import br.com.thiagoRDS.api_authors.providers.MailProvider.dtos.SendMailDTO;
 import jakarta.mail.internet.MimeMessage;
 
 @Service
-public class MailProvider {
+public class MailProviderImpl extends MailProvider {
   private final JavaMailSender javaMailSender;
 
-  public MailProvider(JavaMailSender javaMailSender) {
+  public MailProviderImpl(JavaMailSender javaMailSender) {
     this.javaMailSender = javaMailSender;
   }
 

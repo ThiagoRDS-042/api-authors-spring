@@ -14,11 +14,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import br.com.thiagoRDS.api_authors.config.MinioConfig;
 import br.com.thiagoRDS.api_authors.modules.authors.exceptions.AuthorNotFoundException;
 import br.com.thiagoRDS.api_authors.modules.authors.repositories.AuthorsRepository;
 import br.com.thiagoRDS.api_authors.modules.utils.MakeAuthor;
-import br.com.thiagoRDS.api_authors.providers.MinioProvider;
+import br.com.thiagoRDS.api_authors.providers.StorageProvider.StorageProvider;
 
 @ExtendWith(MockitoExtension.class)
 public class GetAvatarTest {
@@ -26,10 +25,7 @@ public class GetAvatarTest {
   private GetAvatar getAvatar;
 
   @Mock
-  private MinioConfig minioConfig;
-
-  @Mock
-  private MinioProvider minioProvider;
+  private StorageProvider storageProvider;
 
   @Mock
   private AuthorsRepository authorsRepository;
@@ -38,13 +34,11 @@ public class GetAvatarTest {
   @DisplayName("Should be able to get a author avatar")
   public void getAvatar() {
     String avatar = "avatar.png";
-    String bucketName = "api-authors";
 
     InputStream nullFile = InputStream.nullInputStream();
 
     when(this.authorsRepository.findByAvatar(avatar)).thenReturn(Optional.of(MakeAuthor.AUTHOR.clone()));
-    when(this.minioConfig.getBucketName()).thenReturn(bucketName);
-    when(this.minioProvider.getFile(bucketName, avatar)).thenReturn(nullFile);
+    when(this.storageProvider.getFile(avatar)).thenReturn(nullFile);
 
     InputStream file = this.getAvatar.execute(avatar);
 

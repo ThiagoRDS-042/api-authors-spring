@@ -10,9 +10,9 @@ import br.com.thiagoRDS.api_authors.modules.authors.entities.RecoveryToken;
 import br.com.thiagoRDS.api_authors.modules.authors.exceptions.AuthorNotFoundException;
 import br.com.thiagoRDS.api_authors.modules.authors.repositories.AuthorsRepository;
 import br.com.thiagoRDS.api_authors.modules.authors.repositories.RecoveryTokensRepository;
-import br.com.thiagoRDS.api_authors.providers.CurrentContextProvider;
-import br.com.thiagoRDS.api_authors.providers.MailProvider;
-import br.com.thiagoRDS.api_authors.providers.dtos.SendMailDTO;
+import br.com.thiagoRDS.api_authors.providers.CurrentContextProvider.CurrentContextProvider;
+import br.com.thiagoRDS.api_authors.providers.MailProvider.MailProvider;
+import br.com.thiagoRDS.api_authors.providers.MailProvider.dtos.SendMailDTO;
 
 @Service
 public class ForgotMailPassword {

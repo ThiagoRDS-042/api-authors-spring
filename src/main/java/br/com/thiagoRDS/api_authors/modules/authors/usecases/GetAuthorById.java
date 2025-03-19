@@ -12,7 +12,7 @@ import br.com.thiagoRDS.api_authors.modules.authors.entities.Author;
 import br.com.thiagoRDS.api_authors.modules.authors.exceptions.AuthorNotFoundException;
 import br.com.thiagoRDS.api_authors.modules.authors.repositories.AuthorsRepository;
 import br.com.thiagoRDS.api_authors.modules.posts.repositories.PostsRepository;
-import br.com.thiagoRDS.api_authors.providers.CurrentContextProvider;
+import br.com.thiagoRDS.api_authors.providers.CurrentContextProvider.CurrentContextProvider;
 
 @Service
 public class GetAuthorById {

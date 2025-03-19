@@ -4,21 +4,18 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
-import br.com.thiagoRDS.api_authors.config.MinioConfig;
 import br.com.thiagoRDS.api_authors.modules.authors.entities.Author;
 import br.com.thiagoRDS.api_authors.modules.authors.exceptions.AuthorNotFoundException;
 import br.com.thiagoRDS.api_authors.modules.authors.repositories.AuthorsRepository;
-import br.com.thiagoRDS.api_authors.providers.MinioProvider;
+import br.com.thiagoRDS.api_authors.providers.StorageProvider.StorageProvider;
 
 @Service
 public class DeleteAuthor {
-  private final MinioConfig minioConfig;
-  private final MinioProvider minioProvider;
+  private final StorageProvider storageProvider;
   private final AuthorsRepository authorsRepository;
 
-  public DeleteAuthor(MinioConfig minioConfig, MinioProvider minioProvider, AuthorsRepository authorsRepository) {
-    this.minioConfig = minioConfig;
-    this.minioProvider = minioProvider;
+  public DeleteAuthor(StorageProvider storageProvider, AuthorsRepository authorsRepository) {
+    this.storageProvider = storageProvider;
     this.authorsRepository = authorsRepository;
   }
 
@@ -28,7 +25,7 @@ public class DeleteAuthor {
     });
 
     if (author.getAvatar() != null) {
-      this.minioProvider.deleteFile(this.minioConfig.getBucketName(), author.getAvatar());
+      this.storageProvider.deleteFile(author.getAvatar());
     }
 
     this.authorsRepository.delete(author);

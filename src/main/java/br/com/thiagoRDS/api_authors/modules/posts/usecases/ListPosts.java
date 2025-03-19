@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import br.com.thiagoRDS.api_authors.modules.posts.dtos.ListPostsDTO;
 import br.com.thiagoRDS.api_authors.modules.posts.entities.Post;
 import br.com.thiagoRDS.api_authors.modules.posts.repositories.PostsRepository;
-import br.com.thiagoRDS.api_authors.providers.GerericWhereSpecificationProvider;
+import br.com.thiagoRDS.api_authors.providers.GenericWhereSpecificationProvider.GerericWhereSpecificationProvider;
 
 @Service
 public class ListPosts {

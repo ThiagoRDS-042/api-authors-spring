@@ -10,7 +10,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.auth0.jwt.interfaces.DecodedJWT;
 
-import br.com.thiagoRDS.api_authors.providers.JwtProvider;
+import br.com.thiagoRDS.api_authors.providers.JwtProvider.JwtProvider;
 import br.com.thiagoRDS.api_authors.utils.SessionId;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
