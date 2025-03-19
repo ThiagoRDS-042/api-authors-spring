@@ -1,4 +1,4 @@
-package br.com.thiagoRDS.api_authors.providers.CurrentContextProvider.impl;
+package br.com.thiagoRDS.api_authors.providers.CurrentContextProvider.Impl;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
