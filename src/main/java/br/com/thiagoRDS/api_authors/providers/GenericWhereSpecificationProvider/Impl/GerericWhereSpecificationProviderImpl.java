@@ -1,4 +1,4 @@
-package br.com.thiagoRDS.api_authors.providers;
+package br.com.thiagoRDS.api_authors.providers.GenericWhereSpecificationProvider.Impl;
 
 import java.util.List;
 
@@ -6,11 +6,12 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import br.com.thiagoRDS.api_authors.providers.GenericWhereSpecificationProvider.GerericWhereSpecificationProvider;
 import jakarta.persistence.criteria.Expression;
 import jakarta.persistence.criteria.Path;
 
 @Service
-public class GerericWhereSpecificationProvider<G> {
+public class GerericWhereSpecificationProviderImpl<G> extends GerericWhereSpecificationProvider<G> {
   public Specification<G> like(String filter, String fieldPath) {
     List<String> paths = List.of(fieldPath.split("\\."));
 

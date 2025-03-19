@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import br.com.thiagoRDS.api_authors.modules.authors.dtos.ListAuthorsDTO;
 import br.com.thiagoRDS.api_authors.modules.authors.entities.Author;
 import br.com.thiagoRDS.api_authors.modules.authors.repositories.AuthorsRepository;
-import br.com.thiagoRDS.api_authors.providers.GerericWhereSpecificationProvider;
+import br.com.thiagoRDS.api_authors.providers.GenericWhereSpecificationProvider.GerericWhereSpecificationProvider;
 
 @Service
 public class ListAuthors {

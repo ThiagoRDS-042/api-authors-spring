@@ -24,7 +24,8 @@ import br.com.thiagoRDS.api_authors.modules.posts.entities.Post;
 import br.com.thiagoRDS.api_authors.modules.posts.repositories.PostsRepository;
 import br.com.thiagoRDS.api_authors.modules.utils.MakeAuthor;
 import br.com.thiagoRDS.api_authors.modules.utils.MakePost;
-import br.com.thiagoRDS.api_authors.providers.GerericWhereSpecificationProvider;
+import br.com.thiagoRDS.api_authors.providers.GenericWhereSpecificationProvider.GerericWhereSpecificationProvider;
+import br.com.thiagoRDS.api_authors.providers.GenericWhereSpecificationProvider.Impl.GerericWhereSpecificationProviderImpl;
 
 @ExtendWith(MockitoExtension.class)
 public class ListPostsTest {
@@ -59,7 +60,7 @@ public class ListPostsTest {
 
                 Pageable pageable = PageRequest.of(listPosts.page(), listPosts.pageSize(), sortBy);
 
-                GerericWhereSpecificationProvider<Post> gerericWhere = new GerericWhereSpecificationProvider<Post>();
+                GerericWhereSpecificationProvider<Post> gerericWhere = new GerericWhereSpecificationProviderImpl<Post>();
 
                 Specification<Post> titleLike = gerericWhere.like(listPosts.title(),
                                 "title");
