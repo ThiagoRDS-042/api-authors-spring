@@ -25,9 +25,9 @@ import org.springframework.web.context.WebApplicationContext;
 import br.com.thiagoRDS.api_authors.modules.authors.entities.Author;
 import br.com.thiagoRDS.api_authors.modules.authors.repositories.AuthorsRepository;
 import br.com.thiagoRDS.api_authors.modules.utils.MakeAuthor;
-import br.com.thiagoRDS.api_authors.providers.MinioProvider;
 import br.com.thiagoRDS.api_authors.providers.JwtProvider.JwtProvider;
 import br.com.thiagoRDS.api_authors.providers.JwtProvider.dtos.SignResponseDTO;
+import br.com.thiagoRDS.api_authors.providers.StorageProvider.StorageProvider;
 
 @Transactional
 @ActiveProfiles("test")
@@ -43,7 +43,7 @@ public class UploadAvatarControllerTest {
   private JwtProvider jwtProvider;
 
   @MockitoBean
-  private MinioProvider minioProvider;
+  private StorageProvider storageProvider;
 
   @Autowired
   private AuthorsRepository authorsRepository;

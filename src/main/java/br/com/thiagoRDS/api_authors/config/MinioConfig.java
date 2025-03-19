@@ -12,7 +12,6 @@ public class MinioConfig {
   private String url;
   private String accessKey;
   private String secretKey;
-  private String bucketName;
 
   public String getUrl() {
     return this.url;
@@ -36,14 +35,6 @@ public class MinioConfig {
 
   public void setSecretKey(String secretKey) {
     this.secretKey = secretKey;
-  }
-
-  public String getBucketName() {
-    return this.bucketName;
-  }
-
-  public void setBucketName(String bucketName) {
-    this.bucketName = bucketName;
   }
 
   @Bean
