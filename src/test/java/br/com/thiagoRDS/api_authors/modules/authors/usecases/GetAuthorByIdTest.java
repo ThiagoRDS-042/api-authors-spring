@@ -26,7 +26,7 @@ import br.com.thiagoRDS.api_authors.modules.posts.repositories.PostsRepository;
 import br.com.thiagoRDS.api_authors.modules.utils.MakeAddress;
 import br.com.thiagoRDS.api_authors.modules.utils.MakeAuthor;
 import br.com.thiagoRDS.api_authors.modules.utils.MakePost;
-import br.com.thiagoRDS.api_authors.providers.CurrentContextProvider;
+import br.com.thiagoRDS.api_authors.providers.CurrentContextProvider.CurrentContextProvider;
 
 @ExtendWith(MockitoExtension.class)
 public class GetAuthorByIdTest {

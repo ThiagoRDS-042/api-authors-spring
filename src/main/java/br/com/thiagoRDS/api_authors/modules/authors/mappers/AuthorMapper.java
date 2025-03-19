@@ -5,7 +5,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import br.com.thiagoRDS.api_authors.modules.authors.dtos.AddressResponseMapperDTO;
 import br.com.thiagoRDS.api_authors.modules.authors.dtos.AuthorReponseMapperDTO;
 import br.com.thiagoRDS.api_authors.modules.authors.entities.Author;
-import br.com.thiagoRDS.api_authors.providers.CurrentContextProvider;
+import br.com.thiagoRDS.api_authors.providers.CurrentContextProvider.impl.CurrentContextProviderImpl;
 
 public record AuthorMapper() {
 
@@ -13,7 +13,7 @@ public record AuthorMapper() {
     String avatarUrl = null;
 
     if (author.getAvatar() != null) {
-      UriComponentsBuilder currentUri = new CurrentContextProvider().getUri();
+      UriComponentsBuilder currentUri = new CurrentContextProviderImpl().getUri();
 
       avatarUrl = currentUri.path("/authors/avatar/").path(author.getAvatar()).toUriString();
     }
