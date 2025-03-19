@@ -22,7 +22,7 @@ import br.com.thiagoRDS.api_authors.modules.authors.entities.Author;
 import br.com.thiagoRDS.api_authors.modules.authors.exceptions.InvalidCredentialsException;
 import br.com.thiagoRDS.api_authors.modules.authors.repositories.AuthorsRepository;
 import br.com.thiagoRDS.api_authors.modules.utils.MakeAuthor;
-import br.com.thiagoRDS.api_authors.providers.JwtProvider;
+import br.com.thiagoRDS.api_authors.providers.JwtProvider.JwtProvider;
 import br.com.thiagoRDS.api_authors.providers.dtos.SignResponseDTO;
 
 @ExtendWith(MockitoExtension.class)

@@ -25,8 +25,8 @@ import org.springframework.web.context.WebApplicationContext;
 import br.com.thiagoRDS.api_authors.modules.authors.entities.Author;
 import br.com.thiagoRDS.api_authors.modules.authors.repositories.AuthorsRepository;
 import br.com.thiagoRDS.api_authors.modules.utils.MakeAuthor;
-import br.com.thiagoRDS.api_authors.providers.JwtProvider;
 import br.com.thiagoRDS.api_authors.providers.MinioProvider;
+import br.com.thiagoRDS.api_authors.providers.JwtProvider.JwtProvider;
 import br.com.thiagoRDS.api_authors.providers.dtos.SignResponseDTO;
 
 @Transactional
