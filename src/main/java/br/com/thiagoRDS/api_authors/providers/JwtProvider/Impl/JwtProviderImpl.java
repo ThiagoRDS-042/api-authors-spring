@@ -12,7 +12,7 @@ import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 
 import br.com.thiagoRDS.api_authors.providers.JwtProvider.JwtProvider;
-import br.com.thiagoRDS.api_authors.providers.dtos.SignResponseDTO;
+import br.com.thiagoRDS.api_authors.providers.JwtProvider.dtos.SignResponseDTO;
 
 @Service
 public class JwtProviderImpl extends JwtProvider {

@@ -29,7 +29,7 @@ import br.com.thiagoRDS.api_authors.modules.posts.repositories.PostsRepository;
 import br.com.thiagoRDS.api_authors.modules.utils.MakeAuthor;
 import br.com.thiagoRDS.api_authors.modules.utils.MakePost;
 import br.com.thiagoRDS.api_authors.providers.JwtProvider.JwtProvider;
-import br.com.thiagoRDS.api_authors.providers.dtos.SignResponseDTO;
+import br.com.thiagoRDS.api_authors.providers.JwtProvider.dtos.SignResponseDTO;
 
 @Transactional
 @ActiveProfiles("test")

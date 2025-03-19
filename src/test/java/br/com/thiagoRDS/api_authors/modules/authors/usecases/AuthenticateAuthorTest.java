@@ -23,7 +23,7 @@ import br.com.thiagoRDS.api_authors.modules.authors.exceptions.InvalidCredential
 import br.com.thiagoRDS.api_authors.modules.authors.repositories.AuthorsRepository;
 import br.com.thiagoRDS.api_authors.modules.utils.MakeAuthor;
 import br.com.thiagoRDS.api_authors.providers.JwtProvider.JwtProvider;
-import br.com.thiagoRDS.api_authors.providers.dtos.SignResponseDTO;
+import br.com.thiagoRDS.api_authors.providers.JwtProvider.dtos.SignResponseDTO;
 
 @ExtendWith(MockitoExtension.class)
 public class AuthenticateAuthorTest {
