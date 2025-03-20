@@ -1,5 +1,7 @@
 package br.com.thiagoRDS.api_authors.security;
 
+import static org.springframework.security.web.util.matcher.RegexRequestMatcher.regexMatcher;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,6 +26,8 @@ public class SecurityConfig {
       "/actuator/**",
   };
 
+  private static final String UUID_FORMAT = "[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}";
+
   @Bean
   SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     http.csrf(csrf -> csrf.disable()).authorizeHttpRequests(auth -> {
@@ -34,11 +38,10 @@ public class SecurityConfig {
           .requestMatchers("/authors/avatar/{avatar:.+}").permitAll()
           .requestMatchers("/authors/forgot-password").permitAll()
           .requestMatchers("/authors/password/reset").permitAll()
-          .requestMatchers("/authors/{authorId}").permitAll() // TODO: ajustar, o {authorId} pode ser qualquer coisa,
-                                                              // ele n entende
+          .requestMatchers(regexMatcher("/authors/" + UUID_FORMAT)).permitAll()
           .requestMatchers(HttpMethod.GET, "/posts").permitAll()
-          .requestMatchers("/posts/{postId}").permitAll() // TODO: ajustar tambem
-          .requestMatchers("/posts/{postId}/up").permitAll();
+          .requestMatchers(regexMatcher("/posts/" + UUID_FORMAT)).permitAll()
+          .requestMatchers(regexMatcher("/posts/" + UUID_FORMAT + "/up")).permitAll();
 
       auth.anyRequest().authenticated();
     }).addFilterBefore(this.securityAuthorConfig, BasicAuthenticationFilter.class);
