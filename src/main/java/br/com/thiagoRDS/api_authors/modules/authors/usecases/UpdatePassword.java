@@ -39,7 +39,7 @@ public class UpdatePassword {
     String passwordEncoded = this.passwordEncoder.encode(data.newPassword());
 
     author.setPassword(passwordEncoded);
-    author.setUpdtaedAt(LocalDateTime.now());
+    author.setUpdatedAt(LocalDateTime.now());
 
     this.authorsRepository.save(author);
   }

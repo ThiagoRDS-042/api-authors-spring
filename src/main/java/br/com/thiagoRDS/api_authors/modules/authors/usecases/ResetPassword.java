@@ -40,7 +40,7 @@ public class ResetPassword {
     Author author = token.getAuthor();
 
     author.setPassword(passwordEncoded);
-    author.setUpdtaedAt(LocalDateTime.now());
+    author.setUpdatedAt(LocalDateTime.now());
 
     this.authorsRepository.save(author);
 

@@ -41,7 +41,7 @@ public class UpdatePost {
     post.setContent(data.content());
     post.setTitle(data.title());
     post.setKeywords(keywords);
-    post.setUpdtaedAt(LocalDateTime.now());
+    post.setUpdatedAt(LocalDateTime.now());
 
     this.postsRepository.save(post);
   }

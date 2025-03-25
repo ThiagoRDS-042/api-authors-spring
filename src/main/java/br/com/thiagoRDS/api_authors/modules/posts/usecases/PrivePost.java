@@ -28,7 +28,7 @@ public class PrivePost {
     }
 
     post.setPublishedAt(null);
-    post.setUpdtaedAt(LocalDateTime.now());
+    post.setUpdatedAt(LocalDateTime.now());
 
     this.postsRepository.save(post);
   }

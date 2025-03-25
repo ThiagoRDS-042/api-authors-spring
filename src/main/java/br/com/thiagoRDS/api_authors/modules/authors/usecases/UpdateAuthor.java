@@ -64,7 +64,7 @@ public class UpdateAuthor {
     author.setName(data.name());
     author.setEmail(data.email());
     author.setBirthdate(birthdate);
-    author.setUpdtaedAt(LocalDateTime.now());
+    author.setUpdatedAt(LocalDateTime.now());
 
     this.authorsRepository.save(author);
   }

@@ -28,7 +28,7 @@ public class PublishPost {
     }
 
     post.setPublishedAt(LocalDateTime.now());
-    post.setUpdtaedAt(LocalDateTime.now());
+    post.setUpdatedAt(LocalDateTime.now());
 
     this.postsRepository.save(post);
   }
