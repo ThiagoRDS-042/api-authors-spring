@@ -64,7 +64,7 @@ public class Post implements Serializable {
 
   @CreationTimestamp
   @Column(name = "updated_at", nullable = false)
-  private LocalDateTime updtaedAt;
+  private LocalDateTime updatedAt;
 
   @Column(nullable = false, name = "author_id")
   private UUID authorId;
@@ -77,7 +77,7 @@ public class Post implements Serializable {
   }
 
   public Post(UUID id, String title, String content, String description, String keywords, Integer up,
-      Integer version, LocalDateTime createdAt, LocalDateTime publishedAt, LocalDateTime updtaedAt, UUID authorId,
+      Integer version, LocalDateTime createdAt, LocalDateTime publishedAt, LocalDateTime updatedAt, UUID authorId,
       Author author) {
     this.id = id;
     this.title = title;
@@ -88,7 +88,7 @@ public class Post implements Serializable {
     this.version = version;
     this.createdAt = createdAt;
     this.publishedAt = publishedAt;
-    this.updtaedAt = updtaedAt;
+    this.updatedAt = updatedAt;
     this.authorId = authorId;
     this.author = author;
   }
@@ -100,6 +100,17 @@ public class Post implements Serializable {
     this.keywords = keywords;
     this.authorId = authorId;
     this.author = author;
+    this.up = 0;
+    this.version = 1;
+    this.publishedAt = LocalDateTime.now();
+  }
+
+  public Post(String title, String content, String description, String keywords, UUID authorId) {
+    this.title = title;
+    this.content = content;
+    this.description = description;
+    this.keywords = keywords;
+    this.authorId = authorId;
     this.up = 0;
     this.version = 1;
     this.publishedAt = LocalDateTime.now();
@@ -177,12 +188,12 @@ public class Post implements Serializable {
     this.publishedAt = publishedAt;
   }
 
-  public LocalDateTime getUpdtaedAt() {
-    return this.updtaedAt;
+  public LocalDateTime getUpdatedAt() {
+    return this.updatedAt;
   }
 
-  public void setUpdtaedAt(LocalDateTime updtaedAt) {
-    this.updtaedAt = updtaedAt;
+  public void setUpdatedAt(LocalDateTime updatedAt) {
+    this.updatedAt = updatedAt;
   }
 
   public UUID getAuthorId() {
@@ -213,14 +224,14 @@ public class Post implements Serializable {
         && Objects.equals(description, post.description) && Objects.equals(keywords, post.keywords)
         && Objects.equals(up, post.up) && Objects.equals(version, post.version)
         && Objects.equals(createdAt, post.createdAt) && Objects.equals(publishedAt, post.publishedAt)
-        && Objects.equals(updtaedAt, post.updtaedAt) && Objects.equals(authorId, post.authorId)
+        && Objects.equals(updatedAt, post.updatedAt) && Objects.equals(authorId, post.authorId)
         && Objects.equals(author, post.author);
   }
 
   @Override
   public int hashCode() {
     return Objects.hash(id, title, content, description, keywords, up, version, createdAt, publishedAt,
-        updtaedAt, authorId, author);
+        updatedAt, authorId, author);
   }
 
   @Override
@@ -235,7 +246,7 @@ public class Post implements Serializable {
         ", version='" + getVersion() + "'" +
         ", createdAt='" + getCreatedAt() + "'" +
         ", publishedAt='" + getPublishedAt() + "'" +
-        ", updtaedAt='" + getUpdtaedAt() + "'" +
+        ", updatedAt='" + getUpdatedAt() + "'" +
         ", authorId='" + getAuthorId() + "'" +
         ", author='" + getAuthor() + "'" +
         "}";
@@ -247,7 +258,7 @@ public class Post implements Serializable {
       return (Post) super.clone();
     } catch (CloneNotSupportedException e) {
       return new Post(this.id, this.title, this.content, this.description, this.keywords, this.up, this.version,
-          this.createdAt, this.publishedAt, this.updtaedAt, this.authorId, this.author);
+          this.createdAt, this.publishedAt, this.updatedAt, this.authorId, this.author);
     }
   }
 }

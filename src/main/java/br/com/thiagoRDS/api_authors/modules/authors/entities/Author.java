@@ -63,13 +63,13 @@ public class Author implements Serializable {
 
   @CreationTimestamp
   @Column(name = "updated_at", nullable = false)
-  private LocalDateTime updtaedAt;
+  private LocalDateTime updatedAt;
 
   public Author() {
   }
 
   public Author(UUID id, String name, String email, String tag, String password, String avatar, LocalDate birthdate,
-      UUID addressId, Address address, LocalDateTime updtaedAt, LocalDateTime createdAt) {
+      UUID addressId, Address address, LocalDateTime updatedAt, LocalDateTime createdAt) {
     this.id = id;
     this.name = name;
     this.email = email;
@@ -79,7 +79,7 @@ public class Author implements Serializable {
     this.birthdate = birthdate;
     this.addressId = addressId;
     this.address = address;
-    this.updtaedAt = updtaedAt;
+    this.updatedAt = updatedAt;
     this.createdAt = createdAt;
   }
 
@@ -171,12 +171,12 @@ public class Author implements Serializable {
     this.createdAt = createdAt;
   }
 
-  public LocalDateTime getUpdtaedAt() {
-    return this.updtaedAt;
+  public LocalDateTime getUpdatedAt() {
+    return this.updatedAt;
   }
 
-  public void setUpdtaedAt(LocalDateTime updtaedAt) {
-    this.updtaedAt = updtaedAt;
+  public void setUpdatedAt(LocalDateTime updatedAt) {
+    this.updatedAt = updatedAt;
   }
 
   @Override
@@ -191,12 +191,12 @@ public class Author implements Serializable {
         && Objects.equals(tag, author.tag) && Objects.equals(password, author.password)
         && Objects.equals(avatar, author.avatar) && Objects.equals(birthdate, author.birthdate)
         && Objects.equals(addressId, author.addressId) && Objects.equals(address, author.address)
-        && Objects.equals(createdAt, author.createdAt) && Objects.equals(updtaedAt, author.updtaedAt);
+        && Objects.equals(createdAt, author.createdAt) && Objects.equals(updatedAt, author.updatedAt);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, name, email, tag, password, avatar, birthdate, addressId, address, createdAt, updtaedAt);
+    return Objects.hash(id, name, email, tag, password, avatar, birthdate, addressId, address, createdAt, updatedAt);
   }
 
   @Override
@@ -212,7 +212,7 @@ public class Author implements Serializable {
         ", addressId='" + getAddressId() + "'" +
         ", address='" + getAddress() + "'" +
         ", createdAt='" + getCreatedAt() + "'" +
-        ", updtaedAt='" + getUpdtaedAt() + "'" +
+        ", updatedAt='" + getUpdatedAt() + "'" +
         "}";
   }
 
@@ -222,7 +222,7 @@ public class Author implements Serializable {
       return (Author) super.clone();
     } catch (CloneNotSupportedException e) {
       return new Author(this.id, this.name, this.email, this.tag, this.password, this.avatar, this.birthdate,
-          this.addressId, this.address, this.updtaedAt, this.createdAt);
+          this.addressId, this.address, this.updatedAt, this.createdAt);
     }
   }
 }

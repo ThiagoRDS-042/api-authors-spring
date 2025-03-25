@@ -31,7 +31,7 @@ public class UpdateTag {
     }
 
     author.setTag(tag);
-    author.setUpdtaedAt(LocalDateTime.now());
+    author.setUpdatedAt(LocalDateTime.now());
 
     this.authorsRepository.save(author);
   }

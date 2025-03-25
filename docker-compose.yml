@@ -11,7 +11,7 @@ services:
       POSTGRES_PASSWORD: admin
       POSTGRES_DB: api_authors
     volumes:
-      - db_data:/var/lib/postgresql/data
+      - db_data:/bitnami/postgresql
 
   storage:
     container_name: api_authors_storage
